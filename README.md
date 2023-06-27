@@ -3,7 +3,7 @@
 Hogwarts Schedule Manager
 
 
-One teacher one subject
+One professor one subject
 
 One subject one classroom
 
@@ -21,7 +21,7 @@ User has one of 3 available roles: student, professor, admin
 
 Admin options:
 
-Edit database (CRUD student, teacher, course and relations between them)
+Edit database (CRUD student, professor, course and relations between them)
 User options:
 Navigate to MySchedule
 Choose a time window for schedule viewing (default «current month»)

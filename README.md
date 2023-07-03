@@ -2,8 +2,7 @@
 
 Hogwarts Schedule Manager
 
-
-One professor one subject
+One teacher one subject
 
 One subject one classroom
 
@@ -20,8 +19,7 @@ The sample of a students group name: «Gryffindor-7-1»; «houseName-yearOfStudy
 User has one of 3 available roles: student, professor, admin
 
 Admin options:
-
-Edit database (CRUD student, professor, course and relations between them)
+Edit database (CRUD student, teacher, course and relations between them)
 User options:
 Navigate to MySchedule
 Choose a time window for schedule viewing (default «current month»)
@@ -58,21 +56,23 @@ Septima Vector.
 
 List of classrooms:
 
-"Dungeon Five,
+Dungeon Five,
 Potion-Mixing Room,
-Potions Classroom",
-"Hagrid's Hut,
-Forbidden Forest",
-"Class 31,
-Classroom 3C",
-"Greenhouse 1-7,
-Class 102",
-"Classroom 1B,
-Class 34",
+Potions Classroom,
+Hagrid's Hut,
+Forbidden Forest,
+Class 31,
+Classroom 3C,
+Greenhouse 1-7,
+Class 102,
+Classroom 1B,
+Class 1,
+Class 34,
 Backyard,
-"Classroom 1,
-Divination Classroom",
+Classroom 1,
+Divination Classroom,
 Classroom 2E,
 Classroom 6A,
+Backyard,
 Classroom 4F,
 Classroom 7A.

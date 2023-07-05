@@ -1,4 +1,15 @@
+How to use APP:
+1. Download source code
+2. Build jar
+3. Build Docker image
+4. Execute docker-compose file
+5. Go to webpage
+6. Sign in as student, professor or admin
+7. View schedule
 
+Run DB with docker:
+
+docker run --name=spring-mvc-docker-hogwarts -d -e POSTGRES_DB=hogwarts_db -e POSTGRES_USER=lenskyi -e POSTGRES_PASSWORD=lenskyi -p 5432:5432 postgres:15-alpine
 
 Hogwarts Schedule Manager
 

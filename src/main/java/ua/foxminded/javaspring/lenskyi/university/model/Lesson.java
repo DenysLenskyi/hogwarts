@@ -16,16 +16,7 @@ public class Lesson {
     @Column(name = "LESSON_DATE")
     private LocalDate date;
 
-    @Column(name = "START_END_TIME_ID")
-    private Long startEndTimeId;
-
-    @Column(name = "SUBJECT_ID")
-    private Long subjectId;
-
-    @Column(name = "GROUP_ID")
-    private Long groupId;
-
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "START_END_TIME_ID", referencedColumnName = "ID", insertable = false, updatable = false)
     private LessonStartEndTime lessonStartEndTime;
 
@@ -37,4 +28,46 @@ public class Lesson {
     @JoinColumn(name = "GROUP_ID", insertable = false, updatable = false)
     private Group groupLessons;
 
+    public Lesson() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public LessonStartEndTime getLessonStartEndTime() {
+        return lessonStartEndTime;
+    }
+
+    public void setLessonStartEndTime(LessonStartEndTime lessonStartEndTime) {
+        this.lessonStartEndTime = lessonStartEndTime;
+    }
+
+    public Subject getSubjectLessons() {
+        return subjectLessons;
+    }
+
+    public void setSubjectLessons(Subject subjectLessons) {
+        this.subjectLessons = subjectLessons;
+    }
+
+    public Group getGroupLessons() {
+        return groupLessons;
+    }
+
+    public void setGroupLessons(Group groupLessons) {
+        this.groupLessons = groupLessons;
+    }
 }

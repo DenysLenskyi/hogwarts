@@ -3,7 +3,7 @@ INSERT INTO HOGWARTS.ROLE (NAME) VALUES
 ('professor'),
 ('admin');
 
-INSERT INTO HOGWARTS.GROUP (NAME) VALUES ('Gryffindor');
+INSERT INTO HOGWARTS.GROUP (NAME) VALUES ('Gryffindor-7');
 
 INSERT INTO HOGWARTS.CLASSROOM (NAME, DESCRIPTION) VALUES
 ('Class 1', 'Class 1 was a classroom located on the first floor of Hogwarts Castle. First-year Transfiguration classes were taught there in the 1991–1992 school year.'),
@@ -31,9 +31,52 @@ INSERT INTO HOGWARTS.CLASSROOM (NAME, DESCRIPTION) VALUES
 ('Classroom 7A', 'Classroom 7A was a classroom where Arithmancy classes were taught at Hogwarts School of Witchcraft and Wizardry. It was located off of the Serpentine Corridor on the third-floor of Hogwarts Castle, next-door to Classroom 3C and around the corner from a corridor where the staffroom sometimes existed.'),
 ('Classroom 6A', 'Classroom 6A was where Study of Ancient Runes and Ancient Studies classes were taught at Hogwarts. It was located on the sixth floor of Hogwarts Castle, next-door to Classroom 6B, and included some desks, a bookcase, and a lectern for the teacher.');
 
+CREATE SEQUENCE HOGWARTS.LESSON_START_END_TIME_ID_SEQ
+    START 1
+    INCREMENT 1
+    OWNED BY HOGWARTS.LESSON_START_END_TIME.ID;
+
 INSERT INTO HOGWARTS.LESSON_START_END_TIME (ID, START_TIME, END_TIME) VALUES
-(1, '09:30', '10:50'),
-(2, '11:00', '12:20'),
-(3, '13:00', '14:20'),
-(4, '14:30', '15:50'),
-(5, '16:00', '17:20');
+(nextval('HOGWARTS.LESSON_START_END_TIME_ID_SEQ'), '09:30', '10:50'),
+(nextval('HOGWARTS.LESSON_START_END_TIME_ID_SEQ'), '11:00', '12:20'),
+(nextval('HOGWARTS.LESSON_START_END_TIME_ID_SEQ'), '13:00', '14:20'),
+(nextval('HOGWARTS.LESSON_START_END_TIME_ID_SEQ'), '14:30', '15:50'),
+(nextval('HOGWARTS.LESSON_START_END_TIME_ID_SEQ'), '16:00', '17:20');
+
+INSERT INTO HOGWARTS.SUBJECT (NAME, DESCRIPTION, PROFESSOR_ID, CLASSROOM_ID) VALUES
+('Potions', 'In this class, students learnt the correct way to brew potions. They followed specific recipes and used various magical ingredients to create potions, starting with simple ones and moving to more advanced ones as they progressed in knowledge.', null, null),
+('Defence Against the Dark Arts', 'In this class, students studied and learnt how to defend themselves against all aspects of the Dark Arts, including dark creatures, curses, hexes and jinxes (dark charms), and duelling.', null, null),
+('Herbology', 'In this class students learned to care for and utilise plants, learn about their magical properties and what they are used for. Many plants provided ingredients for potions and medicine, while others had magical effects of their own right.', null, null),
+('Transfiguration', 'Transfiguration was a core class and subject taught at Hogwarts School of Witchcraft and Wizardry, Ilvermorny School of Witchcraft and Wizardry and Uagadou. It taught the art of changing the form and appearance of an object or a person. This type of magic was commonly referred to as "Transfiguration" and was considered both complex and dangerous.', null, null),
+('Field Studies', 'Field Studies class was proposed by the British Ministry of Magic official Archibald Eagleton in the 2010s. It involved studying magical creatures in nature.', null, null),
+('Divination', 'Divination was an elective course taught at Hogwarts School of Witchcraft and Wizardry. It taught methods of divining the future, or gathering insights into future events, through various rituals and tools.', null, null),
+('Charms', 'Charms was a core class and subject taught at Hogwarts School of Witchcraft and Wizardry and Ilvermorny School of Witchcraft and Wizardry. As the name suggests, it specialised in the teaching of charms.', null, null),
+('Study of Ancient Runes', 'Ancient runes were a form of writing which witches and wizards used hundreds of years ago.', null, null),
+('Flying', 'Flying, also known as Broom Flight Class, was a subject taught at Hogwarts School of Witchcraft and Wizardry. It was taught by Madam Rolanda Hooch, the Hogwarts Flying Instructor and Quidditch referee. The subject taught students how to fly broomsticks.', null, null),
+('History of Magic', 'This class was a study of magical history. This was one of the subjects where the use of magic practically was not necessary. History of Magic was taught from the first year to the fifth, and was completed with an O.W.L. exam with only a written section.', null, null),
+('Arithmancy', 'Little is known about the class, but the study of Arithmancy has been described as "predicting the future using numbers", with "bit of numerology" as well.', null, null),
+('Care of Magical Creatures', 'In the class, students learnt about a wide range of magical creatures, from flobberworms, hippogriffs, unicorns and even thestrals. Students were taught about feeding, maintaining, breeding, and proper treatment of these creatures and many more.', null, null);
+
+INSERT INTO HOGWARTS.USER (GROUP_ID, SUBJECT_ID, FIRST_NAME, LAST_NAME) VALUES
+-- professors
+(null, null, 'Severus', 'Snape'),
+(null, null, 'Remus', 'Lupin'),
+(null, null, 'Pomona', 'Sprout'),
+(null, null, 'Minerva', 'McGonagall'),
+(null, null, 'Luna', 'Scamander'),
+(null, null, 'Firenze', ''),
+(null, null, 'Filius', 'Flitwick'),
+(null, null, 'Elspeth', 'MacGillony'),
+(null, null, 'Rolanda', 'Hooch'),
+(null, null, 'Jakub', 'Gorski'),
+(null, null, 'Septima', 'Vector'),
+(null, null, 'Rubeus', 'Hagrid'),
+-- students
+(null, null, 'Harry', 'Potter'),
+(null, null, 'Hermione', 'Granger'),
+(null, null, 'Neville', 'Longbottom'),
+(null, null, 'Ronald', 'Weasley'),
+(null, null, 'Lavender', 'Brown'),
+(null, null, 'Dean', 'Thomas'),
+(null, null, 'Seamus', 'Finnigan'),
+(null, null, 'Parvati', 'Patil');

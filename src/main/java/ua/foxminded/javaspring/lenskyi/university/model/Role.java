@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "ROLE", schema = "HOGWARTS")
@@ -22,7 +23,7 @@ public class Role {
                     CascadeType.MERGE
             },
             mappedBy = "roles")
-    private Collection<User> users = new HashSet<>();
+    private Set<User> users = new HashSet<>();
 
     public Role() {
     }

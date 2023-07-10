@@ -15,8 +15,6 @@ public class User {
     private Long id;
     @Column(name = "GROUP_ID", insertable = false, updatable = false)
     private Long groupId;
-    @Column(name = "SUBJECT_ID", insertable = false, updatable = false)
-    private Long subjectId;
     @Column(name = "FIRST_NAME")
     private String firstName;
     @Column(name = "LAST_NAME")
@@ -57,14 +55,6 @@ public class User {
 
     public void setGroupId(Long groupId) {
         this.groupId = groupId;
-    }
-
-    public Long getSubjectId() {
-        return subjectId;
-    }
-
-    public void setSubjectId(Long subjectId) {
-        this.subjectId = subjectId;
     }
 
     public String getFirstName() {

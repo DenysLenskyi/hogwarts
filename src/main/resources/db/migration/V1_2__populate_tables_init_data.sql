@@ -57,26 +57,26 @@ INSERT INTO HOGWARTS.SUBJECT (NAME, DESCRIPTION, PROFESSOR_ID, CLASSROOM_ID) VAL
 ('Arithmancy', 'Little is known about the class, but the study of Arithmancy has been described as "predicting the future using numbers", with "bit of numerology" as well.', null, null),
 ('Care of Magical Creatures', 'In the class, students learnt about a wide range of magical creatures, from flobberworms, hippogriffs, unicorns and even thestrals. Students were taught about feeding, maintaining, breeding, and proper treatment of these creatures and many more.', null, null);
 
-INSERT INTO HOGWARTS.USER (GROUP_ID, SUBJECT_ID, FIRST_NAME, LAST_NAME) VALUES
+INSERT INTO HOGWARTS.USER (GROUP_ID, FIRST_NAME, LAST_NAME) VALUES
 -- professors
-(null, null, 'Severus', 'Snape'),
-(null, null, 'Remus', 'Lupin'),
-(null, null, 'Pomona', 'Sprout'),
-(null, null, 'Minerva', 'McGonagall'),
-(null, null, 'Luna', 'Scamander'),
-(null, null, 'Firenze', ''),
-(null, null, 'Filius', 'Flitwick'),
-(null, null, 'Elspeth', 'MacGillony'),
-(null, null, 'Rolanda', 'Hooch'),
-(null, null, 'Jakub', 'Gorski'),
-(null, null, 'Septima', 'Vector'),
-(null, null, 'Rubeus', 'Hagrid'),
+(null, 'Severus', 'Snape'),
+(null, 'Remus', 'Lupin'),
+(null, 'Pomona', 'Sprout'),
+(null, 'Minerva', 'McGonagall'),
+(null, 'Luna', 'Scamander'),
+(null, 'Firenze', ''),
+(null, 'Filius', 'Flitwick'),
+(null, 'Elspeth', 'MacGillony'),
+(null, 'Rolanda', 'Hooch'),
+(null, 'Jakub', 'Gorski'),
+(null, 'Septima', 'Vector'),
+(null, 'Rubeus', 'Hagrid'),
 -- students
-(null, null, 'Harry', 'Potter'),
-(null, null, 'Hermione', 'Granger'),
-(null, null, 'Neville', 'Longbottom'),
-(null, null, 'Ronald', 'Weasley'),
-(null, null, 'Lavender', 'Brown'),
-(null, null, 'Dean', 'Thomas'),
-(null, null, 'Seamus', 'Finnigan'),
-(null, null, 'Parvati', 'Patil');
+(null, 'Harry', 'Potter'),
+(null, 'Hermione', 'Granger'),
+(null, 'Neville', 'Longbottom'),
+(null, 'Ronald', 'Weasley'),
+(null, 'Lavender', 'Brown'),
+(null, 'Dean', 'Thomas'),
+(null, 'Seamus', 'Finnigan'),
+(null, 'Parvati', 'Patil');

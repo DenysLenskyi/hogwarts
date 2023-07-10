@@ -3,7 +3,6 @@ package ua.foxminded.javaspring.lenskyi.university.model;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;
-import java.util.Set;
 
 @Entity
 @Table(name = "LESSON_START_END_TIME", schema = "HOGWARTS")
@@ -19,9 +18,6 @@ public class LessonStartEndTime {
 
     @Column(name = "END_TIME")
     private LocalTime end;
-
-    @OneToMany(mappedBy = "lessonStartEndTime")
-    private Set<Lesson> lessons;
 
     public LessonStartEndTime() {
     }

@@ -5,13 +5,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
     container_name: hogwarts_lenskyi_app_cont
     depends_on:
       - db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://hogwarts_lenskyi_db_cont:5432/hogwarts_db
-    stdin_open: true
-    tty: true
     volumes:
       - ./logs:/logs
 

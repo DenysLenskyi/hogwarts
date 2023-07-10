@@ -32,7 +32,7 @@ public class Subject {
     @JoinColumn(name = "CLASSROOM_ID", referencedColumnName = "ID")
     private Classroom subjectClassroom;
 
-    @OneToMany(mappedBy = "subjectLessons")
+    @OneToMany(mappedBy = "subjectOfTheLesson")
     private Set<Lesson> lessons;
 
     public Subject() {

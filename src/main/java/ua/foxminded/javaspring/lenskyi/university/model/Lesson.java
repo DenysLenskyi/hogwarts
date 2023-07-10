@@ -22,11 +22,11 @@ public class Lesson {
 
     @ManyToOne
     @JoinColumn(name = "SUBJECT_ID", insertable = false, updatable = false)
-    private Subject subjectLessons;
+    private Subject subjectOfTheLesson;
 
     @ManyToOne
     @JoinColumn(name = "GROUP_ID", insertable = false, updatable = false)
-    private Group groupLessons;
+    private Group group;
 
     public Lesson() {
     }
@@ -55,19 +55,19 @@ public class Lesson {
         this.lessonStartEndTime = lessonStartEndTime;
     }
 
-    public Subject getSubjectLessons() {
-        return subjectLessons;
+    public Subject getSubjectOfTheLesson() {
+        return subjectOfTheLesson;
     }
 
-    public void setSubjectLessons(Subject subjectLessons) {
-        this.subjectLessons = subjectLessons;
+    public void setSubjectOfTheLesson(Subject subjectLessons) {
+        this.subjectOfTheLesson = subjectLessons;
     }
 
-    public Group getGroupLessons() {
-        return groupLessons;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setGroupLessons(Group groupLessons) {
-        this.groupLessons = groupLessons;
+    public void setGroup(Group groupLessons) {
+        this.group = groupLessons;
     }
 }

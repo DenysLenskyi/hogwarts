@@ -51,12 +51,12 @@ class CreateTablesTest {
         assertEquals("Severus", severus.getFirstName());
         assertEquals("professor", severus.getRoles().stream().findFirst().get().getName());
 
-        assertEquals("Gryffindor-7", lessonRepository.findAll().get(0).getGroupLessons().getName());
+        assertEquals("Gryffindor-7", lessonRepository.findAll().get(0).getGroup().getName());
 
         Lesson lesson = lessonRepository.findLessonByDateAndLessonStartEndTime(
                 LocalDate.of(2023, 9, 4), lessonStartEndTimeRepository.findById(1L).get());
 
-        assertEquals("Gryffindor-7", lesson.getGroupLessons().getName());
-        assertEquals("Potions", lesson.getSubjectLessons().getName());
+        assertEquals("Gryffindor-7", lesson.getGroup().getName());
+        assertEquals("Potions", lesson.getSubjectOfTheLesson().getName());
     }
 }

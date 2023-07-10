@@ -19,7 +19,7 @@ public class Group {
     @OneToMany(mappedBy = "group")
     private Set<User> users;
 
-    @OneToMany(mappedBy = "groupLessons")
+    @OneToMany(mappedBy = "group")
     private Set<Lesson> lessons;
 
     public Group() {

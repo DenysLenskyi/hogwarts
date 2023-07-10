@@ -6,10 +6,12 @@ import ua.foxminded.javaspring.lenskyi.university.model.Lesson;
 import ua.foxminded.javaspring.lenskyi.university.model.LessonStartEndTime;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.List;
 
 @Repository
 public interface LessonRepository extends JpaRepository<Lesson, Long> {
 
     Lesson findLessonByDateAndLessonStartEndTime(LocalDate date, LessonStartEndTime lessonStartEndTime);
+
+    List<Lesson> findLessonsByDate(LocalDate date);
 }

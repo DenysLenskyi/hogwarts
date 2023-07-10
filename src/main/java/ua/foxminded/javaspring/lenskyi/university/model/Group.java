@@ -16,11 +16,11 @@ public class Group {
     @Column(name = "NAME")
     private String name;
 
-    @OneToMany(mappedBy = "group")
-    private Set<User> users;
+//    @OneToMany(mappedBy = "group")
+//    private Set<User> users;
 
-    @OneToMany(mappedBy = "groupLessons")
-    private Set<Lesson> lessons;
+//    @OneToMany(mappedBy = "groupLessons")
+//    private Set<Lesson> lessons;
 
     public Group() {
     }

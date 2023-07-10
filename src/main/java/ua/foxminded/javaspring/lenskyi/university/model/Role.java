@@ -18,11 +18,7 @@ public class Role {
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
-            mappedBy = "roles")
+                mappedBy = "roles")
     private Set<User> users = new HashSet<>();
 
     public Role() {
@@ -42,5 +38,13 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 }

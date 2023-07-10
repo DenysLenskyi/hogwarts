@@ -17,8 +17,8 @@ public class Classroom {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @OneToOne(mappedBy = "subjectClassroom")
-    private Subject subject;
+//    @OneToOne(mappedBy = "subjectClassroom")
+//    private Subject subject;
 
     public Classroom() {
     }

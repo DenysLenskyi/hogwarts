@@ -10,10 +10,12 @@ services:
       - db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://hogwarts_lenskyi_db_cont:5432/hogwarts_db
-    stdin_open: true
-    tty: true
+#    stdin_open: true
+#    tty: true
     volumes:
       - ./logs:/logs
+    ports:
+      - '8080:8080'
 
   db:
     image: postgres:15-alpine

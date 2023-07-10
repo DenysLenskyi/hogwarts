@@ -11,7 +11,15 @@ public class LessonStartEndTime {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                    generator = "test_seq")
+    @SequenceGenerator(
+            name = "test_seq",
+            schema = "HOGWARTS",
+            sequenceName = "LESSON_START_END_TIME_ID_SEQ",
+            initialValue = 1,
+            allocationSize = 1
+    )
     private Long id;
 
     @Column(name = "START_TIME")
@@ -20,8 +28,8 @@ public class LessonStartEndTime {
     @Column(name = "END_TIME")
     private LocalTime end;
 
-    @OneToMany(mappedBy = "lessonStartEndTime")
-    private Set<Lesson> lessons;
+//    @OneToMany(mappedBy = "lessonStartEndTime")
+//    private Set<Lesson> lessons;
 
     public LessonStartEndTime() {
     }

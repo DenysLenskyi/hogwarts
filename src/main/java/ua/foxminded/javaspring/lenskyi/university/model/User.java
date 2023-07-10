@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "USER", schema = "HOGWARTS")
@@ -13,32 +14,24 @@ public class User {
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "GROUP_ID", insertable = false, updatable = false)
-    private Long groupId;
-    @Column(name = "SUBJECT_ID", insertable = false, updatable = false)
-    private Long subjectId;
     @Column(name = "FIRST_NAME")
     private String firstName;
     @Column(name = "LAST_NAME")
     private String lastName;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USER_ROLE", schema = "HOGWARTS",
             joinColumns = {@JoinColumn(name = "USER_ID")},
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID")})
-    private Collection<Role> roles = new HashSet<>();
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "SUBJECT_ID", referencedColumnName = "ID")
-    private Subject professorSubject;
+    private Set<Role> roles = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "GROUP_ID", insertable = false, updatable = false)
     private Group group;
+
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "SUBJECT_ID", referencedColumnName = "ID")
+//    private Subject professorSubject;
 
     public User() {
     }
@@ -49,22 +42,6 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
-    }
-
-    public Long getSubjectId() {
-        return subjectId;
-    }
-
-    public void setSubjectId(Long subjectId) {
-        this.subjectId = subjectId;
     }
 
     public String getFirstName() {
@@ -83,27 +60,28 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Collection<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Collection<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
-    public Subject getProfessorSubject() {
-        return professorSubject;
-    }
-
-    public void setProfessorSubject(Subject professorSubject) {
-        this.professorSubject = professorSubject;
-    }
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
+    //
+//    public Subject getProfessorSubject() {
+//        return professorSubject;
+//    }
+//
+//    public void setProfessorSubject(Subject professorSubject) {
+//        this.professorSubject = professorSubject;
+//    }
+//
+//    public Group getGroup() {
+//        return group;
+//    }
+//
+//    public void setGroup(Group group) {
+//        this.group = group;
+//    }
 }

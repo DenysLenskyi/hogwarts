@@ -1,9 +1,57 @@
---INSERT INTO HOGWARTS.ROLE (NAME) VALUES
---('student'),
---('professor'),
---('admin');
+INSERT INTO HOGWARTS.ROLE (NAME) VALUES
+('student'),
+('professor'),
+('admin');
 
 INSERT INTO HOGWARTS.GROUP (NAME) VALUES ('Gryffindor-7');
+
+INSERT INTO HOGWARTS.LESSON_START_END_TIME (ID, START_TIME, END_TIME) VALUES
+(nextval('HOGWARTS.LESSON_START_END_TIME_ID_SEQ'), '09:30', '10:50'),
+(nextval('HOGWARTS.LESSON_START_END_TIME_ID_SEQ'), '11:00', '12:20'),
+(nextval('HOGWARTS.LESSON_START_END_TIME_ID_SEQ'), '13:00', '14:20'),
+(nextval('HOGWARTS.LESSON_START_END_TIME_ID_SEQ'), '14:30', '15:50'),
+(nextval('HOGWARTS.LESSON_START_END_TIME_ID_SEQ'), '16:00', '17:20');
+
+do $$
+declare
+    gryffindor_id BIGINT;
+begin
+    SELECT INTO gryffindor_id gr.ID FROM HOGWARTS.GROUP gr WHERE NAME = 'Gryffindor-7';
+
+    INSERT INTO HOGWARTS.USER (GROUP_ID, FIRST_NAME, LAST_NAME) VALUES
+    -- professors
+    (null, 'Severus', 'Snape'),
+    (null, 'Remus', 'Lupin'),
+    (null, 'Pomona', 'Sprout'),
+    (null, 'Minerva', 'McGonagall'),
+    (null, 'Luna', 'Scamander'),
+    (null, 'Firenze', ''),
+    (null, 'Filius', 'Flitwick'),
+    (null, 'Elspeth', 'MacGillony'),
+    (null, 'Rolanda', 'Hooch'),
+    (null, 'Jakub', 'Gorski'),
+    (null, 'Septima', 'Vector'),
+    (null, 'Rubeus', 'Hagrid'),
+    (gryffindor_id, 'Harry', 'Potter'),
+    (gryffindor_id, 'Hermione', 'Granger'),
+    (gryffindor_id, 'Neville', 'Longbottom'),
+    (gryffindor_id, 'Ronald', 'Weasley'),
+    (gryffindor_id, 'Lavender', 'Brown'),
+    (gryffindor_id, 'Dean', 'Thomas'),
+    (gryffindor_id, 'Dean', 'Finnigan'),
+    (gryffindor_id, 'Seamus', 'Patil' );
+end; $$;
+
+INSERT INTO HOGWARTS.USER_ROLE (USER_ID, ROLE_ID)
+SELECT U.ID, R.ID FROM HOGWARTS.USER U JOIN HOGWARTS.ROLE R ON (u.FIRST_NAME = 'Severus' AND u.LAST_NAME = 'Snape' and r.NAME = 'professor');
+--SELECT U.ID, R.ID FROM HOGWARTS.USER U JOIN HOGWARTS.ROLE R ON (u.FIRST_NAME = 'Remus' AND u.LAST_NAME = 'Lupin' and r.NAME = 'professor'),
+--SELECT U.ID, R.ID FROM HOGWARTS.USER U JOIN HOGWARTS.ROLE R ON (u.FIRST_NAME = 'Pomona' AND u.LAST_NAME = 'Sprout' and r.NAME = 'professor'),
+--SELECT U.ID, R.ID FROM HOGWARTS.USER U JOIN HOGWARTS.ROLE R ON (u.FIRST_NAME = 'Minerva' AND u.LAST_NAME = 'McGonagall' and r.NAME = 'professor'),
+INSERT INTO HOGWARTS.USER_ROLE (USER_ID, ROLE_ID)
+SELECT U.ID, R.ID FROM HOGWARTS.USER U JOIN HOGWARTS.ROLE R ON (u.FIRST_NAME = 'Harry' AND u.LAST_NAME = 'Potter' and r.NAME = 'student');
+-- next line can trigger exception in validate_group function
+--SELECT U.ID, R.ID FROM HOGWARTS.USER U JOIN HOGWARTS.ROLE R ON (u.FIRST_NAME = 'Harry' AND u.LAST_NAME = 'Potter' and r.NAME = 'professor');
+-- continue
 
 --INSERT INTO HOGWARTS.CLASSROOM (NAME, DESCRIPTION) VALUES
 --('Class 1', 'Class 1 was a classroom located on the first floor of Hogwarts Castle. First-year Transfiguration classes were taught there in the 1991–1992 school year.'),
@@ -32,14 +80,6 @@ INSERT INTO HOGWARTS.GROUP (NAME) VALUES ('Gryffindor-7');
 --('Classroom 6A', 'Classroom 6A was where Study of Ancient Runes and Ancient Studies classes were taught at Hogwarts. It was located on the sixth floor of Hogwarts Castle, next-door to Classroom 6B, and included some desks, a bookcase, and a lectern for the teacher.');
 --
 
---
---INSERT INTO HOGWARTS.LESSON_START_END_TIME (ID, START_TIME, END_TIME) VALUES
---(nextval('HOGWARTS.LESSON_START_END_TIME_ID_SEQ'), '09:30', '10:50'),
---(nextval('HOGWARTS.LESSON_START_END_TIME_ID_SEQ'), '11:00', '12:20'),
---(nextval('HOGWARTS.LESSON_START_END_TIME_ID_SEQ'), '13:00', '14:20'),
---(nextval('HOGWARTS.LESSON_START_END_TIME_ID_SEQ'), '14:30', '15:50'),
---(nextval('HOGWARTS.LESSON_START_END_TIME_ID_SEQ'), '16:00', '17:20');
---
 --INSERT INTO HOGWARTS.SUBJECT (NAME, DESCRIPTION, PROFESSOR_ID, CLASSROOM_ID) VALUES
 --('Potions', 'In this class, students learnt the correct way to brew potions. They followed specific recipes and used various magical ingredients to create potions, starting with simple ones and moving to more advanced ones as they progressed in knowledge.', null, null),
 --('Defence Against the Dark Arts', 'In this class, students studied and learnt how to defend themselves against all aspects of the Dark Arts, including dark creatures, curses, hexes and jinxes (dark charms), and duelling.', null, null),
@@ -54,26 +94,3 @@ INSERT INTO HOGWARTS.GROUP (NAME) VALUES ('Gryffindor-7');
 --('Arithmancy', 'Little is known about the class, but the study of Arithmancy has been described as "predicting the future using numbers", with "bit of numerology" as well.', null, null),
 --('Care of Magical Creatures', 'In the class, students learnt about a wide range of magical creatures, from flobberworms, hippogriffs, unicorns and even thestrals. Students were taught about feeding, maintaining, breeding, and proper treatment of these creatures and many more.', null, null);
 --
---INSERT INTO HOGWARTS.USER (GROUP_ID, SUBJECT_ID, FIRST_NAME, LAST_NAME) VALUES
----- professors
---(null, null, 'Severus', 'Snape'),
---(null, null, 'Remus', 'Lupin'),
---(null, null, 'Pomona', 'Sprout'),
---(null, null, 'Minerva', 'McGonagall'),
---(null, null, 'Luna', 'Scamander'),
---(null, null, 'Firenze', ''),
---(null, null, 'Filius', 'Flitwick'),
---(null, null, 'Elspeth', 'MacGillony'),
---(null, null, 'Rolanda', 'Hooch'),
---(null, null, 'Jakub', 'Gorski'),
---(null, null, 'Septima', 'Vector'),
---(null, null, 'Rubeus', 'Hagrid'),
----- students
---(null, null, 'Harry', 'Potter'),
---(null, null, 'Hermione', 'Granger'),
---(null, null, 'Neville', 'Longbottom'),
---(null, null, 'Ronald', 'Weasley'),
---(null, null, 'Lavender', 'Brown'),
---(null, null, 'Dean', 'Thomas'),
---(null, null, 'Seamus', 'Finnigan'),
---(null, null, 'Parvati', 'Patil');

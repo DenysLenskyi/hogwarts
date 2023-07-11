@@ -14,11 +14,9 @@ CREATE TABLE IF NOT EXISTS HOGWARTS.GROUP (
 CREATE TABLE IF NOT EXISTS HOGWARTS.USER (
     ID BIGSERIAL PRIMARY KEY,
     GROUP_ID BIGINT,
---    SUBJECT_ID BIGINT,
     FIRST_NAME TEXT NOT NULL,
     LAST_NAME TEXT NOT NULL,
-    CONSTRAINT GROUP_ID_FK FOREIGN KEY (GROUP_ID) REFERENCES HOGWARTS.GROUP (ID) ON DELETE CASCADE,
-    CONSTRAINT SUBJECT_ID_FK FOREIGN KEY (SUBJECT_ID) REFERENCES HOGWARTS.SUBJECT (ID) ON DELETE CASCADE
+    CONSTRAINT GROUP_ID_FK FOREIGN KEY (GROUP_ID) REFERENCES HOGWARTS.GROUP (ID) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS HOGWARTS.USER_ROLE (
@@ -68,24 +66,70 @@ CREATE TABLE IF NOT EXISTS HOGWARTS.LESSON (
     CONSTRAINT GROUP_ID_FK FOREIGN KEY (GROUP_ID) REFERENCES HOGWARTS.GROUP (ID) ON DELETE CASCADE
 );
 
-INSERT INTO HOGWARTS.ROLE (NAME) VALUES
-('student'),
-('professor'),
-('admin');
-
-CREATE FUNCTION trigger_function()
-   RETURNS TRIGGER
-   LANGUAGE PLPGSQL
-AS $$
+----------------------------------------------------------------------------------
+-- check for table HOGWARTS.SUBJECT. Only users with `professor` role can be in PROFESSOR_ID
+----------------------------------------------------------------------------------
+CREATE FUNCTION check_professor_role_id()
+    RETURNS TRIGGER
+    LANGUAGE PLPGSQL
+    AS
+$$
 DECLARE
-    allowed_professor_id BIGINT;
+    professor_role_id BIGINT;
+    current_role_id BIGINT;
 BEGIN
-    select INTO allowed_professor_id id
+    select INTO professor_role_id id
       from HOGWARTS.ROLE where name LIKE 'professor';
 
-    IF allowed_professor_id <> NEW.ID
+    select into current_role_id role_id
+      from HOGWARTS.USER_ROLE where user_id = NEW.PROFESSOR_ID;
+
+    IF professor_id <> current_role_id
     THEN
-        RAISE EXCEPTION 'some error';
+        RAISE EXCEPTION 'in table HOGWARTS.SUBJECT column PROFESSOR_ID can save only users with role `professor`';
     END IF;
+    RETURN NEW;
 END;
+$$;
+
+CREATE TRIGGER professor_role_id_trigger
+    BEFORE INSERT OR UPDATE ON HOGWARTS.SUBJECT
+    FOR EACH ROW
+    EXECUTE FUNCTION check_professor_role_id();
+
+----------------------------------------------------------------------------------
+-- check for table HOGWARTS.USER. Only users with `student` role can have GROUP_ID
+----------------------------------------------------------------------------------
+CREATE FUNCTION validate_group()
+    RETURNS TRIGGER
+    LANGUAGE PLPGSQL
+    AS
 $$
+DECLARE
+    new_user_role TEXT;
+    new_user_group_id BIGINT;
+BEGIN
+    select INTO new_user_role R.NAME
+      from HOGWARTS.ROLE R
+     where R.ID = NEW.ROLE_ID;
+
+    select into new_user_group_id GROUP_ID
+      from HOGWARTS.USER where id = NEW.USER_ID;
+
+    IF new_user_role = 'student' AND new_user_group_id IS NULL
+    THEN
+        RAISE EXCEPTION 'in table HOGWARTS.USER column GROUP_ID must have value for users with role `student`';
+    ELSIF new_user_role = 'admin' OR new_user_role = 'professor' AND new_user_group_id IS NOT NULL
+    THEN
+        RAISE EXCEPTION 'in table HOGWARTS.USER column GROUP_ID should not have value for users with role `admin` or `professor`';
+    ELSE
+        RETURN NEW;
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER user_group_trigger
+    BEFORE INSERT OR UPDATE ON HOGWARTS.USER_ROLE
+    FOR EACH ROW
+    EXECUTE FUNCTION validate_group();

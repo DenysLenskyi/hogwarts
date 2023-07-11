@@ -29,10 +29,6 @@ public class User {
     @JoinColumn(name = "GROUP_ID", insertable = false, updatable = false)
     private Group group;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "SUBJECT_ID", referencedColumnName = "ID")
-//    private Subject professorSubject;
-
     public User() {
     }
 

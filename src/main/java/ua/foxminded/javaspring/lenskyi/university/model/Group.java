@@ -16,11 +16,11 @@ public class Group {
     @Column(name = "NAME")
     private String name;
 
-//    @OneToMany(mappedBy = "group")
-//    private Set<User> users;
+    @OneToMany(mappedBy = "group")
+    private Set<User> users;
 
-//    @OneToMany(mappedBy = "groupLessons")
-//    private Set<Lesson> lessons;
+    @OneToMany(mappedBy = "groupLessons")
+    private Set<Lesson> lessons;
 
     public Group() {
     }
@@ -39,5 +39,21 @@ public class Group {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    public Set<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(Set<Lesson> lessons) {
+        this.lessons = lessons;
     }
 }

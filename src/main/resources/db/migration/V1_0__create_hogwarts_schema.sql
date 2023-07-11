@@ -66,9 +66,9 @@ CREATE TABLE IF NOT EXISTS HOGWARTS.LESSON (
     CONSTRAINT GROUP_ID_FK FOREIGN KEY (GROUP_ID) REFERENCES HOGWARTS.GROUP (ID) ON DELETE CASCADE
 );
 
-----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
 -- check for table HOGWARTS.SUBJECT. Only users with `professor` role can be in PROFESSOR_ID
-----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
 CREATE FUNCTION check_professor_role_id()
     RETURNS TRIGGER
     LANGUAGE PLPGSQL
@@ -84,7 +84,7 @@ BEGIN
     select into current_role_id role_id
       from HOGWARTS.USER_ROLE where user_id = NEW.PROFESSOR_ID;
 
-    IF professor_id <> current_role_id
+    IF professor_role_id <> current_role_id
     THEN
         RAISE EXCEPTION 'in table HOGWARTS.SUBJECT column PROFESSOR_ID can save only users with role `professor`';
     END IF;

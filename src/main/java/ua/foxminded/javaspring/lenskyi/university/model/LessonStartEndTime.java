@@ -28,8 +28,8 @@ public class LessonStartEndTime {
     @Column(name = "END_TIME")
     private LocalTime end;
 
-//    @OneToMany(mappedBy = "lessonStartEndTime")
-//    private Set<Lesson> lessons;
+    @OneToMany(mappedBy = "lessonStartEndTime")
+    private Set<Lesson> lessons;
 
     public LessonStartEndTime() {
     }

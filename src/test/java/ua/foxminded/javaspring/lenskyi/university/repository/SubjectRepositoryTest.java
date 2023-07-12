@@ -52,4 +52,13 @@ class SubjectRepositoryTest {
         Subject potions = subjectRepository.findSubjectByName(expectedNameForPotionSubject).orElseThrow();
         assertEquals("Potions Classroom", potions.getSubjectClassroom().getName());
     }
+
+    @Test
+    @Transactional
+    void test() {
+        User harry = userRepository.findUserByLastName("Potter");
+        Subject potions = subjectRepository.findSubjectByName("Potions").orElseThrow();
+        potions.setProfessorId(harry.getId());
+        subjectRepository.save(potions);
+    }
 }

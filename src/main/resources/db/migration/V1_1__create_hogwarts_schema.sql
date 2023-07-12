@@ -81,27 +81,37 @@ ALTER TABLE HOGWARTS.LESSON
 ALTER TABLE HOGWARTS.LESSON
     ADD CONSTRAINT GROUP_ID_FK FOREIGN KEY (GROUP_ID) REFERENCES HOGWARTS.GROUP (ID);
 
-CREATE OR REPLACE FUNCTION error_if_not_a_professor_assigned_to_a_subject()
+CREATE FUNCTION check_professor_role_id()
     RETURNS TRIGGER
     LANGUAGE PLPGSQL
 AS
 $$
+DECLARE
+    professor_role_id BIGINT;
+    admin_role_id BIGINT;
+    current_role_id BIGINT;
 BEGIN
-    IF EXISTS(SELECT 1
-              FROM HOGWARTS.USER_ROLE
-              WHERE USER_ID = NEW.professor_id
-                AND ROLE_ID = (SELECT ID FROM HOGWARTS.ROLE WHERE NAME = 'student')) THEN
-        RAISE unique_violation USING MESSAGE = 'Not a professor assigned to the subject!';
+    select INTO professor_role_id id
+    from HOGWARTS.ROLE where name LIKE 'professor';
+
+    select INTO admin_role_id id
+    from HOGWARTS.ROLE where name LIKE 'admin';
+
+    select into current_role_id role_id
+    from HOGWARTS.USER_ROLE where user_id = NEW.PROFESSOR_ID;
+
+    IF professor_role_id <> current_role_id and admin_role_id <> current_role_id
+    THEN
+        RAISE EXCEPTION 'in table HOGWARTS.SUBJECT column PROFESSOR_ID can save only users with role `professor`';
     END IF;
     RETURN NEW;
 END;
 $$;
 
-CREATE TRIGGER check_if_user_is_a_professor
-    BEFORE UPDATE
-    ON HOGWARTS.SUBJECT
+CREATE TRIGGER professor_role_id_trigger
+    BEFORE INSERT OR UPDATE ON HOGWARTS.SUBJECT
     FOR EACH ROW
-EXECUTE PROCEDURE error_if_not_a_professor_assigned_to_a_subject();
+EXECUTE FUNCTION check_professor_role_id();
 
 CREATE OR REPLACE FUNCTION error_if_professor_or_admin_assigned_to_a_group()
     RETURNS TRIGGER
@@ -129,8 +139,42 @@ BEGIN
 END;
 $$;
 
-CREATE TRIGGER check_if_user_is_a_student
+CREATE TRIGGER check_if_user_is_a_student_when_update_user_group_id
     BEFORE UPDATE OF GROUP_ID
     ON HOGWARTS.USER
     FOR EACH ROW
 EXECUTE PROCEDURE error_if_professor_or_admin_assigned_to_a_group();
+
+CREATE FUNCTION validate_group()
+    RETURNS TRIGGER
+    LANGUAGE PLPGSQL
+AS
+$$
+DECLARE
+    new_user_role TEXT;
+    new_user_group_id BIGINT;
+BEGIN
+    select INTO new_user_role R.NAME
+    from HOGWARTS.ROLE R
+    where R.ID = NEW.ROLE_ID;
+
+    select into new_user_group_id GROUP_ID
+    from HOGWARTS.USER where id = NEW.USER_ID;
+
+    IF new_user_role = 'student' AND new_user_group_id IS NULL
+    THEN
+        RAISE EXCEPTION 'in table HOGWARTS.USER column GROUP_ID must have value for users with role `student`';
+    ELSIF new_user_role = 'admin' AND new_user_group_id is not null OR new_user_role = 'professor' AND new_user_group_id is not null
+    THEN
+        RAISE EXCEPTION 'in table HOGWARTS.USER column GROUP_ID should not have value for users with role `admin` or `professor`';
+    ELSE
+        RETURN NEW;
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER user_group_trigger
+    BEFORE INSERT OR UPDATE ON HOGWARTS.USER_ROLE
+    FOR EACH ROW
+EXECUTE FUNCTION validate_group();

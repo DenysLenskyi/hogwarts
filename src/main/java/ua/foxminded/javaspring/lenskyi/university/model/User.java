@@ -1,6 +1,8 @@
 package ua.foxminded.javaspring.lenskyi.university.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -16,6 +18,8 @@ public class User {
     @Column(name = "GROUP_ID", insertable = false, updatable = false)
     private Long groupId;
     @Column(name = "FIRST_NAME")
+    @NotNull
+    @NotBlank
     private String firstName;
     @Column(name = "LAST_NAME")
     private String lastName;

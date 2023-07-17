@@ -10,7 +10,11 @@ public class LessonStartEndTime {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lesson_start_end_time_id_seq")
+    @SequenceGenerator(name = "lesson_start_end_time_id_seq",
+            sequenceName = "LESSON_START_END_TIME_ID_SEQ",
+            schema = "HOGWARTS",
+            allocationSize = 1)
     private Long id;
 
     @Column(name = "START_TIME")

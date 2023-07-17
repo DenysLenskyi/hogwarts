@@ -29,7 +29,8 @@ public class Subject {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @OneToOne(mappedBy = "professorSubject")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "PROFESSOR_ID", referencedColumnName = "ID")
     private User user;
 
     @OneToOne(cascade = CascadeType.ALL)

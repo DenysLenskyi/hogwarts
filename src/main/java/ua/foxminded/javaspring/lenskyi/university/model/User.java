@@ -34,8 +34,7 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID")})
     private Collection<Role> roles = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "SUBJECT_ID", referencedColumnName = "ID")
+    @OneToOne(mappedBy = "user")
     private Subject professorSubject;
 
     @ManyToOne

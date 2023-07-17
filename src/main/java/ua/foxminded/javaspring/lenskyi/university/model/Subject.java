@@ -2,7 +2,6 @@ package ua.foxminded.javaspring.lenskyi.university.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.Set;
 
@@ -15,14 +14,7 @@ public class Subject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "PROFESSOR_ID", insertable = false, updatable = false)
-    private Long professorId;
-
-    @Column(name = "CLASSROOM_ID", insertable = false, updatable = false)
-    private Long classroomId;
-
-    @Column(name = "NAME")
-    @NotNull
+    @Column(name = "NAME", nullable = false, unique = true)
     @NotBlank
     private String name;
 
@@ -35,7 +27,7 @@ public class Subject {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "CLASSROOM_ID", referencedColumnName = "ID")
-    private Classroom subjectClassroom;
+    private Classroom classroom;
 
     @OneToMany(mappedBy = "subjectOfTheLesson")
     private Set<Lesson> lessons;
@@ -49,22 +41,6 @@ public class Subject {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getProfessorId() {
-        return professorId;
-    }
-
-    public void setProfessorId(Long professorId) {
-        this.professorId = professorId;
-    }
-
-    public Long getClassroomId() {
-        return classroomId;
-    }
-
-    public void setClassroomId(Long classroomId) {
-        this.classroomId = classroomId;
     }
 
     public String getName() {
@@ -91,12 +67,12 @@ public class Subject {
         this.user = user;
     }
 
-    public Classroom getSubjectClassroom() {
-        return subjectClassroom;
+    public Classroom getClassroom() {
+        return classroom;
     }
 
-    public void setSubjectClassroom(Classroom subjectClassroom) {
-        this.subjectClassroom = subjectClassroom;
+    public void setClassroom(Classroom subjectClassroom) {
+        this.classroom = subjectClassroom;
     }
 
     public Set<Lesson> getLessons() {

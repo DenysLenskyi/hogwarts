@@ -16,16 +16,12 @@ public class Role {
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "NAME")
+    @Column(name = "NAME", nullable = false, unique = true)
     @NotNull
     @NotBlank
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
             mappedBy = "roles")
     private Set<User> users = new HashSet<>();
 

@@ -1,9 +1,7 @@
 package ua.foxminded.javaspring.lenskyi.university.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -15,8 +13,7 @@ public class Classroom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "NAME")
-    @NotNull
+    @Column(name = "NAME", nullable = false, unique = true)
     @NotBlank
     @Size(min = 2)
     private String name;
@@ -24,7 +21,7 @@ public class Classroom {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @OneToOne(mappedBy = "subjectClassroom")
+    @OneToOne(mappedBy = "classroom")
     private Subject subject;
 
     public Classroom() {

@@ -18,7 +18,7 @@ import static org.junit.Assert.assertTrue;
 @SpringBootTest
 @ActiveProfiles("test")
 @Testcontainers
-class CreateTablesTest {
+class EntitiesCorrelationTest {
 
     @Autowired
     private RoleRepository roleRepository;

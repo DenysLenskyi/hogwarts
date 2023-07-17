@@ -13,7 +13,7 @@ public class Lesson {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "LESSON_DATE")
+    @Column(name = "LESSON_DATE", nullable = false)
     private LocalDate date;
 
     @ManyToOne(cascade = CascadeType.ALL)

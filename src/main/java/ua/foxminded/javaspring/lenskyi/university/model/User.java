@@ -2,10 +2,10 @@ package ua.foxminded.javaspring.lenskyi.university.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "USER", schema = "HOGWARTS")
@@ -15,10 +15,7 @@ public class User {
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "GROUP_ID", insertable = false, updatable = false)
-    private Long groupId;
-    @Column(name = "FIRST_NAME")
-    @NotNull
+    @Column(name = "FIRST_NAME", nullable = false)
     @NotBlank
     private String firstName;
     @Column(name = "LAST_NAME")
@@ -32,10 +29,7 @@ public class User {
     @JoinTable(name = "USER_ROLE", schema = "HOGWARTS",
             joinColumns = {@JoinColumn(name = "USER_ID")},
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID")})
-    private Collection<Role> roles = new HashSet<>();
-
-    @OneToOne(mappedBy = "user")
-    private Subject professorSubject;
+    private Set<Role> roles = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "GROUP_ID", insertable = false, updatable = false)
@@ -50,14 +44,6 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
     }
 
     public String getFirstName() {
@@ -80,16 +66,8 @@ public class User {
         return roles;
     }
 
-    public void setRoles(Collection<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-
-    public Subject getProfessorSubject() {
-        return professorSubject;
-    }
-
-    public void setProfessorSubject(Subject professorSubject) {
-        this.professorSubject = professorSubject;
     }
 
     public Group getGroup() {

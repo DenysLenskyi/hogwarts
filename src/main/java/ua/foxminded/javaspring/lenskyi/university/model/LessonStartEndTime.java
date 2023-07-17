@@ -17,10 +17,10 @@ public class LessonStartEndTime {
             allocationSize = 1)
     private Long id;
 
-    @Column(name = "START_TIME")
+    @Column(name = "START_TIME", nullable = false, unique = true)
     private LocalTime start;
 
-    @Column(name = "END_TIME")
+    @Column(name = "END_TIME", nullable = false, unique = true)
     private LocalTime end;
 
     public LessonStartEndTime() {

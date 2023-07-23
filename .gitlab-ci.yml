@@ -1,0 +1,14 @@
+variables:
+  DOCKER_DRIVER: overlay2
+
+stages:
+  - build
+
+maven-build-job:
+  image: maven:latest
+  stage: build
+  script:
+    - mvn clean package
+  artifacts:
+    paths:
+      - target/*.jar

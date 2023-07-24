@@ -14,20 +14,28 @@
 
     <link rel="stylesheet" href="./CSS/styles.css" />
 
-    <title>Hogwarts Schedule Manager</title>
+    <title>Hogwarts Schedule Manager | Users</title>
 </head>
 <body>
-<h1>Hogwarts schedule manager homepage</h1>
-<h2>Here's what we have in Hogwarts Database</h2>
-<div>
-    <ul>
-        <li><a href="/users">Users</a></li>
-        <li>Roles</li>
-        <li>Subjects</li>
-        <li>Classrooms</li>
-        <li>Groups</li>
-        <li>Lessons</li>
-        <li>Lessons start and end time</li>
-    </ul>
+<h1>Here's the list of Hogwarts users</h1>
+
+<div th:switch="${users}">
+    <h2 th:case="null">No users yet!</h2>
+    <div th:case="*">
+        <table>
+            <thead>
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.getFirstName()}"></td>
+                <td th:text="${user.getLastName()}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>

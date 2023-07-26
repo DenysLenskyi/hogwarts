@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,400;1,700&display=swap"
+            rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./CSS/styles.css" />
+
+    <title>Hogwarts Schedule Manager | Schedule</title>
+</head>
+<body>
+<h1>Here's the Hogwarts schedule</h1>
+
+<div th:switch="${lessons}">
+    <h2 th:case="null">No schedule yet!</h2>
+    <div th:case="*">
+        <table>
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Start time</th>
+                <th>End time</th>
+                <th>Group</th>
+                <th>Subject</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="lesson : ${lessons}">
+                <td th:text="${lesson.getDate()}"></td>
+                <td th:text="${lesson.getLessonStartEndTime().getStart()}"></td>
+                <td th:text="${lesson.getLessonStartEndTime().getEnd()}"></td>
+                <td th:text="${lesson.getGroup().getName()}"></td>
+                <td th:text="${lesson.getSubjectOfTheLesson().getName()}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>

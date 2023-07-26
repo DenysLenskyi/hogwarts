@@ -4,16 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
+import ua.foxminded.javaspring.lenskyi.university.repository.SubjectRepository;
 
-@Controller("/user")
-public class UserController {
+@Controller("/subject")
+public class SubjectController {
     @Autowired
-    UserRepository userRepo;
+    SubjectRepository subjectRepository;
 
-    @RequestMapping("/user/db")
+    @RequestMapping("/subject/db")
     public String home(Model model) {
-        model.addAttribute("users", userRepo.findAll());
-        return "users-db-overview";
+        model.addAttribute("subjects", subjectRepository.findAll());
+        return "subjects-db-overview";
     }
 }

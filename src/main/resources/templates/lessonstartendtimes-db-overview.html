@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,400;1,700&display=swap"
+            rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./CSS/styles.css" />
+
+    <title>Hogwarts Schedule Manager | Lessons timing</title>
+</head>
+<body>
+<h1>Here's the list of Hogwarts classrooms</h1>
+
+<div th:switch="${lessonstartendtimes}">
+    <h2 th:case="null">No lessonstartendtimes yet!</h2>
+    <div th:case="*">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Start time</th>
+                <th>End time</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="lessonstartendtime : ${lessonstartendtimes}">
+                <td th:text="${lessonstartendtime.getId()}"></td>
+                <td th:text="${lessonstartendtime.getStart()}"></td>
+                <td th:text="${lessonstartendtime.getEnd()}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>

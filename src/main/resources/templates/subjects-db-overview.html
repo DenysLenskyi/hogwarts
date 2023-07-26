@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,400;1,700&display=swap"
+            rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./CSS/styles.css" />
+
+    <title>Hogwarts Schedule Manager | Subjects</title>
+</head>
+<body>
+<h1>Here's the list of Hogwarts subjects</h1>
+
+<div th:switch="${subjects}">
+    <h2 th:case="null">No subjects yet!</h2>
+    <div th:case="*">
+        <table>
+            <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Description</th>
+                <th>Classroom</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="subject : ${subjects}">
+                <td th:text="${subject.getName()}"></td>
+                <td th:text="${subject.getDescription()}"></td>
+                <td th:text="${subject.getClassroom().getName()}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>

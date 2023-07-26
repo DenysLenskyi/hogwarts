@@ -4,16 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
+import ua.foxminded.javaspring.lenskyi.university.repository.RoleRepository;
 
-@Controller("/user")
-public class UserController {
+@Controller("/role")
+public class RoleController {
+
     @Autowired
-    UserRepository userRepo;
+    RoleRepository roleRepository;
 
-    @RequestMapping("/user/db")
+    @RequestMapping("/role/db")
     public String home(Model model) {
-        model.addAttribute("users", userRepo.findAll());
-        return "users-db-overview";
+        model.addAttribute("roles", roleRepository.findAll());
+        return "roles-db-overview";
     }
 }

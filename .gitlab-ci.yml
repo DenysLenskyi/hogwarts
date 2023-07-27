@@ -12,8 +12,18 @@ maven-compile-job:
   script:
     - mvn compile
 
+maven-test-job:
+  image: maven:latest
+  before_script:
+    - docker run --privileged -d --name dind-test docker:dind
+  stage: test
+  script:
+    - mvn test
+
 maven-build-job:
   image: maven:latest
+  before_script:
+    - docker run --privileged -d --name dind-test docker:dind
   stage: build
   script:
     - mvn clean package

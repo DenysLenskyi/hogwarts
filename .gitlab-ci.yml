@@ -2,7 +2,15 @@ variables:
   DOCKER_DRIVER: overlay2
 
 stages:
+  - compile
+  - test
   - build
+
+maven-compile-job:
+  image: maven:3-jdk-8-alpine
+  stage: compile
+  script:
+    - mvn compile
 
 maven-build-job:
   image: maven:latest

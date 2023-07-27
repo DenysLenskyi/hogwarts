@@ -32,7 +32,7 @@ class GroupControllerTest {
         List<Group> allGroups = Arrays.asList(testGroup);
         given(groupRepository.findAll()).willReturn(allGroups);
         mvc.perform(MockMvcRequestBuilders
-                        .get("/group/db"))
+                        .get("/group/all"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("groups-db-overview"))
                 .andExpect(model().attribute("groups", allGroups))

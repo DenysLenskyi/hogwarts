@@ -34,7 +34,7 @@ class LessonStartEndTimeControllerTest {
         List<LessonStartEndTime> allLessonStartEndTimes = Arrays.asList(testLessonStartEndTime);
         given(lessonStartEndTimeRepository.findAll()).willReturn(allLessonStartEndTimes);
         mvc.perform(MockMvcRequestBuilders
-                        .get("/lessonstartendtime/db"))
+                        .get("/lessonstartendtime/all"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("lessonstartendtimes-db-overview"))
                 .andExpect(model().attribute("lessonstartendtimes", allLessonStartEndTimes))

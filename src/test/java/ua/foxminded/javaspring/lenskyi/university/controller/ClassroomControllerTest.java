@@ -33,7 +33,7 @@ class ClassroomControllerTest {
         List<Classroom> allClassrooms = Arrays.asList(testClassroom);
         given(classroomRepository.findAll()).willReturn(allClassrooms);
         mvc.perform(MockMvcRequestBuilders
-                        .get("/classroom/db"))
+                        .get("/classroom/all"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("classrooms-db-overview"))
                 .andExpect(model().attribute("classrooms", allClassrooms))

@@ -39,7 +39,7 @@ class LessonControllerTest {
         List<Lesson> allLessons = Arrays.asList(testLesson);
         given(lessonRepository.findAll()).willReturn(allLessons);
         mvc.perform(MockMvcRequestBuilders
-                        .get("/lesson/db"))
+                        .get("/lesson/all"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("lessons-db-overview"))
                 .andExpect(model().attribute("lessons", allLessons))

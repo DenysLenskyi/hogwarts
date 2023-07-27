@@ -33,7 +33,7 @@ class UserControllerTest {
         List<User> allUsers = Arrays.asList(testUser);
         given(userRepository.findAll()).willReturn(allUsers);
         mvc.perform(MockMvcRequestBuilders
-                        .get("/user/db"))
+                        .get("/user/all"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("users-db-overview"))
                 .andExpect(model().attribute("users", allUsers))

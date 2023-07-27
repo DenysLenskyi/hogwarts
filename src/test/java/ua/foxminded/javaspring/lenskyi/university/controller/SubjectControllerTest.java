@@ -35,7 +35,7 @@ class SubjectControllerTest {
         List<Subject> allRoles = Arrays.asList(testSubject);
         given(subjectRepository.findAll()).willReturn(allRoles);
         mvc.perform(MockMvcRequestBuilders
-                        .get("/subject/db"))
+                        .get("/subject/all"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("subjects-db-overview"))
                 .andExpect(model().attribute("subjects", allRoles))

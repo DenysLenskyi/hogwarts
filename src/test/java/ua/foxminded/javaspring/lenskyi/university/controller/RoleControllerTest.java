@@ -32,7 +32,7 @@ class RoleControllerTest {
         List<Role> allRoles = Arrays.asList(testRole);
         given(roleRepository.findAll()).willReturn(allRoles);
         mvc.perform(MockMvcRequestBuilders
-                        .get("/role/db"))
+                        .get("/role/all"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("roles-db-overview"))
                 .andExpect(model().attribute("roles", allRoles))

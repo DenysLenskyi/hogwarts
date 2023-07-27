@@ -25,11 +25,9 @@ maven-test-job:
 
 maven-build-job:
   image: maven:latest
-  before_script:
-    - docker run --privileged -d --name dind-test docker:dind
   stage: build
   script:
-    - mvn clean package
+    - mvn package
   artifacts:
     paths:
       - target/*.jar

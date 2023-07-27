@@ -1,5 +1,5 @@
 services:
- - name: docker:dind
+ - name: docker:24.0.5-dind
    command: ["--tls=false"]
 variables:
  DOCKER_HOST: "tcp://docker:2375"
@@ -9,7 +9,8 @@ variables:
 stages:
   - compile
   - test
-  - build
+  - build-jar
+  - build-and-push-docker-image
 
 maven-compile-job:
   image: maven:latest
@@ -25,9 +26,19 @@ maven-test-job:
 
 maven-build-job:
   image: maven:latest
-  stage: build
+  stage: build-jar
   script:
     - mvn package
   artifacts:
     paths:
       - target/*.jar
+
+
+docker-build-and-push-job:
+  image: docker:24.0.5
+  stage: build-and-push-docker-image
+  before_script:
+    - docker login -u $DOCKER_HUB_USER_LENSKYI -p $DOCKER_HUB_PASSWORD
+  script:
+    - docker build -t denyslenskyi/lenskyi-docker-repository:hogwarts-schedule-manager-1.0 .
+    - docker push denyslenskyi/lenskyi-docker-repository:hogwarts-schedule-manager-1.0

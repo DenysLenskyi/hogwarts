@@ -46,7 +46,6 @@ docker-build-and-push-job:
 
 deploy:
   stage: deploy
-  image: alpine
   # before_script:
   #   - chmod 400 $SSH_KEY
   # script:
@@ -54,8 +53,8 @@ deploy:
   #       docker login -u $DOCKER_HUB_USER_LENSKYI -p $DOCKER_HUB_PASSWORD &&
   #       docker ps -aq | xargs docker stop | xargs docker rm "
   before_script:
-    - apk add openssh-client
-    - eval $(ssh-agent -s)
+    # - apk add openssh-client
+    # - eval $(ssh-agent -s)
     - chmod 600 $SSH_KEY
     - ssh-add $SSH_KEY
     # - mkdir -p ~/.ssh

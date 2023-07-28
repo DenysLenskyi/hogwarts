@@ -56,8 +56,9 @@ deploy:
   before_script:
     - apk add openssh-client
     - eval $(ssh-agent -s)
+    - chmod 600 $SSH_KEY
     - echo "$SSH_KEY" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
+    # - mkdir -p ~/.ssh
+    # - chmod 700 ~/.ssh
   script:
     - scp -o StrictHostKeyChecking=no docker-compose.yml ec2-user@ec2-3-16-216-231.us-east-2.compute.amazonaws.com:/home/ec2-user/

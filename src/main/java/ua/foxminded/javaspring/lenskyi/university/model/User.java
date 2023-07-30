@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -29,7 +28,7 @@ public class User {
     @JoinTable(name = "USER_ROLE", schema = "HOGWARTS",
             joinColumns = {@JoinColumn(name = "USER_ID")},
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID")})
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles;
 
     @ManyToOne
     @JoinColumn(name = "GROUP_ID", insertable = false, updatable = false)

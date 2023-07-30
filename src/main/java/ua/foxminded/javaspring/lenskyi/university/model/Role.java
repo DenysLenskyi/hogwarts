@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -23,7 +21,7 @@ public class Role {
 
     @ManyToMany(fetch = FetchType.LAZY,
             mappedBy = "roles")
-    private Set<User> users = new HashSet<>();
+    private Set<User> users;
 
     public Role() {
     }

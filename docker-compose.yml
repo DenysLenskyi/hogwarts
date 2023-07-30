@@ -2,9 +2,7 @@ version: '3.9'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: denyslenskyi/lenskyi-docker-repository:hogwarts-schedule-manager-1.0
     ports:
       - "8080:8080"
     container_name: hogwarts_lenskyi_app_cont

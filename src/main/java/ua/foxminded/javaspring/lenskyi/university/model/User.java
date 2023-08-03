@@ -1,9 +1,9 @@
 package ua.foxminded.javaspring.lenskyi.university.model;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
 
-import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -37,6 +37,14 @@ public class User {
     public User() {
     }
 
+    public User(Long id, String firstName, String lastName, Set<Role> roles, Group group) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.roles = roles;
+        this.group = group;
+    }
+
     public Long getId() {
         return id;
     }
@@ -61,8 +69,18 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Collection<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
+    }
+
+    public String getRolesToString() {
+        StringBuilder output = new StringBuilder();
+        this.getRoles().forEach(r -> {
+            output.append(r.getName())
+                    .append(',')
+                    .append(' ');
+        });
+        return output.substring(0, output.length());
     }
 
     public void setRoles(Set<Role> roles) {

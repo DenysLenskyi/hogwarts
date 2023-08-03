@@ -25,14 +25,20 @@
         <table>
             <thead>
             <tr>
+                <th>ID</th>
                 <th>First name</th>
                 <th>Last name</th>
+                <th>Role</th>
+                <th>Edit</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="user : ${users}">
-                <td th:text="${user.getFirstName()}"></td>
+                <td th:text="${user.getId()}"></td>
+                <td th:text="${user.firstName}"></td>
                 <td th:text="${user.getLastName()}"></td>
+                <td th:text="${user.getRolesToString()}"></td>
+                <td><a th:href="@{/user/edit/{id}(id=${user.getId()})}">Edit</a></td>
             </tr>
             </tbody>
         </table>

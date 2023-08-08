@@ -1,7 +1,6 @@
 package ua.foxminded.javaspring.lenskyi.university.model;
 
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.Set;
@@ -80,7 +79,7 @@ public class User {
                     .append(',')
                     .append(' ');
         });
-        return output.substring(0, output.length());
+        return output.substring(0, output.length() - 2);
     }
 
     public void setRoles(Set<Role> roles) {

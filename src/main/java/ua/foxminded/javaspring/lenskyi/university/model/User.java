@@ -18,6 +18,10 @@ public class User {
     private String firstName;
     @Column(name = "LAST_NAME")
     private String lastName;
+    @Column(name = "USERNAME", nullable = false)
+    private String username;
+    @Column(name = "PASSWORD", nullable = false)
+    private String password;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
@@ -34,14 +38,6 @@ public class User {
     private Group group;
 
     public User() {
-    }
-
-    public User(Long id, String firstName, String lastName, Set<Role> roles, Group group) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.roles = roles;
-        this.group = group;
     }
 
     public Long getId() {
@@ -92,5 +88,21 @@ public class User {
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

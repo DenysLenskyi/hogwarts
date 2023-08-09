@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
 
@@ -17,22 +18,25 @@ public class HogwartsUserDetailService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        ua.foxminded.javaspring.lenskyi.university.model.User user = userRepository.findUserByFirstName(username);
+        ua.foxminded.javaspring.lenskyi.university.model.User user = userRepository.findUserByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
-//        List<String> rolesNames = new ArrayList<>();
-//        user.getRoles().forEach(role -> {
-//            rolesNames.add(role.getName());
-//        });
+        List<String> rolesNames = new ArrayList<>();
+        user.getRoles().forEach(role -> {
+            rolesNames.add(role.getName());
+        });
         UserDetails userDetails = User
-                .withUsername(user.getFirstName().toLowerCase())
-                .password(user.getFirstName().toLowerCase())
-                //.authorities(rolesNames.stream().toArray(String[]::new))
-                .authorities("admin")
+                .withUsername(user.getUsername())
+                .password(passwordEncoder.encode(user.getPassword()))
+                .authorities(rolesNames.stream().toArray(String[]::new))
+                .roles(rolesNames.stream().toArray(String[]::new))
                 .build();
         return userDetails;
     }

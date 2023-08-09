@@ -24,10 +24,16 @@ class UserRepositoryTest {
     @Transactional
     void entityCorrectnessTest() {
         User severus = userRepository.findUserByLastName("Snape");
-        User harry = userRepository.findUserByLastName("Potter");
+        User harry = userRepository.findUserByFirstName("Harry");
         User user = userRepository.findById(13L).get();
         assertEquals("Snape", severus.getLastName());
         assertEquals("Gryffindor-7", harry.getGroup().getName());
         assertEquals(1, user.getRoles().size());
+    }
+
+    @Test
+    void findUserByUsernameTest() {
+        User harrypotter = userRepository.findUserByUsername("harrypotter");
+        assertEquals("Harry", harrypotter.getFirstName());
     }
 }

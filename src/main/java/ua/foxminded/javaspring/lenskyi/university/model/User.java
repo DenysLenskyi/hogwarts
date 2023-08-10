@@ -37,8 +37,8 @@ public class User {
     @JoinColumn(name = "GROUP_ID", insertable = false, updatable = false)
     private Group group;
 
-    public User() {
-    }
+//    public User() {
+//    }
 
     public Long getId() {
         return id;
@@ -70,12 +70,17 @@ public class User {
 
     public String getRolesToString() {
         StringBuilder output = new StringBuilder();
-        this.getRoles().forEach(r -> {
-            output.append(r.getName())
-                    .append(',')
-                    .append(' ');
-        });
-        return output.substring(0, output.length() - 2);
+        final String emptyString = "";
+        this.getRoles().forEach(r ->
+                output.append(r.getName())
+                        .append(',')
+                        .append(' ')
+        );
+        if (this.getRoles().isEmpty()) {
+            return emptyString;
+        } else {
+            return output.substring(0, output.length() - 2);
+        }
     }
 
     public void setRoles(Set<Role> roles) {

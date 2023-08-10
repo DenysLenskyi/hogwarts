@@ -1,22 +1,16 @@
 package ua.foxminded.javaspring.lenskyi.university.controller;
 
 import jakarta.annotation.security.RolesAllowed;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ua.foxminded.javaspring.lenskyi.university.model.Role;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
 import ua.foxminded.javaspring.lenskyi.university.repository.GroupRepository;
 import ua.foxminded.javaspring.lenskyi.university.repository.RoleRepository;
 import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
 import ua.foxminded.javaspring.lenskyi.university.util.UserInput;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/user")
@@ -38,22 +32,23 @@ public class UserController {
     @RolesAllowed("admin")
     public String editUser(@PathVariable("id") Long id, Model model) {
         User user = userRepo.findById(id).get();
+        UserInput newRoleName = new UserInput();
         model.addAttribute("user", user);
         model.addAttribute("availableRoles", roleRepository.findAll());
-        model.addAttribute("newRoleName", new UserInput());
-        model.addAttribute("pageTitle", "Create new User");
+        model.addAttribute("newRoleName", newRoleName);
+        model.addAttribute("pageTitle", "Change Role For User");
 
         return "forms/edit-user-form";
     }
 
     @PostMapping("/save")
-    public String saveUser(@ModelAttribute UserInput newRoleName, User user,
+    public String saveUser(UserInput newRoleName,
+                           User user,
                            RedirectAttributes redirectAttributes, Model model) {
         try {
-            Set<Role> newRoles = new HashSet<>();
-            newRoles.add(roleRepository.findRoleByName(newRoleName.getTextInput()).get());
-            user.setRoles(newRoles);
-            userRepo.save(user);
+            User userToUpdate = userRepo.findById(user.getId()).get();
+            userToUpdate.getRoles().add(roleRepository.findRoleByName(newRoleName.getTextInput()).get());
+            userRepo.save(userToUpdate);
             model.addAttribute("users", userRepo.findAll());
             redirectAttributes.addFlashAttribute("message", "The User has been saved successfully!");
         } catch (Exception e) {

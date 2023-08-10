@@ -4,6 +4,12 @@ ALTER TABLE hogwarts."user"
     ADD COLUMN PASSWORD TEXT UNIQUE;
 
 UPDATE hogwarts."user"
+SET USERNAME = 'severussnape',
+    PASSWORD = 'severussnape'
+WHERE first_name = 'Severus'
+  AND last_name = 'Snape';
+
+UPDATE hogwarts."user"
 SET USERNAME = 'remuslupin',
     PASSWORD = 'remuslupin'
 WHERE first_name = 'Remus'
@@ -14,12 +20,6 @@ SET USERNAME = 'pomonasprout',
     PASSWORD = 'pomonasprout'
 WHERE first_name = 'Pomona'
   AND last_name = 'Sprout';
-
-UPDATE hogwarts."user"
-SET USERNAME = 'severussnape',
-    PASSWORD = 'severussnape'
-WHERE first_name = 'Severus'
-  AND last_name = 'Snape';
 
 UPDATE hogwarts."user"
 SET USERNAME = 'minervamcgonagall',

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ua.foxminded.javaspring.lenskyi.university.model.Role;
@@ -26,6 +27,7 @@ class RoleControllerTest {
     private RoleRepository roleRepository;
 
     @Test
+    @WithMockUser(username = "minervamcgonagall", roles = "admin")
     void givenRoles_whenFindAllRoles_thenReturnJsonArray() throws Exception {
         Role testRole = new Role();
         testRole.setName("test");

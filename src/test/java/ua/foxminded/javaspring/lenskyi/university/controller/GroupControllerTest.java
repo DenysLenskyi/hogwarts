@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ua.foxminded.javaspring.lenskyi.university.model.Group;
@@ -26,6 +27,7 @@ class GroupControllerTest {
     private GroupRepository groupRepository;
 
     @Test
+    @WithMockUser(username = "minervamcgonagall", roles = "admin")
     void givenGroups_whenFindAllGroups_thenReturnJsonArray() throws Exception {
         Group testGroup = new Group();
         testGroup.setName("test");

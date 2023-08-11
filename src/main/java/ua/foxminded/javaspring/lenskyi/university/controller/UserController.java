@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
-import ua.foxminded.javaspring.lenskyi.university.repository.GroupRepository;
 import ua.foxminded.javaspring.lenskyi.university.repository.RoleRepository;
 import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
 import ua.foxminded.javaspring.lenskyi.university.controller.form.reader.EditUserFormInputReader;
@@ -17,13 +16,12 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
+@RolesAllowed("admin")
 public class UserController {
     @Autowired
     private UserRepository userRepo;
     @Autowired
     private RoleRepository roleRepository;
-    @Autowired
-    private GroupRepository groupRepository;
 
     @GetMapping("/all")
     public String getUserPage(Model model) {
@@ -32,7 +30,6 @@ public class UserController {
     }
 
     @GetMapping("/edit/{id}")
-    @RolesAllowed("admin")
     public String editUser(@PathVariable("id") Long id, Model model) throws ChangeSetPersister.NotFoundException {
         Optional<User> optional = userRepo.findById(id);
         if (optional.isEmpty()) {

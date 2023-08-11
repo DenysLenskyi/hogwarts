@@ -1,7 +1,7 @@
 <h2 class="text-center">[[${pageTitle}]]</h2>
 
 <div>
-    <form th:action="@{/user/save}" method="post" enctype="multipart/form-data" th:object="${user}">
+    <form th:action="@{/user/save-edited-user}" method="post" enctype="multipart/form-data" th:object="${user}">
 
         <input type="hidden" th:field="*{id}"/>
 
@@ -20,11 +20,20 @@
                 </div>
             </div>
 
-            <form th:object="${newRoleName}">
+            <form th:object="${inputReader}">
                 <div>
                     <label>Add Role</label>
                     <div>
-                        <select th:field="*{textInput}">
+                        <select th:field="*{roleNameToInclude}">
+                            <option th:each="role: ${availableRoles}" th:value="${role.name}"
+                                    th:text="${role.name}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label>Remove Role</label>
+                    <div>
+                        <select th:field="*{roleNameToExclude}">
                             <option th:each="role: ${availableRoles}" th:value="${role.name}"
                                     th:text="${role.name}"></option>
                         </select>

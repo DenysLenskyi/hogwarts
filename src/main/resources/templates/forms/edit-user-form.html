@@ -1,7 +1,7 @@
 <h2 class="text-center">[[${pageTitle}]]</h2>
 
 <div>
-    <form th:action="@{/user/save-edited-user}" method="post" enctype="multipart/form-data" th:object="${user}">
+    <form th:action="@{/user/save}" method="post" enctype="multipart/form-data" th:object="${user}">
 
         <input type="hidden" th:field="*{id}"/>
 

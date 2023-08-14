@@ -36,4 +36,10 @@ class UserRepositoryTest {
         User harrypotter = userRepository.findUserByUsername("harrypotter");
         assertEquals("Harry", harrypotter.getFirstName());
     }
+
+    @Test
+    void findUserByFirstAndLastName() {
+        User user = userRepository.findUserByFirstNameAndLastName("Harry", "Potter");
+        assertEquals("Harry", user.getFirstName());
+    }
 }

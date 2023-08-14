@@ -12,10 +12,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ua.foxminded.javaspring.lenskyi.university.model.Role;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
-import ua.foxminded.javaspring.lenskyi.university.repository.RoleRepository;
-import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
 import ua.foxminded.javaspring.lenskyi.university.security.MethodSecurityConfig;
 import ua.foxminded.javaspring.lenskyi.university.security.SecurityConfig;
+import ua.foxminded.javaspring.lenskyi.university.service.RoleService;
+import ua.foxminded.javaspring.lenskyi.university.service.UserService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,10 +32,10 @@ class UserControllerTest {
     private MockMvc mvc;
 
     @MockBean
-    private UserRepository userRepository;
+    private UserService userService;
 
     @MockBean
-    private RoleRepository roleRepository;
+    private RoleService roleService;
 
     @Test
     @WithMockUser(username = "minervamcgonagall", authorities = "admin")
@@ -47,7 +47,7 @@ class UserControllerTest {
         testRole.setName("test");
         testUser.setRoles(Set.of(testRole));
         List<User> allUsers = Arrays.asList(testUser);
-        given(userRepository.findAll()).willReturn(allUsers);
+        given(userService.findAllUsers()).willReturn(allUsers);
         mvc.perform(MockMvcRequestBuilders
                         .get("/user/all"))
                 .andExpect(status().isOk())

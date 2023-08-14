@@ -23,7 +23,7 @@ public class User {
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY,
+    @ManyToMany(fetch = FetchType.EAGER,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE

@@ -38,7 +38,7 @@ class UserControllerTest {
     private RoleRepository roleRepository;
 
     @Test
-    @WithMockUser(username = "minervamcgonagall", roles = "admin")
+    @WithMockUser(username = "minervamcgonagall", authorities = "admin")
     void givenUsers_whenFindAllUsers_thenReturnJsonArray() throws Exception {
         User testUser = new User();
         testUser.setFirstName("test");

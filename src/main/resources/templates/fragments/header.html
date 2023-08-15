@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="header">
+    <!-- Common header elements -->
+</head>
+<body>
+<header>
+    <h1>Hogwarts Schedule Manager</h1>
+    <div sec:authorize="isAnonymous()">
+        <a href="/login">Log in</a>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <p>
+            Hello, <span sec:authentication="name"></span>
+        </p>
+        <p>
+            <a href="/logout">Log out</a>
+        </p>
+    </div>
+
+</header>
+</body>

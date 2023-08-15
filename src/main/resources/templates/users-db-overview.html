@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,7 +30,6 @@
                 <th>First name</th>
                 <th>Last name</th>
                 <th>Role</th>
-                <th>Edit</th>
             </tr>
             </thead>
             <tbody>
@@ -38,7 +38,7 @@
                 <td th:text="${user.firstName}"></td>
                 <td th:text="${user.getLastName()}"></td>
                 <td th:text="${user.getRolesToString()}"></td>
-                <td><a th:href="@{/user/edit/{id}(id=${user.getId()})}">Edit</a></td>
+                <td sec:authorize="hasAuthority('admin')"><a th:href="@{/user/edit/{id}(id=${user.getId()})}">Edit</a></td>
             </tr>
             </tbody>
         </table>

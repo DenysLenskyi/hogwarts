@@ -1,7 +1,6 @@
 package ua.foxminded.javaspring.lenskyi.university.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +12,6 @@ import ua.foxminded.javaspring.lenskyi.university.service.UserService;
 
 @Controller
 @RequestMapping("/user")
-@PreAuthorize("hasAuthority('admin')")
 public class UserController {
 
     private UserService userService;
@@ -25,7 +23,7 @@ public class UserController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/all")
+    @GetMapping(value = {"", "/all"})
     public String getUserPage(Model model) {
         model.addAttribute("users", userService.findAllUsers());
         return "users-db-overview";

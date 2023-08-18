@@ -13,22 +13,25 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private static final String LOGIN_URL = "/login";
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/login", "/", "/css/**").permitAll()
+                .authorizeHttpRequests(requests -> requests
+                        .requestMatchers(LOGIN_URL, "/css/**", "/webjars/**").permitAll()
+                        .requestMatchers("/admin/**").hasAuthority("admin")
                         .anyRequest().authenticated()
                 )
-                .formLogin((form) -> form
-                        .loginPage("/login")
+                .formLogin(form -> form
+                        .loginPage(LOGIN_URL)
                         .permitAll()
                         .defaultSuccessUrl("/", true)
                 )
-                .logout((logout) -> logout
+                .logout(logout -> logout
                         .permitAll()
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .logoutSuccessUrl("/login"));
+                        .logoutSuccessUrl(LOGIN_URL));
 
         return http.build();
     }

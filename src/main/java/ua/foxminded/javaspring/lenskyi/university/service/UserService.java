@@ -2,11 +2,15 @@ package ua.foxminded.javaspring.lenskyi.university.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ua.foxminded.javaspring.lenskyi.university.model.Role;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
 import ua.foxminded.javaspring.lenskyi.university.repository.RoleRepository;
 import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -52,5 +56,15 @@ public class UserService {
     public void removeRole(User user, String roleName) {
         user.getRoles().remove(roleRepository.findRoleByName(roleName).orElseThrow());
         userRepository.save(user);
+    }
+
+    public void updateRolesFromArray(User user, String[] newRolesArray) throws Exception {
+        Set<Role> updatedRoles = new HashSet<>();
+        Arrays.asList(newRolesArray).forEach(roleName -> {
+            updatedRoles.add(roleRepository.findRoleByName(roleName).orElseThrow());
+        });
+        user.setRoles(updatedRoles);
+        userRepository.save(user);
+        userRepository.flush();
     }
 }

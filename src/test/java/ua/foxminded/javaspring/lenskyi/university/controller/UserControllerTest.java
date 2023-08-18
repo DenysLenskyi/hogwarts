@@ -6,25 +6,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ua.foxminded.javaspring.lenskyi.university.model.Role;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
-import ua.foxminded.javaspring.lenskyi.university.security.MethodSecurityConfig;
 import ua.foxminded.javaspring.lenskyi.university.security.SecurityConfig;
 import ua.foxminded.javaspring.lenskyi.university.service.RoleService;
 import ua.foxminded.javaspring.lenskyi.university.service.UserService;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@Import({SecurityConfig.class, MethodSecurityConfig.class})
+@Import(SecurityConfig.class)
 @WebMvcTest(UserController.class)
 class UserControllerTest {
 

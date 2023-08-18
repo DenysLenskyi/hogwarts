@@ -1,7 +1,15 @@
-<h2 class="text-center">[[${pageTitle}]]</h2>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit User</title>
+</head>
 
+<body>
+<div th:replace="~{fragments/header}"></div>
+<h2>[[${pageTitle}]]</h2>
 <div>
-    <form th:action="@{/user/save}" method="post" enctype="multipart/form-data" th:object="${user}">
+    <form th:action="@{/user/edit/{id}(id=${user.id})}" th:object="${user}" th:method="put">
 
         <input type="hidden" th:field="*{id}"/>
 
@@ -22,27 +30,23 @@
 
             <form th:object="${inputReader}">
                 <div>
-                    <label>Add Role</label>
-                    <div>
-                        <select th:field="*{roleNameToInclude}">
-                            <option th:each="role: ${availableRoles}" th:value="${role.name}"
-                                    th:text="${role.name}"></option>
-                        </select>
-                    </div>
+                    <ul>
+                        <li th:each="roleName: ${availableRolesNames}">
+                            <input type="checkbox" th:field="*{checkboxSelectedValues}" th:value="${roleName}">
+                            <label th:for="${#ids.prev('checkboxSelectedValues')}" th:text="${roleName}"></label>
+                        </li>
+                    </ul>
                 </div>
-                <div>
-                    <label>Remove Role</label>
-                    <div>
-                        <select th:field="*{roleNameToExclude}">
-                            <option th:each="role: ${availableRoles}" th:value="${role.name}"
-                                    th:text="${role.name}"></option>
-                        </select>
-                    </div>
-                </div>
+
             </form>
+
+
             <div>
-                <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
+                <p><input type="submit" value="Submit"/></p>
             </div>
         </div>
     </form>
 </div>
+</body>
+
+</html>

@@ -25,6 +25,7 @@ public class UserController {
 
     @GetMapping("/edit/{id}")
     public String showEditUserForm(@PathVariable("id") Long id, Model model) {
+        // to do: check if id exists in db, else return /error/404
         User user = userService.findById(id);
         EditUserFormInputReader inputReader = new EditUserFormInputReader();
         model.addAttribute("user", user);
@@ -44,6 +45,5 @@ public class UserController {
         }
         return "redirect:/user/all";
     }
-
     // minervamcgonagall
 }

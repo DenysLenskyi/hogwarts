@@ -29,7 +29,6 @@ public class UserController {
         User user = userService.findById(id);
         EditUserFormInputReader inputReader = new EditUserFormInputReader();
         model.addAttribute("user", user);
-        model.addAttribute("availableRolesNames", new String[] {"student", "professor", "admin"});
         model.addAttribute("inputReader", inputReader);
         model.addAttribute("pageTitle", "Change Role For User");
 
@@ -39,7 +38,8 @@ public class UserController {
     @PutMapping(value = "/edit/{id}")
     public String editUser(EditUserFormInputReader inputReader, @PathVariable("id") Long id) {
         try {
-            userService.updateRolesFromArray(userService.findById(id), inputReader.getCheckboxSelectedValues());
+            if (inputReader.getCheckboxSelectedValues() != null)
+                userService.updateRolesFromArray(userService.findById(id), inputReader.getCheckboxSelectedValues());
         } catch (Exception e) {
             e.printStackTrace();
         }

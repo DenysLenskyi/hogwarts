@@ -28,25 +28,34 @@
                 </div>
             </div>
 
-            <form th:object="${inputReader}">
+            <!--            Change role options for users with no group-->
+            <div th:if="${user.getGroup() == null}">
+                <form th:object="${inputReader}">
+                    <div>
+                        <ul>
+                            <li>
+                                <input type="checkbox" th:field="*{checkboxSelectedValues}" th:value="professor">
+                                <label th:text="professor"></label>
+                            </li>
+                            <li>
+                                <input type="checkbox" th:field="*{checkboxSelectedValues}" th:value="admin">
+                                <label th:text="admin"></label>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
                 <div>
-                    <ul>
-                        <li th:each="roleName: ${availableRolesNames}">
-                            <input type="checkbox" th:field="*{checkboxSelectedValues}" th:value="${roleName}">
-                            <label th:for="${#ids.prev('checkboxSelectedValues')}" th:text="${roleName}"></label>
-                        </li>
-                    </ul>
+                    <p><input type="submit" value="Submit"/></p>
                 </div>
+            </div>
 
-            </form>
-
-
-            <div>
-                <p><input type="submit" value="Submit"/></p>
+            <!--            Change role options for users with a group-->
+            <div th:if="${user.getGroup() != null}">
+                <p>This user was created as a user with role 'student'</p>
+                <p>Change role option is disabled for them</p>
             </div>
         </div>
     </form>
 </div>
 </body>
-
 </html>

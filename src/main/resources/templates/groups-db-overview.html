@@ -26,13 +26,11 @@
         <table>
             <thead>
             <tr>
-                <th>ID</th>
                 <th>Name</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="group : ${groups}">
-                <td th:text="${group.getId()}"></td>
                 <td th:text="${group.getName()}"></td>
             </tr>
             </tbody>

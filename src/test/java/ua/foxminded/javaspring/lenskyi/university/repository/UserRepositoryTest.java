@@ -10,7 +10,9 @@ import ua.foxminded.javaspring.lenskyi.university.model.User;
 
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -41,5 +43,12 @@ class UserRepositoryTest {
     void findUserByFirstAndLastName() {
         User user = userRepository.findUserByFirstNameAndLastName("Harry", "Potter");
         assertEquals("Harry", user.getFirstName());
+    }
+
+    @Test
+    void existByIdTest() {
+        List<User> allUsers = userRepository.findAll();
+        assertTrue(userRepository.existsById(allUsers.get(0).getId()));
+        assertFalse(userRepository.existsById(10000L));
     }
 }

@@ -3,6 +3,7 @@ package ua.foxminded.javaspring.lenskyi.university.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
 import ua.foxminded.javaspring.lenskyi.university.controller.form.reader.EditUserFormInputReader;
 import ua.foxminded.javaspring.lenskyi.university.service.UserService;
@@ -25,14 +26,17 @@ public class UserController {
 
     @GetMapping("/edit/{id}")
     public String showEditUserForm(@PathVariable("id") Long id, Model model) {
-        // to do: check if id exists in db, else return /error/404
-        User user = userService.findById(id);
-        EditUserFormInputReader inputReader = new EditUserFormInputReader();
-        model.addAttribute("user", user);
-        model.addAttribute("inputReader", inputReader);
-        model.addAttribute("pageTitle", "Change Role For User");
+        if (!userService.doesUserExistById(id)) {
+            return "error/404";
+        } else {
+            UserDto userDto = userService.getUserDtoByUserId(id);
+            EditUserFormInputReader inputReader = new EditUserFormInputReader();
+            model.addAttribute("user", userDto);
+            model.addAttribute("inputReader", inputReader);
+            model.addAttribute("pageTitle", "Change Role For User");
 
-        return "forms/edit-user-form";
+            return "forms/edit-user-form";
+        }
     }
 
     @PutMapping(value = "/edit/{id}")

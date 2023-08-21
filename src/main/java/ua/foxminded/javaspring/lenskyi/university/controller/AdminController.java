@@ -12,6 +12,6 @@ public class AdminController {
 
     @GetMapping
     public String getAdminPage(Model model) {
-        return "admin/controll-panel";
+        return "admin/control-panel";
     }
 }

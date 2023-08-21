@@ -26,14 +26,12 @@
         <table>
             <thead>
             <tr>
-                <th>ID</th>
                 <th>Start time</th>
                 <th>End time</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="lessonstartendtime : ${lessonstartendtimes}">
-                <td th:text="${lessonstartendtime.getId()}"></td>
                 <td th:text="${lessonstartendtime.getStart()}"></td>
                 <td th:text="${lessonstartendtime.getEnd()}"></td>
             </tr>

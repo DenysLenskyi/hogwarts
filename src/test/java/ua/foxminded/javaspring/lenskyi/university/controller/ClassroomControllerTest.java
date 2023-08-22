@@ -30,6 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class ClassroomControllerTest {
 
+    @MockBean
+    private ClassroomRepository classroomRepository;
     @Autowired
     private WebApplicationContext context;
 
@@ -42,9 +44,6 @@ class ClassroomControllerTest {
                 .apply(springSecurity())
                 .build();
     }
-
-    @MockBean
-    private ClassroomRepository classroomRepository;
 
     @Test
     @WithUserDetails("minervamcgonagall")

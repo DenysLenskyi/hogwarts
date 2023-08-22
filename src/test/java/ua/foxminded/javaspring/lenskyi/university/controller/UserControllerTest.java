@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
 import ua.foxminded.javaspring.lenskyi.university.model.Role;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
 import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
@@ -22,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -33,10 +35,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest {
 
     @Autowired
+    private UserRepository userRepository;
+    @MockBean
+    private UserService userService;
+    @Autowired
     private WebApplicationContext context;
     private MockMvc mvc;
-    @Autowired
-    private UserRepository userRepository;
 
     @BeforeEach
     public void setup() {
@@ -45,8 +49,6 @@ class UserControllerTest {
                 .apply(springSecurity())
                 .build();
     }
-    @MockBean
-    private UserService userService;
 
     @Test
     void shouldRedirectAnonymousUserToLogin() throws Exception {
@@ -73,6 +75,18 @@ class UserControllerTest {
                 .andExpect(view().name("users-db-overview"))
                 .andExpect(model().attribute("users", allUsers))
                 .andExpect(model().attribute("users", Matchers.hasSize(1)));
+    }
+
+    @Test
+    @WithUserDetails("minervamcgonagall")
+    void showEditFormTest() throws Exception {
+        UserDto userDto = new UserDto();
+        given(userService.getUserDtoByUserId(isA(Long.class))).willReturn(userDto);
+        given(userService.doesUserExistById(isA(Long.class))).willReturn(true);
+        List<User> allUsers = userRepository.findAll();
+        mvc.perform(MockMvcRequestBuilders.get("/user/edit/" + allUsers.get(0).getId()))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("user", userDto));
     }
 
     @Test

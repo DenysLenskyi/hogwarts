@@ -24,7 +24,7 @@ public class UserController {
         return "users-db-overview";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/edit/{id}") //to do add test for this
     public String showEditUserForm(@PathVariable("id") Long id, Model model) {
         if (!userService.doesUserExistById(id)) {
             return "error/404";

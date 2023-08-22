@@ -30,7 +30,7 @@ public class HogwartsUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return passwordEncoder.encode(user.getPassword());
+        return user.getPassword();
     }
 
     @Override

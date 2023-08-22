@@ -1,14 +1,16 @@
 package ua.foxminded.javaspring.lenskyi.university.controller.form.reader;
 
+import java.util.List;
+
 public class EditUserFormInputReader {
 
-    private String[] checkboxSelectedValues;
+    private List<String> checkboxSelectedValues;
 
-    public String[] getCheckboxSelectedValues() {
+    public List<String> getCheckboxSelectedValues() {
         return checkboxSelectedValues;
     }
 
-    public void setCheckboxSelectedValues(String[] checkboxSelectedValues) {
+    public void setCheckboxSelectedValues(List<String> checkboxSelectedValues) {
         this.checkboxSelectedValues = checkboxSelectedValues;
     }
 }

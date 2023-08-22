@@ -64,10 +64,10 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void updateRolesFromArray(User user, String[] newRolesArray) throws Exception {
-        if (newRolesArray.length != 0) {
+    public void updateRolesFromArray(User user, List<String> newRolesArray) throws Exception {
+        if (newRolesArray.size() != 0) {
             Set<Role> updatedRoles = new HashSet<>();
-            Arrays.asList(newRolesArray).forEach(roleName -> {
+            newRolesArray.forEach(roleName -> {
                 updatedRoles.add(roleRepository.findRoleByName(roleName).orElseThrow());
             });
             user.setRoles(updatedRoles);

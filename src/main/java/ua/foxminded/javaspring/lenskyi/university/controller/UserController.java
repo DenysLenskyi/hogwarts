@@ -4,7 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
-import ua.foxminded.javaspring.lenskyi.university.model.User;
 import ua.foxminded.javaspring.lenskyi.university.controller.form.reader.EditUserFormInputReader;
 import ua.foxminded.javaspring.lenskyi.university.service.UserService;
 

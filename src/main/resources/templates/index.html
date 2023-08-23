@@ -5,18 +5,19 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
             href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,400;1,700&display=swap"
             rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="./CSS/styles.css"/>
+    <link th:href="@{/css/index-styles.css}" rel="stylesheet" />
 
     <title>Hogwarts Schedule Manager</title>
 </head>
 <body>
+<div th:replace="~{fragments/header}"></div>
 <h1>Hogwarts schedule manager homepage</h1>
 <h2>Here's what we have in Hogwarts Database</h2>
 <div>
@@ -30,4 +31,5 @@
         <li><a href="/lessonstartendtime/all">Lessons start and end time</a></li>
     </ul>
 </div>
+<div th:replace="~{fragments/footer}"></div>
 </body>

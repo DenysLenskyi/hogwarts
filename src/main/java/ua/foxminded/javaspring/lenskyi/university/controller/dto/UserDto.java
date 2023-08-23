@@ -1,44 +1,19 @@
-package ua.foxminded.javaspring.lenskyi.university.model;
+package ua.foxminded.javaspring.lenskyi.university.controller.dto;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import ua.foxminded.javaspring.lenskyi.university.model.Group;
+import ua.foxminded.javaspring.lenskyi.university.model.Role;
 
 import java.util.Set;
 
-@Entity
-@Table(name = "USER", schema = "HOGWARTS")
-public class User {
+public class UserDto {
 
-    @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "FIRST_NAME", nullable = false)
-    @NotBlank
     private String firstName;
-    @Column(name = "LAST_NAME")
     private String lastName;
-    @Column(name = "USERNAME", nullable = false)
     private String username;
-    @Column(name = "PASSWORD", nullable = false)
     private String password;
-
-    @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
-    @JoinTable(name = "USER_ROLE", schema = "HOGWARTS",
-            joinColumns = {@JoinColumn(name = "USER_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "ROLE_ID")})
     private Set<Role> roles;
-
-    @ManyToOne
-    @JoinColumn(name = "GROUP_ID", insertable = false, updatable = false)
     private Group group;
-
-//    public User() {
-//    }
 
     public Long getId() {
         return id;

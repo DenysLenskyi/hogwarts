@@ -1,16 +1,17 @@
 package ua.foxminded.javaspring.lenskyi.university.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = {"/", "/home"})
-public class HomeController {
+@RequestMapping("/admin")
+public class AdminController {
 
     @GetMapping
-    public String home(Model model) {
-        return "index";
+    public String getAdminPage(Model model) {
+        return "admin/control-panel";
     }
 }

@@ -50,20 +50,28 @@ Flying,
 History of Magic,
 Arithmancy.
 
-List of professors:
+List of Users (first name, last name, username (password is the same), authority):
 
-Severus Snape,
-Rubeus Hagrid,
-Remus Lupin,
-Pomona Sprout,
-Minerva McGonagall,
-Luna Scamander,
-Firenze,
-Filius Flitwick,
-Elspeth MacGillony,
-Rolanda Hooch,
-Jakub Gorski,
-Septima Vector.
+Severus Snape, severussnape, professor,
+Rubeus Hagrid, rubeushagrid, professor,
+Remus Lupin, remuslupin, professor,
+Pomona Sprout, pomonasprout, professor,
+Minerva McGonagall, minervamcgonagall, professor, admin,
+Luna Scamander, lunascamander, professor
+Firenze, firenze, professor,
+Filius Flitwick, filiusflitwick, professor,
+Elspeth MacGillony, elspethmacgillony, professor,
+Rolanda Hooch, rolandahooch, professor,
+Jakub Gorski, jakubgorski, professor,
+Septima Vector, septimavector, professor,
+Harry Potter, harrypotter, student,
+Hermione Granger, hermionegranger, student,
+Neville Longbottom, nevillelongbottom, student,
+Ronald Weasley, ronaldweasley, student,
+Lavender Brown, lavenderbrown, student,
+Dean Thomas, deanthomas, student,
+Seamus Finnigan, seamusfinnigan, student,
+Parvati Patil, parvatipatil, student.
 
 List of classrooms:
 

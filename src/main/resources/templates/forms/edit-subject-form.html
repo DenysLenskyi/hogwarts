@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Subject</title>
+</head>
+
+<body>
+<div th:replace="~{fragments/header}"></div>
+<h2>[[${pageTitle}]]</h2>
+<div>
+    <form th:action="@{/subject/edit/{id}(id=${subjectDto.id})}" th:object="${subjectDto}" th:method="put">
+
+        <input type="hidden" th:field="*{id}"/>
+
+        <div>
+            <div>
+                <label>Name</label>
+                <div>
+                    <input type="text" th:value="*{name}">
+                </div>
+            </div>
+
+            <div>
+                <label>Description</label>
+                <div>
+                    <input type="text" th:value="*{description}" width="400px">
+                </div>
+            </div>
+
+            <div>
+                <label>Classroom</label>
+                <div>
+                    <input type="text" th:value="*{classroom.name}" width="400px">
+                </div>
+            </div>
+
+            <div>
+                <label>Professor</label>
+                <div>
+                    <input type="text" th:value="*{user.firstName + ' ' + user.lastName}" width="400px">
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+</body>
+</html>

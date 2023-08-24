@@ -50,4 +50,12 @@ public class Classroom {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
 }

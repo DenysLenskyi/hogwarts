@@ -37,8 +37,8 @@ public class User {
     @JoinColumn(name = "GROUP_ID", insertable = false, updatable = false)
     private Group group;
 
-//    public User() {
-//    }
+    @OneToOne(mappedBy = "user")
+    private Subject subject;
 
     public Long getId() {
         return id;
@@ -109,5 +109,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 }

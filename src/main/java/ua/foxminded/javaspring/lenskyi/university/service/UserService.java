@@ -28,4 +28,6 @@ public interface UserService {
     boolean doesUserExistById(Long userId);
 
     UserDto getUserDtoByUserId(Long id);
+
+    List<User> findAllProfessorsWithNoSubject();
 }

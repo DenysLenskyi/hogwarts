@@ -63,12 +63,13 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     public void updateRolesFromArray(User user, List<String> newRolesArray) throws Exception {
-        if (newRolesArray.size() != 0) {
+        if (!newRolesArray.isEmpty()) {
             Set<Role> updatedRoles = new HashSet<>();
-            newRolesArray.forEach(roleName -> {
-                updatedRoles.add(roleRepository.findRoleByName(roleName).orElseThrow());
-            });
+            newRolesArray.forEach(roleName ->
+                updatedRoles.add(roleRepository.findRoleByName(roleName).orElseThrow())
+            );
             user.setRoles(updatedRoles);
             userRepository.save(user);
             userRepository.flush();
@@ -81,5 +82,9 @@ public class UserServiceImpl implements UserService {
 
     public UserDto getUserDtoByUserId(Long id) {
         return mapper.userEntityToUserDto(userRepository.findById(id).orElseThrow());
+    }
+
+    public List<User> findAllProfessorsWithNoSubject() {
+        return userRepository.findAllProfessorsWithNoSubject();
     }
 }

@@ -32,9 +32,6 @@ public class Subject {
     @OneToMany(mappedBy = "subjectOfTheLesson")
     private Set<Lesson> lessons;
 
-    public Subject() {
-    }
-
     public Long getId() {
         return id;
     }

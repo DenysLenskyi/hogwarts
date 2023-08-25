@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -36,6 +37,7 @@
                 <td th:text="${subject.getName()}"></td>
                 <td th:text="${subject.getDescription()}"></td>
                 <td th:text="${subject.getClassroom().getName()}"></td>
+                <td sec:authorize="hasAuthority('admin')"><a th:href="@{/subject/edit/{id}(id=${subject.getId()})}">Edit</a></td>
             </tr>
             </tbody>
         </table>

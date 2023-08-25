@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.SubjectDto;
 import ua.foxminded.javaspring.lenskyi.university.service.ClassroomService;
@@ -43,29 +44,13 @@ public class SubjectController {
         }
     }
 
-//    @GetMapping("/edit/{id}") //to do add test for this
-//    public String showEditUserForm(@PathVariable("id") Long id, Model model) {
-//        if (!userService.doesUserExistById(id)) {
-//            return "error/404";
-//        } else {
-//            UserDto userDto = userService.getUserDtoByUserId(id);
-//            EditUserFormInputReader inputReader = new EditUserFormInputReader();
-//            model.addAttribute("user", userDto);
-//            model.addAttribute("inputReader", inputReader);
-//            model.addAttribute("pageTitle", "Change Role For User");
-//
-//            return "forms/edit-user-form";
-//        }
-//    }
-//
-//    @PutMapping(value = "/edit/{id}")
-//    public String editUser(EditUserFormInputReader inputReader, @PathVariable("id") Long id) {
-//        try {
-//            if (inputReader.getCheckboxSelectedValues() != null)
-//                userService.updateRolesFromArray(userService.findById(id), inputReader.getCheckboxSelectedValues());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return "redirect:/user/all";
-//    }
+    @PutMapping("/edit/{id}")
+    public String editSubject(@PathVariable("id") Long id, SubjectDto subjectDto) {
+        try {
+            subjectService.updateSubjectFromSubjectDto(subjectDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/subject/all";
+    }
 }

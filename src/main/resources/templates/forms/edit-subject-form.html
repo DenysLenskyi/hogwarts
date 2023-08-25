@@ -17,31 +17,50 @@
             <div>
                 <label>Name</label>
                 <div>
-                    <input type="text" th:value="*{name}">
+                    <input type="text" th:field="*{name}" th:value="*{name}">
                 </div>
             </div>
 
             <div>
                 <label>Description</label>
+                <p th:text="*{description}"></p>
                 <div>
-                    <input type="text" th:value="*{description}" width="400px">
+                    <input type="text" th:field="*{description}" value="Type new description here">
                 </div>
             </div>
 
             <div>
                 <label>Classroom</label>
                 <div>
-                    <input type="text" th:value="*{classroom.name}" width="400px">
+                    <select th:field="${subjectDto.classroom.name}">
+                        <option th:each="classroom : ${freeClassrooms}" th:value="${classroom.name}"
+                                th:text="${classroom.name}">
+                        </option>
+                        <option th:value="*{classroom.name}" th:text="*{classroom.name + ' (current)'}"></option>
+                    </select>
                 </div>
             </div>
 
-            <div>
+            <!--            if no free professor available-->
+            <div th:if="${freeProfessors.isEmpty()}">
+                <p>Can't find any free professor to assign to this subject</p>
+                <p>Current professor: <span th:value="*{user.firstName + ' ' + user.lastName}"></span></p>
+                <p>Add new user with role 'professor' if you'd change a professor for this subject</p>
+            </div>
+
+            <!--            if a free professor available-->
+            <div th:if="${!freeProfessors.isEmpty()}">
                 <label>Professor</label>
                 <div>
-                    <input type="text" th:value="*{user.firstName + ' ' + user.lastName}" width="400px">
+                    <select th:field="*{user.username}">
+                        <option th:each="user : ${freeProfessors}" th:value="${user.username}"
+                                th:text="${user.firstName + ' ' + user.lastName}"></option>
+                    </select>
                 </div>
             </div>
-
+        </div>
+        <div>
+            <p><input type="submit" value="Submit"/></p>
         </div>
     </form>
 </div>

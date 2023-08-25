@@ -79,4 +79,30 @@ public class Subject {
     public void setLessons(Set<Lesson> lessons) {
         this.lessons = lessons;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Subject subject)) return false;
+
+        if (!getId().equals(subject.getId())) return false;
+        if (!getName().equals(subject.getName())) return false;
+        if (getDescription() != null ? !getDescription().equals(subject.getDescription()) : subject.getDescription() != null)
+            return false;
+        if (getUser() != null ? !getUser().equals(subject.getUser()) : subject.getUser() != null) return false;
+        if (getClassroom() != null ? !getClassroom().equals(subject.getClassroom()) : subject.getClassroom() != null)
+            return false;
+        return getLessons() != null ? getLessons().equals(subject.getLessons()) : subject.getLessons() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId().hashCode();
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        result = 31 * result + (getUser() != null ? getUser().hashCode() : 0);
+        result = 31 * result + (getClassroom() != null ? getClassroom().hashCode() : 0);
+        result = 31 * result + (getLessons() != null ? getLessons().hashCode() : 0);
+        return result;
+    }
 }

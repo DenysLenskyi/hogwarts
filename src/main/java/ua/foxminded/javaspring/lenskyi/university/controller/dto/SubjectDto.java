@@ -65,4 +65,30 @@ public class SubjectDto {
     public void setLessons(Set<Lesson> lessons) {
         this.lessons = lessons;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SubjectDto that)) return false;
+
+        if (!getId().equals(that.getId())) return false;
+        if (!getName().equals(that.getName())) return false;
+        if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
+            return false;
+        if (getUser() != null ? !getUser().equals(that.getUser()) : that.getUser() != null) return false;
+        if (getClassroom() != null ? !getClassroom().equals(that.getClassroom()) : that.getClassroom() != null)
+            return false;
+        return getLessons() != null ? getLessons().equals(that.getLessons()) : that.getLessons() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId().hashCode();
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        result = 31 * result + (getUser() != null ? getUser().hashCode() : 0);
+        result = 31 * result + (getClassroom() != null ? getClassroom().hashCode() : 0);
+        result = 31 * result + (getLessons() != null ? getLessons().hashCode() : 0);
+        return result;
+    }
 }

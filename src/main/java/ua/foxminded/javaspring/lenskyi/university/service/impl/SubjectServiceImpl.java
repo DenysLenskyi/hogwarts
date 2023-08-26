@@ -75,4 +75,24 @@ public class SubjectServiceImpl implements SubjectService {
     public boolean doesSubjectExistById(Long subjectId) {
         return subjectRepository.existsById(subjectId);
     }
+
+    public void createNewSubjectFromSubjectDto(SubjectDto subjectDto) {
+        Subject newSubject = new Subject();
+        if (!subjectDto.getName().isEmpty()) {
+            newSubject.setName(subjectDto.getName());
+        }
+        if (!subjectDto.getDescription().isEmpty()) {
+            newSubject.setDescription(subjectDto.getDescription());
+        }
+        if (subjectDto.getClassroom() != null) {
+            Classroom classroom = classroomRepository.findByName(subjectDto.getClassroom().getName()).orElseThrow();
+            newSubject.setClassroom(classroom);
+        }
+        if (subjectDto.getUser() != null) {
+            User user = userRepository.findUserByUsername(subjectDto.getUser().getUsername());
+            newSubject.setUser(user);
+        }
+        subjectRepository.save(newSubject);
+        subjectRepository.flush();
+    }
 }

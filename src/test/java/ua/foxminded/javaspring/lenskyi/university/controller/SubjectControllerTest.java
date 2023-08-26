@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -89,5 +90,29 @@ class SubjectControllerTest {
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection());
         assertEquals("test", subjectToEdit.getDescription());
+    }
+
+    @Test
+    @WithUserDetails("minervamcgonagall")
+    void showCreateNewSubjectFormTest() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/subject/new")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("forms/create-subject"))
+                .andExpect(model().attributeExists("subjectDto"))
+                .andExpect(model().attribute("freeClassrooms", classroomService.findAllFreeClassrooms()))
+                .andExpect(model().attribute("freeProfessors", userService.findAllProfessorsWithNoSubject()));
+    }
+
+    @Test
+    @WithUserDetails("minervamcgonagall")
+    void createNewSubjectTest() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.post("/subject/new")
+                        .param("name", "testName")
+                        .param("description", "testDescription")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection());
+        Subject subject = subjectService.findByName("testName").orElseThrow();
+        assertEquals("testDescription", subject.getDescription());
     }
 }

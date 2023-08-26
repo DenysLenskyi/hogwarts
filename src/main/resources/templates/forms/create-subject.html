@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Subject</title>
+</head>
+
+<body>
+<div th:replace="~{fragments/header}"></div>
+<div>
+    <form th:action="@{/subject/new}" th:object="${subjectDto}" method="post">
+
+        <input type="hidden" th:field="*{id}"/>
+
+        <div>
+            <div>
+                <label>Name</label>
+                <div>
+                    <input type="text" value="Type a name for new subject here" th:field="*{name}" required>
+                </div>
+            </div>
+
+            <div>
+                <label>Description</label>
+                <div>
+                    <input type="text" th:field="*{description}" value="Type a description here" required>
+                </div>
+            </div>
+
+            <div>
+                <label>Classroom</label>
+                <p>Choose a classroom from the list below</p>
+                <div>
+                    <select th:field="${subjectDto.classroom.name}">
+                        <option th:each="classroom : ${freeClassrooms}" th:value="${classroom.name}"
+                                th:text="${classroom.name}">
+                        </option>
+                        <option th:value="*{classroom.name}" th:text="*{classroom.name + ' (current)'}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <!--            if no free professor available-->
+            <div th:if="${freeProfessors.isEmpty()}">
+                <p>Can't find any free professor to assign to this subject</p>
+                <p>Add new user with role 'professor' if you'd assign a professor for this subject</p>
+            </div>
+
+            <!--            if a free professor available-->
+            <div th:if="${!freeProfessors.isEmpty()}">
+                <label>Professor</label>
+                <div>
+                    <select th:field="*{user.username}">
+                        <option th:each="user : ${freeProfessors}" th:value="${user.username}"
+                                th:text="${user.firstName + ' ' + user.lastName}"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div>
+            <p><input type="submit" value="Submit"/></p>
+        </div>
+    </form>
+</div>
+</body>
+</html>

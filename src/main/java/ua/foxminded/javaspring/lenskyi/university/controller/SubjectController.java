@@ -2,10 +2,7 @@ package ua.foxminded.javaspring.lenskyi.university.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.SubjectDto;
 import ua.foxminded.javaspring.lenskyi.university.service.ClassroomService;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
@@ -53,4 +50,20 @@ public class SubjectController {
         }
         return "redirect:/subject/all";
     }
+
+    @GetMapping("/new")
+    public String showCreateNewSubjectForm(Model model) {
+        model.addAttribute("subjectDto", new SubjectDto());
+        model.addAttribute("freeClassrooms", classroomService.findAllFreeClassrooms());
+        model.addAttribute("freeProfessors", userService.findAllProfessorsWithNoSubject());
+        return "forms/create-subject";
+    }
+
+    @PostMapping("/new")
+    public String createNewSubject(SubjectDto subjectDto) {
+        subjectService.createNewSubjectFromSubjectDto(subjectDto);
+        return "redirect:/subject/all";
+    }
 }
+
+// minervamcgonagall

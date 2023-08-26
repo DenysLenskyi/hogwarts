@@ -21,4 +21,6 @@ public interface SubjectService {
     void updateSubjectFromSubjectDto(SubjectDto subjectDto);
 
     boolean doesSubjectExistById(Long subjectId);
+
+    void createNewSubjectFromSubjectDto(SubjectDto subjectDto);
 }

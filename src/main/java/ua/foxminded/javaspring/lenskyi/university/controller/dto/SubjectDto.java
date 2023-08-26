@@ -71,8 +71,8 @@ public class SubjectDto {
         if (this == o) return true;
         if (!(o instanceof SubjectDto that)) return false;
 
-        if (!getId().equals(that.getId())) return false;
-        if (!getName().equals(that.getName())) return false;
+        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
         if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
             return false;
         if (getUser() != null ? !getUser().equals(that.getUser()) : that.getUser() != null) return false;
@@ -83,8 +83,8 @@ public class SubjectDto {
 
     @Override
     public int hashCode() {
-        int result = getId().hashCode();
-        result = 31 * result + getName().hashCode();
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
         result = 31 * result + (getUser() != null ? getUser().hashCode() : 0);
         result = 31 * result + (getClassroom() != null ? getClassroom().hashCode() : 0);

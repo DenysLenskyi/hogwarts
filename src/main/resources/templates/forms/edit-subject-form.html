@@ -44,7 +44,9 @@
             <!--            if no free professor available-->
             <div th:if="${freeProfessors.isEmpty()}">
                 <p>Can't find any free professor to assign to this subject</p>
-                <p>Current professor: <span th:value="*{user.firstName + ' ' + user.lastName}"></span></p>
+                <p th:if="*{user != null}">
+                    Current professor: <span th:value="*{user.firstName + ' ' + user.lastName}"></span>
+                </p>
                 <p>Add new user with role 'professor' if you'd change a professor for this subject</p>
             </div>
 

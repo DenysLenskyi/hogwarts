@@ -95,4 +95,8 @@ public class SubjectServiceImpl implements SubjectService {
         subjectRepository.save(newSubject);
         subjectRepository.flush();
     }
+
+    public void deleteSubjectById(Long id) {
+        subjectRepository.deleteById(id);
+    }
 }

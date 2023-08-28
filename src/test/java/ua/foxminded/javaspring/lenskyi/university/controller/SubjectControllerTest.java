@@ -28,7 +28,7 @@ import ua.foxminded.javaspring.lenskyi.university.service.UserService;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -114,5 +114,19 @@ class SubjectControllerTest {
                 .andExpect(status().is3xxRedirection());
         Subject subject = subjectService.findByName("testName").orElseThrow();
         assertEquals("testDescription", subject.getDescription());
+    }
+
+    @Test
+    @WithUserDetails("minervamcgonagall")
+    void deleteSubjectTest() throws Exception {
+        SubjectDto newSubject = new SubjectDto();
+        newSubject.setName("testDeleteSubject");
+        newSubject.setDescription("test");
+        subjectService.createNewSubjectFromSubjectDto(newSubject);
+        Subject subjectToDelete = subjectService.findByName("testDeleteSubject").orElseThrow();
+        mvc.perform(MockMvcRequestBuilders.delete("/subject/delete/" + subjectToDelete.getId())
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection());
+        assertFalse(subjectService.doesSubjectExistById(subjectToDelete.getId()));
     }
 }

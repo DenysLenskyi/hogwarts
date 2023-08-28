@@ -64,6 +64,16 @@ public class SubjectController {
         subjectService.createNewSubjectFromSubjectDto(subjectDto);
         return "redirect:/subject/all";
     }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteSubject(@PathVariable("id") Long id) {
+        if (!subjectService.doesSubjectExistById(id)) {
+            return "error/404";
+        } else {
+            subjectService.deleteSubjectById(id);
+            return "redirect:/subject/all";
+        }
+    }
 }
 
 // minervamcgonagall

@@ -3,17 +3,17 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link
             href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,400;1,700&display=swap"
             rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="./CSS/styles.css" />
+    <link rel="stylesheet" href="./CSS/styles.css"/>
 
     <title>Hogwarts Schedule Manager | Subjects</title>
 </head>
@@ -37,7 +37,12 @@
                 <td th:text="${subject.getName()}"></td>
                 <td th:text="${subject.getDescription()}"></td>
                 <td th:text="${subject.getClassroom().getName()}"></td>
-                <td sec:authorize="hasAuthority('admin')"><a th:href="@{/subject/edit/{id}(id=${subject.getId()})}">Edit</a></td>
+                <td sec:authorize="hasAuthority('admin') || hasAuthority('professor')">
+                    <a th:href="@{/subject/edit/{id}(id=${subject.getId()})}">Edit</a>
+                    <form th:action="@{/subject/delete/{id}(id=${subject.getId()})}" th:method="delete">
+                        <input type="submit" value="DELETE">
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>

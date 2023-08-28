@@ -5,8 +5,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 </head>
-<header>
-    <p></p>
+<header style="margin-bottom: 10px">
     <ul class="nav nav-tabs">
         <li><div sec:authorize="isAnonymous()" class="container-fluid"><a href="/login">LOG IN</a></div></li>
         <li><div sec:authorize="isAuthenticated()" class="container-fluid"><p>HELLO, <span th:text="${#authentication.principal.firstName.toUpperCase()}"/></p></div></li>

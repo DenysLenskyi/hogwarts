@@ -13,6 +13,5 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Long> {
 
     Optional<Classroom> findByName(String classroomName);
 
-    @Query("select c from Classroom c left join c.subject where c.subject is null")
-    List<Classroom> findAllFreeClassrooms();
+    List<Classroom> findAllBySubjectIsNull();
 }

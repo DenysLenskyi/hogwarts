@@ -58,4 +58,25 @@ public class Classroom {
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Classroom classroom)) return false;
+
+        if (!getId().equals(classroom.getId())) return false;
+        if (!getName().equals(classroom.getName())) return false;
+        if (getDescription() != null ? !getDescription().equals(classroom.getDescription()) : classroom.getDescription() != null)
+            return false;
+        return getSubject() != null ? getSubject().equals(classroom.getSubject()) : classroom.getSubject() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId().hashCode();
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        result = 31 * result + (getSubject() != null ? getSubject().hashCode() : 0);
+        return result;
+    }
 }

@@ -3,9 +3,11 @@ package ua.foxminded.javaspring.lenskyi.university.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import ua.foxminded.javaspring.lenskyi.university.model.Role;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -20,6 +22,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsById(Long userId);
 
-    @Query("select u from User u left join u.subject join u.roles ur where u.subject is null and ur.name = 'professor'")
-    List<User> findAllProfessorsWithNoSubject();
+    List<User> findAllBySubjectIsNullAndRolesContains(Role role);
 }

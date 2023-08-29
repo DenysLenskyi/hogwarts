@@ -24,6 +24,6 @@ public class ClassroomServiceImpl implements ClassroomService {
     }
 
     public List<Classroom> findAllFreeClassrooms() {
-        return classroomRepository.findAllFreeClassrooms();
+        return classroomRepository.findAllBySubjectIsNull();
     }
 }

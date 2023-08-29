@@ -85,6 +85,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<User> findAllProfessorsWithNoSubject() {
-        return userRepository.findAllProfessorsWithNoSubject();
+        return userRepository.findAllBySubjectIsNullAndRolesContains(
+                roleRepository.findRoleByName("professor").orElseThrow());
     }
 }

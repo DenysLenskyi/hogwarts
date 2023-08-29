@@ -51,7 +51,7 @@ class ClassroomRepositoryTest {
     @Test
     void findAllFreeClassroomsTest() {
         List<Classroom> allClassrooms = classroomRepository.findAll();
-        List<Classroom> allFreeClassrooms = classroomRepository.findAllFreeClassrooms();
+        List<Classroom> allFreeClassrooms = classroomRepository.findAllBySubjectIsNull();
         List<Subject> allSubjects = subjectRepository.findAll();
         assertEquals(allFreeClassrooms.size(), allClassrooms.size() - allSubjects.size());
     }

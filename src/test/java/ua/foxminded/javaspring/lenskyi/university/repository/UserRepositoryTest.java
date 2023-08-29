@@ -56,12 +56,6 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findAllProfessorsWithNoSubject_ShouldBeZero() {
-        List<User> allProfessorsWithNoSubject = userRepository.findAllProfessorsWithNoSubject();
-        assertEquals(0, allProfessorsWithNoSubject.size());
-    }
-
-    @Test
     @Transactional
     void findAllProfessorsWithNoSubjectTest() {
         User user = new User();
@@ -70,7 +64,7 @@ class UserRepositoryTest {
         user.setPassword("test");
         user.setRoles(Set.of(roleRepository.findRoleByName("professor").orElseThrow()));
         userRepository.save(user);
-        List<User> allProfessorsWithNoSubject = userRepository.findAllProfessorsWithNoSubject();
+        List<User> allProfessorsWithNoSubject = userRepository.findAllBySubjectIsNullAndRolesContains(roleRepository.findRoleByName("professor").orElseThrow());
         assertEquals(1, allProfessorsWithNoSubject.size());
         assertEquals("test", allProfessorsWithNoSubject.get(0).getFirstName());
     }

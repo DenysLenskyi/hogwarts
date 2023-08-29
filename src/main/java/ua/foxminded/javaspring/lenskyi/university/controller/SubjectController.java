@@ -61,6 +61,7 @@ public class SubjectController {
 
     @PostMapping("/new")
     public String createNewSubject(SubjectDto subjectDto) {
+        // to do: add if statement when creating a subject with a name that exists already
         subjectService.createNewSubjectFromSubjectDto(subjectDto);
         return "redirect:/subject/all";
     }

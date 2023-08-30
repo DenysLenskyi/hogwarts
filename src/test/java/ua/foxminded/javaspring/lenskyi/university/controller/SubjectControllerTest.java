@@ -70,7 +70,7 @@ class SubjectControllerTest {
         Subject subjectToEdit = allSubjects.get(0);
         SubjectDto expectedSubjectDto = subjectService.findSubjectDtoById(subjectToEdit.getId());
         mvc.perform(MockMvcRequestBuilders
-                        .get("/subject/edit/" + subjectToEdit.getId()))
+                        .get("/subject/" + subjectToEdit.getId() + "/edit-page"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("forms/edit-subject-form"))
                 .andExpect(model().attribute("subjectDto", expectedSubjectDto))
@@ -84,7 +84,7 @@ class SubjectControllerTest {
         List<Subject> allSubjects = subjectService.findAll();
         Subject subjectToEdit = allSubjects.get(0);
         mvc.perform(MockMvcRequestBuilders
-                        .put("/subject/edit/" + subjectToEdit.getId())
+                        .put("/subject/" + subjectToEdit.getId())
                         .param("name", subjectToEdit.getName())
                         .param("description", "test")
                         .with(csrf()))
@@ -95,7 +95,7 @@ class SubjectControllerTest {
     @Test
     @WithUserDetails("minervamcgonagall")
     void showCreateNewSubjectFormTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/subject/new")
+        mvc.perform(MockMvcRequestBuilders.get("/subject/create-subject-page")
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("forms/create-subject"))
@@ -107,7 +107,7 @@ class SubjectControllerTest {
     @Test
     @WithUserDetails("minervamcgonagall")
     void createNewSubjectTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.post("/subject/new")
+        mvc.perform(MockMvcRequestBuilders.post("/subject")
                         .param("name", "testName")
                         .param("description", "testDescription")
                 .with(csrf()))
@@ -124,7 +124,7 @@ class SubjectControllerTest {
         newSubject.setDescription("test");
         subjectService.createNewSubjectFromSubjectDto(newSubject);
         Subject subjectToDelete = subjectService.findByName("testDeleteSubject").orElseThrow();
-        mvc.perform(MockMvcRequestBuilders.delete("/subject/delete/" + subjectToDelete.getId())
+        mvc.perform(MockMvcRequestBuilders.delete("/subject/" + subjectToDelete.getId())
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection());
         assertFalse(subjectService.doesSubjectExistById(subjectToDelete.getId()));

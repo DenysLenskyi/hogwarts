@@ -15,7 +15,7 @@
 <div class="container-fluid">
 
     <div class="row" style="margin-bottom: 20px" sec:authorize="hasAuthority('admin')">
-        <a th:href="@{/subject/new}">
+        <a th:href="@{/subject/create-subject-page}">
             <button type="submit" class="btn btn-info">CREATE NEW SUBJECT</button>
         </a>
     </div>
@@ -43,12 +43,12 @@
                 </td>
                 <td sec:authorize="hasAuthority('admin') || hasAuthority('professor')">
                     <div sec:authorize="hasAuthority('admin') || hasAuthority('professor')">
-                        <a th:href="@{/subject/edit/{id}(id=${subject.getId()})}">
+                        <a th:href="@{/subject/{id}/edit-page(id=${subject.getId()})}">
                             <input type="submit" value="EDIT" class="btn btn-warning" style="margin-bottom: 3px">
                         </a>
                     </div>
                     <div sec:authorize="hasAuthority('admin')">
-                        <form th:action="@{/subject/delete/{id}(id=${subject.getId()})}" th:method="delete">
+                        <form th:action="@{/subject/{id}(id=${subject.getId()})}" th:method="delete">
                             <input type="submit" value="DELETE" class="btn btn-danger" style="margin-bottom: 3px">
                         </form>
                     </div>

@@ -28,8 +28,8 @@ public class SubjectController {
         return "subjects-db-overview";
     }
 
-    @GetMapping("/edit/{id}")
-    public String showEditSubjectForm(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/{subjectId}/edit-page")
+    public String showEditSubjectForm(@PathVariable("subjectId") Long id, Model model) {
         if (!subjectService.doesSubjectExistById(id)) {
             return "error/404";
         } else {
@@ -41,9 +41,10 @@ public class SubjectController {
         }
     }
 
-    @PutMapping("/edit/{id}")
-    public String editSubject(@PathVariable("id") Long id, SubjectDto subjectDto) {
+    @PutMapping("/{subjectId}")
+    public String editSubject(@PathVariable("subjectId") Long id, SubjectDto subjectDto) {
         try {
+            subjectDto.setId(id);
             subjectService.updateSubjectFromSubjectDto(subjectDto);
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,7 +52,7 @@ public class SubjectController {
         return "redirect:/subject/all";
     }
 
-    @GetMapping("/new")
+    @GetMapping("/create-subject-page")
     public String showCreateNewSubjectForm(Model model) {
         model.addAttribute("subjectDto", new SubjectDto());
         model.addAttribute("freeClassrooms", classroomService.findAllFreeClassrooms());
@@ -59,15 +60,15 @@ public class SubjectController {
         return "forms/create-subject";
     }
 
-    @PostMapping("/new")
+    @PostMapping
     public String createNewSubject(SubjectDto subjectDto) {
         // to do: add if statement when creating a subject with a name that exists already
         subjectService.createNewSubjectFromSubjectDto(subjectDto);
         return "redirect:/subject/all";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteSubject(@PathVariable("id") Long id) {
+    @DeleteMapping("/{subjectId}")
+    public String deleteSubject(@PathVariable("subjectId") Long id) {
         if (!subjectService.doesSubjectExistById(id)) {
             return "error/404";
         } else {

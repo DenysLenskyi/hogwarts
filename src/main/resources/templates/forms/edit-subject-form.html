@@ -20,7 +20,7 @@
     <div class="row vertical-center" style="max-width: 700px">
 
         <h2>Edit Subject</h2>
-        <form th:action="@{/subject/edit/{id}(id=${subjectDto.id})}" th:object="${subjectDto}" th:method="put">
+        <form th:action="@{/subject/{id}(id=${subjectDto.id})}" th:object="${subjectDto}" th:method="put">
 
             <input type="hidden" th:field="*{id}"/>
 

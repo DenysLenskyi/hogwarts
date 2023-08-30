@@ -20,7 +20,7 @@
 <div class="container-fluid" style="padding: 40px">
     <div class="row vertical-center" style="max-width: 700px">
         <h2>Create New Subject</h2>
-        <form th:action="@{/subject/new}" th:object="${subjectDto}" method="post">
+        <form th:action="@{/subject}" th:object="${subjectDto}" method="post">
 
             <input type="hidden" th:field="*{id}"/>
 

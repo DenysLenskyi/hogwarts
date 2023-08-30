@@ -25,7 +25,7 @@ public class Subject {
     @JoinColumn(name = "PROFESSOR_ID", referencedColumnName = "ID")
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "CLASSROOM_ID", referencedColumnName = "ID")
     private Classroom classroom;
 

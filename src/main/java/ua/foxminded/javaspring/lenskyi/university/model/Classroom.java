@@ -66,9 +66,7 @@ public class Classroom {
 
         if (!getId().equals(classroom.getId())) return false;
         if (!getName().equals(classroom.getName())) return false;
-        if (getDescription() != null ? !getDescription().equals(classroom.getDescription()) : classroom.getDescription() != null)
-            return false;
-        return getSubject() != null ? getSubject().equals(classroom.getSubject()) : classroom.getSubject() == null;
+        return getDescription() != null ? getDescription().equals(classroom.getDescription()) : classroom.getDescription() == null;
     }
 
     @Override
@@ -76,7 +74,6 @@ public class Classroom {
         int result = getId().hashCode();
         result = 31 * result + getName().hashCode();
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-        result = 31 * result + (getSubject() != null ? getSubject().hashCode() : 0);
         return result;
     }
 }

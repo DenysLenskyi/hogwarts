@@ -73,12 +73,7 @@ public class SubjectDto {
 
         if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
         if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
-        if (getDescription() != null ? !getDescription().equals(that.getDescription()) : that.getDescription() != null)
-            return false;
-        if (getUser() != null ? !getUser().equals(that.getUser()) : that.getUser() != null) return false;
-        if (getClassroom() != null ? !getClassroom().equals(that.getClassroom()) : that.getClassroom() != null)
-            return false;
-        return getLessons() != null ? getLessons().equals(that.getLessons()) : that.getLessons() == null;
+        return getDescription() != null ? getDescription().equals(that.getDescription()) : that.getDescription() == null;
     }
 
     @Override
@@ -86,9 +81,6 @@ public class SubjectDto {
         int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-        result = 31 * result + (getUser() != null ? getUser().hashCode() : 0);
-        result = 31 * result + (getClassroom() != null ? getClassroom().hashCode() : 0);
-        result = 31 * result + (getLessons() != null ? getLessons().hashCode() : 0);
         return result;
     }
 }

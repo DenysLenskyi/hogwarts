@@ -2,35 +2,24 @@ package ua.foxminded.javaspring.lenskyi.university.controller;
 
 import jakarta.transaction.Transactional;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.SubjectDto;
-import ua.foxminded.javaspring.lenskyi.university.model.Classroom;
 import ua.foxminded.javaspring.lenskyi.university.model.Subject;
-import ua.foxminded.javaspring.lenskyi.university.repository.SubjectRepository;
 import ua.foxminded.javaspring.lenskyi.university.service.ClassroomService;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 import ua.foxminded.javaspring.lenskyi.university.service.UserService;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -68,7 +57,7 @@ class SubjectControllerTest {
     void showEditSubjectFormTest() throws Exception {
         List<Subject> allSubjects = subjectService.findAll();
         Subject subjectToEdit = allSubjects.get(0);
-        SubjectDto expectedSubjectDto = subjectService.findSubjectDtoById(subjectToEdit.getId());
+        SubjectDto expectedSubjectDto = subjectService.findById(subjectToEdit.getId());
         mvc.perform(MockMvcRequestBuilders
                         .get("/subject/" + subjectToEdit.getId() + "/edit-page"))
                 .andExpect(status().isOk())
@@ -112,7 +101,7 @@ class SubjectControllerTest {
                         .param("description", "testDescription")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection());
-        Subject subject = subjectService.findByName("testName").orElseThrow();
+        SubjectDto subject = subjectService.findByName("testName");
         assertEquals("testDescription", subject.getDescription());
     }
 
@@ -123,7 +112,7 @@ class SubjectControllerTest {
         newSubject.setName("testDeleteSubject");
         newSubject.setDescription("test");
         subjectService.createNewSubjectFromSubjectDto(newSubject);
-        Subject subjectToDelete = subjectService.findByName("testDeleteSubject").orElseThrow();
+        SubjectDto subjectToDelete = subjectService.findByName("testDeleteSubject");
         mvc.perform(MockMvcRequestBuilders.delete("/subject/" + subjectToDelete.getId())
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection());

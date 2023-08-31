@@ -17,9 +17,9 @@ import java.util.Set;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
-    private UserEntityUserDtoMapper mapper;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final UserEntityUserDtoMapper mapper;
 
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, UserEntityUserDtoMapper mapper) {
         this.userRepository = userRepository;

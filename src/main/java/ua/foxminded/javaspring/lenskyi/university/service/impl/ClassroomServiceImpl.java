@@ -11,8 +11,8 @@ import java.util.List;
 @Service
 public class ClassroomServiceImpl implements ClassroomService {
 
-    private ClassroomRepository classroomRepository;
-    private ClassroomEntityClassroomDtoMapper mapper;
+    private final ClassroomRepository classroomRepository;
+    private final ClassroomEntityClassroomDtoMapper mapper;
 
     public ClassroomServiceImpl(ClassroomRepository classroomRepository, ClassroomEntityClassroomDtoMapper mapper) {
         this.classroomRepository = classroomRepository;

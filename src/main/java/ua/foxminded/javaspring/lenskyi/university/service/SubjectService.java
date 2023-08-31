@@ -10,13 +10,9 @@ public interface SubjectService {
 
     List<Subject> findAll();
 
-    Optional<Subject> findById(Long subjectId);
+    SubjectDto findById(Long subjectId);
 
-    SubjectDto findSubjectDtoById(Long subjectId);
-
-    Optional<Subject> findByName(String subjectName);
-
-    SubjectDto findSubjectDtoByName(String subjectName);
+    SubjectDto findByName(String subjectName);
 
     void updateSubjectFromSubjectDto(SubjectDto subjectDto);
 

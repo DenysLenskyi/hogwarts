@@ -33,7 +33,7 @@ public class SubjectController {
         if (!subjectService.doesSubjectExistById(id)) {
             return "error/404";
         } else {
-            SubjectDto subjectDto = subjectService.findSubjectDtoById(id);
+            SubjectDto subjectDto = subjectService.findById(id);
             model.addAttribute("subjectDto", subjectDto);
             model.addAttribute("freeClassrooms", classroomService.findAllFreeClassrooms());
             model.addAttribute("freeProfessors", userService.findAllProfessorsWithNoSubject());

@@ -11,17 +11,7 @@ public interface UserService {
 
     User findById(Long id);
 
-    User findUserByFirstName(String firstName);
-
-    User findUserByLastName(String lastName);
-
-    User findUserByFirstAndLastName(String firstName, String lastName);
-
     User findUserByUsername(String username);
-
-    void addRole(User user, String roleName);
-
-    void removeRole(User user, String roleName);
 
     void updateRolesFromArray(User user, List<String> newRolesArray) throws Exception;
 

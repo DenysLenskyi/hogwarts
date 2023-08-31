@@ -13,15 +13,16 @@ import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
 public class SubjectServiceImpl implements SubjectService {
 
-    SubjectRepository subjectRepository;
-    ClassroomRepository classroomRepository;
-    UserRepository userRepository;
-    SubjectEntitySubjectDtoMapper mapper;
+    private final SubjectRepository subjectRepository;
+    private final ClassroomRepository classroomRepository;
+    private final UserRepository userRepository;
+    private final SubjectEntitySubjectDtoMapper mapper;
 
     public SubjectServiceImpl(SubjectRepository subjectRepository, ClassroomRepository classroomRepository,
                               UserRepository userRepository, SubjectEntitySubjectDtoMapper mapper) {
@@ -35,20 +36,14 @@ public class SubjectServiceImpl implements SubjectService {
         return subjectRepository.findAll();
     }
 
-    public Optional<Subject> findById(Long subjectId) {
-        return subjectRepository.findById(subjectId);
+    public SubjectDto findById(Long subjectId) {
+        return mapper.subjectEntityToSubjectDto(subjectRepository.findById(subjectId)
+                .orElseThrow(NoSuchElementException::new));
     }
 
-    public SubjectDto findSubjectDtoById(Long subjectId) {
-        return mapper.subjectEntityToSubjectDto(subjectRepository.findById(subjectId).orElseThrow());
-    }
-
-    public Optional<Subject> findByName(String subjectName) {
-        return subjectRepository.findSubjectByName(subjectName);
-    }
-
-    public SubjectDto findSubjectDtoByName(String subjectName) {
-        return mapper.subjectEntityToSubjectDto(subjectRepository.findSubjectByName(subjectName).orElseThrow());
+    public SubjectDto findByName(String subjectName) {
+        return mapper.subjectEntityToSubjectDto(subjectRepository.findSubjectByName(subjectName)
+                .orElseThrow(NoSuchElementException::new));
     }
 
     @Transactional
@@ -68,8 +63,7 @@ public class SubjectServiceImpl implements SubjectService {
             User user = userRepository.findUserByUsername(subjectDto.getUser().getUsername());
             subjectToUpdate.setUser(user);
         }
-        subjectRepository.save(subjectToUpdate);
-        subjectRepository.flush();
+        subjectRepository.saveAndFlush(subjectToUpdate);
     }
 
     public boolean doesSubjectExistById(Long subjectId) {
@@ -92,8 +86,7 @@ public class SubjectServiceImpl implements SubjectService {
             User user = userRepository.findUserByUsername(subjectDto.getUser().getUsername());
             newSubject.setUser(user);
         }
-        subjectRepository.save(newSubject);
-        subjectRepository.flush();
+        subjectRepository.saveAndFlush(newSubject);
     }
 
     public void deleteSubjectById(Long id) {

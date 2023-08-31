@@ -1,9 +1,5 @@
 package ua.foxminded.javaspring.lenskyi.university.controller.dto;
 
-import ua.foxminded.javaspring.lenskyi.university.model.Classroom;
-import ua.foxminded.javaspring.lenskyi.university.model.Lesson;
-import ua.foxminded.javaspring.lenskyi.university.model.User;
-
 import java.util.Set;
 
 public class SubjectDto {
@@ -11,12 +7,9 @@ public class SubjectDto {
     private Long id;
     private String name;
     private String description;
-    private User user;
-    private Classroom classroom;
-    private Set<Lesson> lessons;
-
-    public SubjectDto() {
-    }
+    private UserDto userDto;
+    private ClassroomDto classroomDto;
+    private Set<LessonDto> lessonsDto;
 
     public Long getId() {
         return id;
@@ -42,28 +35,28 @@ public class SubjectDto {
         this.description = description;
     }
 
-    public User getUser() {
-        return user;
+    public UserDto getUserDto() {
+        return userDto;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserDto(UserDto userDto) {
+        this.userDto = userDto;
     }
 
-    public Classroom getClassroom() {
-        return classroom;
+    public ClassroomDto getClassroomDto() {
+        return classroomDto;
     }
 
-    public void setClassroom(Classroom subjectClassroom) {
-        this.classroom = subjectClassroom;
+    public void setClassroomDto(ClassroomDto classroomDto) {
+        this.classroomDto = classroomDto;
     }
 
-    public Set<Lesson> getLessons() {
-        return lessons;
+    public Set<LessonDto> getLessonsDto() {
+        return lessonsDto;
     }
 
-    public void setLessons(Set<Lesson> lessons) {
-        this.lessons = lessons;
+    public void setLessonsDto(Set<LessonDto> lessonsDto) {
+        this.lessonsDto = lessonsDto;
     }
 
     @Override

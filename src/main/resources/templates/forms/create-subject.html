@@ -40,11 +40,11 @@
                     <label>Classroom</label>
                     <p>Choose a classroom from the list below</p>
                     <div class="form-group">
-                        <select th:field="${subjectDto.classroom.name}">
+                        <select th:field="${subjectDto.classroomDto.name}">
                             <option th:each="classroom : ${freeClassrooms}" th:value="${classroom.name}"
                                     th:text="${classroom.name}">
                             </option>
-                            <option th:value="*{classroom.name}" th:text="*{classroom.name + ' (current)'}"></option>
+                            <option th:value="*{classroomDto.name}" th:text="*{classroomDto.name + ' (current)'}"></option>
                         </select>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                     <label>Professor</label>
                     <p>Choose a professor from the list below</p>
                     <div class="form-group">
-                        <select th:field="*{user.username}">
+                        <select th:field="*{userDto.username}">
                             <option th:each="user : ${freeProfessors}" th:value="${user.username}"
                                     th:text="${user.firstName + ' ' + user.lastName}"></option>
                         </select>

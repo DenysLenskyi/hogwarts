@@ -12,6 +12,7 @@ import ua.foxminded.javaspring.lenskyi.university.service.UserService;
 @RequestMapping("/subject")
 public class SubjectController {
 
+    private static final String REDIRECT_SUBJECT_PAGE = "redirect:/subject/all";
     private SubjectService subjectService;
     private ClassroomService classroomService;
     private UserService userService;
@@ -43,13 +44,14 @@ public class SubjectController {
 
     @PutMapping("/{subjectId}")
     public String editSubject(@PathVariable("subjectId") Long id, SubjectDto subjectDto) {
-        try {
+        if (subjectService.existsByName(subjectDto.getName()) && !subjectDto.getName()
+                .equals(subjectService.findById(id).getName())) {
+            return "error/400";
+        } else {
             subjectDto.setId(id);
             subjectService.updateSubjectFromSubjectDto(subjectDto);
-        } catch (Exception e) {
-            e.printStackTrace();
+            return REDIRECT_SUBJECT_PAGE;
         }
-        return "redirect:/subject/all";
     }
 
     @GetMapping("/create-subject-page")
@@ -62,9 +64,12 @@ public class SubjectController {
 
     @PostMapping
     public String createNewSubject(SubjectDto subjectDto) {
-        // to do: add if statement when creating a subject with a name that exists already
-        subjectService.createNewSubjectFromSubjectDto(subjectDto);
-        return "redirect:/subject/all";
+        if (subjectService.existsByName(subjectDto.getName())) {
+            return "error/400";
+        } else {
+            subjectService.createNewSubjectFromSubjectDto(subjectDto);
+            return REDIRECT_SUBJECT_PAGE;
+        }
     }
 
     @DeleteMapping("/{subjectId}")
@@ -73,7 +78,7 @@ public class SubjectController {
             return "error/404";
         } else {
             subjectService.deleteSubjectById(id);
-            return "redirect:/subject/all";
+            return REDIRECT_SUBJECT_PAGE;
         }
     }
 }

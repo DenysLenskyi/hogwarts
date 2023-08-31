@@ -109,4 +109,8 @@ public class SubjectServiceImpl implements SubjectService {
     public void deleteSubjectById(Long id) {
         subjectRepository.deleteById(id);
     }
+
+    public boolean existsByName(String subjectName) {
+        return subjectRepository.existsByName(subjectName);
+    }
 }

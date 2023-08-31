@@ -21,4 +21,6 @@ public interface SubjectService {
     void createNewSubjectFromSubjectDto(SubjectDto subjectDto);
 
     void deleteSubjectById(Long id);
+
+    boolean existsByName(String subjectName);
 }

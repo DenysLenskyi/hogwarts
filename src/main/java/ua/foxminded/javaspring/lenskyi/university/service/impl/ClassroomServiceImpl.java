@@ -19,6 +19,10 @@ public class ClassroomServiceImpl implements ClassroomService {
         this.mapper = mapper;
     }
 
+    public List<Classroom> findAll() {
+        return classroomRepository.findAll();
+    }
+
     public Classroom findByName(String classroomName) {
         return classroomRepository.findByName(classroomName).orElseThrow();
     }

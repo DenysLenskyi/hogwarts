@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface ClassroomService {
 
+    List<Classroom> findAll();
     List<Classroom> findAllFreeClassrooms();
 }

@@ -4,7 +4,6 @@ import ua.foxminded.javaspring.lenskyi.university.controller.dto.SubjectDto;
 import ua.foxminded.javaspring.lenskyi.university.model.Subject;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface SubjectService {
 

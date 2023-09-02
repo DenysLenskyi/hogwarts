@@ -1,7 +1,6 @@
 package ua.foxminded.javaspring.lenskyi.university.controller.dto;
 
 import ua.foxminded.javaspring.lenskyi.university.model.Group;
-import ua.foxminded.javaspring.lenskyi.university.model.Role;
 import ua.foxminded.javaspring.lenskyi.university.model.Subject;
 
 import java.util.Set;

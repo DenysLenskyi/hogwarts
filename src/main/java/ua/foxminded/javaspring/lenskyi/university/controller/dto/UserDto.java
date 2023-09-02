@@ -13,7 +13,7 @@ public class UserDto {
     private String lastName;
     private String username;
     private String password;
-    private Set<Role> roles;
+    private Set<RoleDto> roles;
     private Group group;
     private Subject subject;
 
@@ -41,8 +41,12 @@ public class UserDto {
         this.lastName = lastName;
     }
 
-    public Set<Role> getRoles() {
+    public Set<RoleDto> getRoles() {
         return roles;
+    }
+
+    public void setRoles(Set<RoleDto> roles) {
+        this.roles = roles;
     }
 
     public String getRolesToString() {
@@ -58,10 +62,6 @@ public class UserDto {
         } else {
             return output.substring(0, output.length() - 2);
         }
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 
     public Group getGroup() {

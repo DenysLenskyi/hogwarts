@@ -3,8 +3,6 @@ package ua.foxminded.javaspring.lenskyi.university.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
 
 import java.util.Collection;
@@ -13,12 +11,10 @@ import java.util.Set;
 
 public class HogwartsUserDetails implements UserDetails {
 
-    private PasswordEncoder passwordEncoder;
     private User user;
 
     public HogwartsUserDetails(User user) {
         this.user = user;
-        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     @Override

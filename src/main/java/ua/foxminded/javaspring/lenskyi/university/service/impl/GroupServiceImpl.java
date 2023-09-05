@@ -3,6 +3,7 @@ package ua.foxminded.javaspring.lenskyi.university.service.impl;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.GroupDto;
+import ua.foxminded.javaspring.lenskyi.university.controller.dto.mapper.GroupEntityGroupDtoMapper;
 import ua.foxminded.javaspring.lenskyi.university.model.Group;
 import ua.foxminded.javaspring.lenskyi.university.repository.GroupRepository;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
@@ -13,9 +14,11 @@ import java.util.List;
 public class GroupServiceImpl implements GroupService {
 
     private final GroupRepository groupRepository;
+    private GroupEntityGroupDtoMapper groupEntityGroupDtoMapper;
 
-    public GroupServiceImpl(GroupRepository groupRepository) {
+    public GroupServiceImpl(GroupRepository groupRepository, GroupEntityGroupDtoMapper groupEntityGroupDtoMapper) {
         this.groupRepository = groupRepository;
+        this.groupEntityGroupDtoMapper = groupEntityGroupDtoMapper;
     }
 
     public List<Group> findAll() {
@@ -29,9 +32,7 @@ public class GroupServiceImpl implements GroupService {
     @Transactional
     public void createNewGroupFromGroupDto(GroupDto groupDto) {
         if (!groupDto.getName().isEmpty() && !groupDto.getName().isBlank()) {
-            Group group = new Group();
-            group.setName(groupDto.getName());
-            groupRepository.saveAndFlush(group);
+            groupRepository.saveAndFlush(groupEntityGroupDtoMapper.groupDtoToGroupEntity(groupDto));
         }
     }
 

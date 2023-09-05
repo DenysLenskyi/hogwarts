@@ -51,7 +51,9 @@ public class SubjectServiceImpl implements SubjectService {
         Subject subject = subjectRepository.findById(subjectId).orElseThrow(NoSuchElementException::new);
         SubjectDto subjectDto = subjectMapper.subjectEntityToSubjectDto(subject);
         subjectDto.setClassroomDto(classroomMapper.classroomEntityToClassroomDto(subject.getClassroom()));
-        subjectDto.setLessonsDto(subject.getLessons().stream().map(lessonMapper::lessonEntityToLessonDto).collect(Collectors.toSet()));
+        subjectDto.setLessonsDto(subject.getLessons().stream()
+                .map(lessonMapper::lessonEntityToLessonDto)
+                .collect(Collectors.toSet()));
         subjectDto.setUserDto(userMapper.userEntityToUserDto(subject.getUser()));
         return subjectDto;
     }

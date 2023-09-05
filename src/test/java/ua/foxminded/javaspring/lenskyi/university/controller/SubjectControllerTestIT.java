@@ -21,7 +21,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -29,8 +28,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Testcontainers
 @ActiveProfiles("test")
 @Transactional
-class SubjectControllerTest {
+class SubjectControllerTestIT {
 
+    private static final String YOU_INPUTTED_WRONG_DATA = "you inputted wrong data";
     @Autowired
     private MockMvc mvc;
     @Autowired
@@ -69,6 +69,18 @@ class SubjectControllerTest {
 
     @Test
     @WithUserDetails("minervamcgonagall")
+    void showEditSubjectFormWrongIdTest() throws Exception {
+        List<Subject> allSubjects = subjectService.findAll();
+        Subject subjectToEdit = allSubjects.get(0);
+        long wrongSubjectId = subjectToEdit.getId() - 100L;
+        mvc.perform(MockMvcRequestBuilders
+                        .get("/subject/" + wrongSubjectId + "/edit-page"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(YOU_INPUTTED_WRONG_DATA)));
+    }
+
+    @Test
+    @WithUserDetails("minervamcgonagall")
     void editSubjectTest() throws Exception {
         List<Subject> allSubjects = subjectService.findAll();
         Subject subjectToEdit = allSubjects.get(0);
@@ -79,6 +91,22 @@ class SubjectControllerTest {
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection());
         assertEquals("test", subjectToEdit.getDescription());
+    }
+
+    @Test
+    @WithUserDetails("minervamcgonagall")
+    void editSubjectWrongNameTest() throws Exception {
+        List<Subject> allSubjects = subjectService.findAll();
+        Subject subjectToEdit = allSubjects.get(0);
+        Subject anotherExistedSubject = allSubjects.get(1);
+        mvc.perform(MockMvcRequestBuilders
+                        .put("/subject/" + subjectToEdit.getId())
+                        .param("name", anotherExistedSubject.getName())
+                        .param("description", "test")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(YOU_INPUTTED_WRONG_DATA)));
+        assertFalse(subjectToEdit.getDescription().contains("test"));
     }
 
     @Test
@@ -99,10 +127,22 @@ class SubjectControllerTest {
         mvc.perform(MockMvcRequestBuilders.post("/subject")
                         .param("name", "testName")
                         .param("description", "testDescription")
-                .with(csrf()))
+                        .with(csrf()))
                 .andExpect(status().is3xxRedirection());
         SubjectDto subject = subjectService.findByName("testName");
         assertEquals("testDescription", subject.getDescription());
+    }
+
+    @Test
+    @WithUserDetails("minervamcgonagall")
+    void createNewSubjectNotUniqueNameTest() throws Exception {
+        List<Subject> allSubjects = subjectService.findAll();
+        mvc.perform(MockMvcRequestBuilders.post("/subject")
+                        .param("name", allSubjects.get(0).getName())
+                        .param("description", "testDescription")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(YOU_INPUTTED_WRONG_DATA)));
     }
 
     @Test
@@ -117,5 +157,17 @@ class SubjectControllerTest {
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection());
         assertFalse(subjectService.doesSubjectExistById(subjectToDelete.getId()));
+    }
+
+    @Test
+    @WithUserDetails("minervamcgonagall")
+    void deleteSubjectWrongIdTest() throws Exception {
+        List<Subject> allSubjects = subjectService.findAll();
+        Subject subjectToEdit = allSubjects.get(0);
+        long wrongSubjectId = subjectToEdit.getId() - 100L;
+        mvc.perform(MockMvcRequestBuilders.delete("/subject/" + wrongSubjectId)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString(YOU_INPUTTED_WRONG_DATA)));
     }
 }

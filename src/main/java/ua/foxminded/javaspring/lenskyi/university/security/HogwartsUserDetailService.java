@@ -1,7 +1,6 @@
 package ua.foxminded.javaspring.lenskyi.university.security;
 
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,8 +11,11 @@ import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
 @Service
 public class HogwartsUserDetailService implements UserDetailsService {
 
-    @Autowired
     private UserRepository userRepository;
+
+    public HogwartsUserDetailService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     @Transactional

@@ -8,11 +8,12 @@ import ua.foxminded.javaspring.lenskyi.university.service.ClassroomService;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 import ua.foxminded.javaspring.lenskyi.university.service.UserService;
 
+import static ua.foxminded.javaspring.lenskyi.university.util.Constants.*;
+
 @Controller
 @RequestMapping("/subject")
 public class SubjectController {
 
-    private static final String REDIRECT_SUBJECT_PAGE = "redirect:/subject/all";
     private SubjectService subjectService;
     private ClassroomService classroomService;
     private UserService userService;
@@ -26,19 +27,19 @@ public class SubjectController {
     @GetMapping("/all")
     public String getSubjectPage(Model model) {
         model.addAttribute("subjects", subjectService.findAll());
-        return "subjects-db-overview";
+        return SUBJECT_PAGE_TEMPLATE_NAME;
     }
 
     @GetMapping("/{subjectId}/edit-page")
     public String showEditSubjectForm(@PathVariable("subjectId") Long id, Model model) {
         if (!subjectService.doesSubjectExistById(id)) {
-            return "error/404";
+            return ERROR_400_TEMPLATE_NAME;
         } else {
             SubjectDto subjectDto = subjectService.findById(id);
             model.addAttribute("subjectDto", subjectDto);
             model.addAttribute("freeClassrooms", classroomService.findAllFreeClassrooms());
             model.addAttribute("freeProfessors", userService.findAllProfessorsWithNoSubject());
-            return "forms/edit-subject-form";
+            return EDIT_SUBJECT_TEMPLATE_NAME;
         }
     }
 
@@ -46,7 +47,7 @@ public class SubjectController {
     public String editSubject(@PathVariable("subjectId") Long id, SubjectDto subjectDto) {
         if (subjectService.existsByName(subjectDto.getName()) && !subjectDto.getName()
                 .equals(subjectService.findById(id).getName())) {
-            return "error/400";
+            return ERROR_400_TEMPLATE_NAME;
         } else {
             subjectDto.setId(id);
             subjectService.updateSubjectFromSubjectDto(subjectDto);
@@ -59,13 +60,13 @@ public class SubjectController {
         model.addAttribute("subjectDto", new SubjectDto());
         model.addAttribute("freeClassrooms", classroomService.findAllFreeClassrooms());
         model.addAttribute("freeProfessors", userService.findAllProfessorsWithNoSubject());
-        return "forms/create-subject";
+        return CREATE_SUBJECT_TEMPLATE_NAME;
     }
 
     @PostMapping
     public String createNewSubject(SubjectDto subjectDto) {
         if (subjectService.existsByName(subjectDto.getName())) {
-            return "error/400";
+            return ERROR_400_TEMPLATE_NAME;
         } else {
             subjectService.createNewSubjectFromSubjectDto(subjectDto);
             return REDIRECT_SUBJECT_PAGE;
@@ -75,7 +76,7 @@ public class SubjectController {
     @DeleteMapping("/{subjectId}")
     public String deleteSubject(@PathVariable("subjectId") Long id) {
         if (!subjectService.doesSubjectExistById(id)) {
-            return "error/404";
+            return ERROR_400_TEMPLATE_NAME;
         } else {
             subjectService.deleteSubjectById(id);
             return REDIRECT_SUBJECT_PAGE;

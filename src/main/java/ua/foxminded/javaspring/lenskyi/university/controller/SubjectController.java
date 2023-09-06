@@ -1,5 +1,6 @@
 package ua.foxminded.javaspring.lenskyi.university.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,7 @@ public class SubjectController {
     }
 
     @GetMapping("/{subjectId}/edit-page")
+    @PreAuthorize("hasAnyAuthority('admin', 'professor')")
     public String showEditSubjectForm(@PathVariable("subjectId") Long id, Model model) {
         if (!subjectService.doesSubjectExistById(id)) {
             return ERROR_400_TEMPLATE_NAME;
@@ -44,6 +46,7 @@ public class SubjectController {
     }
 
     @PutMapping("/{subjectId}")
+    @PreAuthorize("hasAnyAuthority('admin', 'professor')")
     public String editSubject(@PathVariable("subjectId") Long id, SubjectDto subjectDto) {
         if (subjectService.existsByName(subjectDto.getName()) && !subjectDto.getName()
                 .equals(subjectService.findById(id).getName())) {
@@ -56,6 +59,7 @@ public class SubjectController {
     }
 
     @GetMapping("/create-subject-page")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public String showCreateNewSubjectForm(Model model) {
         model.addAttribute("subjectDto", new SubjectDto());
         model.addAttribute("freeClassrooms", classroomService.findAllFreeClassrooms());
@@ -64,6 +68,7 @@ public class SubjectController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('admin')")
     public String createNewSubject(SubjectDto subjectDto) {
         if (subjectService.existsByName(subjectDto.getName())) {
             return ERROR_400_TEMPLATE_NAME;
@@ -74,6 +79,7 @@ public class SubjectController {
     }
 
     @DeleteMapping("/{subjectId}")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public String deleteSubject(@PathVariable("subjectId") Long id) {
         if (!subjectService.doesSubjectExistById(id)) {
             return ERROR_400_TEMPLATE_NAME;

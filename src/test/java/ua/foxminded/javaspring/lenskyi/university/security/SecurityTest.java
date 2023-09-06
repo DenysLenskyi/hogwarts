@@ -1,83 +1,76 @@
 package ua.foxminded.javaspring.lenskyi.university.security;
 
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ua.foxminded.javaspring.lenskyi.university.controller.ClassroomController;
-import ua.foxminded.javaspring.lenskyi.university.model.Classroom;
-import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
-import ua.foxminded.javaspring.lenskyi.university.service.ClassroomService;
+import ua.foxminded.javaspring.lenskyi.university.model.Subject;
+import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 
-import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.BDDMockito.given;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = ClassroomController.class)
-@Import({TestConfig.class, SecurityConfig.class})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 class SecurityTest {
 
-    private static final String urlTemplate = "/classroom/all";
-
+    private final static String SUBJECT_PAGE = "/subject/all";
+    private final static String CREATE_SUBJECT_PAGE = "/subject/create-subject-page";
     @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private ClassroomService classroomService;
-
-    @MockBean
-    private PasswordEncoder passwordEncoder;
-
-    @MockBean
-    private UserRepository userRepository;
-
-    @InjectMocks
-    private HogwartsUserDetailService hogwartsUserDetailService;
+    private MockMvc mvc;
+    @Autowired
+    private SubjectService subjectService;
 
     @Test
-    @WithUserDetails(value = "someAdminUsernameForTest", userDetailsServiceBeanName = "hogwartsUserDetailService")
-    void getClassroomPage_ShouldReturn200() throws Exception {
-        String expectedNameOfPage = "classrooms-db-overview";
-        String expectedAttrName = "classrooms";
-
-        Classroom testClassroom = new Classroom();
-        testClassroom.setId(1L);
-        testClassroom.setName("test");
-        testClassroom.setDescription("test");
-        List<Classroom> allClassrooms = Arrays.asList(testClassroom);
-
-        given(classroomService.findAll()).willReturn(allClassrooms);
-
-        mockMvc.perform(MockMvcRequestBuilders.get(urlTemplate))
-                .andExpect(status().isOk())
-                .andExpect(view().name(expectedNameOfPage))
-                .andExpect(model().attribute(expectedAttrName, Matchers.hasSize(allClassrooms.size())));
-
-        mockMvc.perform(MockMvcRequestBuilders.get(urlTemplate).with(user("studentUsername")))
-                .andExpect(status().isForbidden());
-
-        mockMvc.perform(MockMvcRequestBuilders.get(urlTemplate).with(user("professorUsername")))
-                .andExpect(status().isForbidden());
-
-        mockMvc.perform(MockMvcRequestBuilders.get(urlTemplate).with(anonymous()))
+    void notAuthenticatedUserTest() throws Exception{
+        mvc.perform(MockMvcRequestBuilders.get(SUBJECT_PAGE))
                 .andExpect(status().isFound());
     }
 
-//    @Test
-//    @WithUserDetails(value = "studentUsername", userDetailsServiceBeanName = "hogwartsUserDetailService")
-//    void getClassroomPage_ShouldReturn403() throws Exception {
-//        mockMvc.perform(MockMvcRequestBuilders.get(urlTemplate))
-//                .andExpect(status().isForbidden());
-//    }
+    @Test
+    @WithUserDetails("minervamcgonagall")
+    void whenAdminOpensAnyPage_thenReturn200() throws Exception {
+        List<Subject> allSubjects = subjectService.findAll();
+        final String editSubjectUrl = "/subject/" + allSubjects.get(0).getId() + "/edit-page";
+        mvc.perform(MockMvcRequestBuilders.get(SUBJECT_PAGE))
+                .andExpect(status().isOk());
+        mvc.perform(MockMvcRequestBuilders.get(CREATE_SUBJECT_PAGE))
+                .andExpect(status().isOk());
+        mvc.perform(MockMvcRequestBuilders.get(editSubjectUrl))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithUserDetails("remuslupin")
+    void whenProfessorOpensEditSubjectPage_thenReturn200() throws Exception {
+        List<Subject> allSubjects = subjectService.findAll();
+        final String editSubjectUrl = "/subject/" + allSubjects.get(0).getId() + "/edit-page";
+        mvc.perform(MockMvcRequestBuilders.get(editSubjectUrl))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithUserDetails("remuslupin")
+    void whenProfessorOpensCreateSubjectPage_thenReturn403() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get(CREATE_SUBJECT_PAGE))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails("harrypotter")
+    void whenStudentOpensCreateSubjectPage_thenReturn403() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get(CREATE_SUBJECT_PAGE))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails("harrypotter")
+    void whenStudentOpensSubjectPage_thenReturn200() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get(SUBJECT_PAGE))
+                .andExpect(status().isOk());
+    }
 }

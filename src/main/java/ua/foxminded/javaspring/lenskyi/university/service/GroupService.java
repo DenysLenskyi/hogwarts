@@ -16,4 +16,6 @@ public interface GroupService {
     boolean existsById(Long groupId);
 
     void deleteById(Long groupId);
+
+    long getNumStudentsInGroup(String groupName);
 }

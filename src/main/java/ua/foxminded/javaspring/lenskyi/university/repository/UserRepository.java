@@ -23,4 +23,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsById(Long userId);
 
     List<User> findAllBySubjectIsNullAndRolesContains(Role role);
+
+    long countAllByGroupName(String groupName);
 }

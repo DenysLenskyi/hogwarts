@@ -6,6 +6,7 @@ import ua.foxminded.javaspring.lenskyi.university.controller.dto.GroupDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.mapper.GroupEntityGroupDtoMapper;
 import ua.foxminded.javaspring.lenskyi.university.model.Group;
 import ua.foxminded.javaspring.lenskyi.university.repository.GroupRepository;
+import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
 
 import java.util.List;
@@ -14,10 +15,13 @@ import java.util.List;
 public class GroupServiceImpl implements GroupService {
 
     private final GroupRepository groupRepository;
+    private UserRepository userRepository;
     private GroupEntityGroupDtoMapper groupEntityGroupDtoMapper;
 
-    public GroupServiceImpl(GroupRepository groupRepository, GroupEntityGroupDtoMapper groupEntityGroupDtoMapper) {
+    public GroupServiceImpl(GroupRepository groupRepository, UserRepository userRepository,
+                            GroupEntityGroupDtoMapper groupEntityGroupDtoMapper) {
         this.groupRepository = groupRepository;
+        this.userRepository = userRepository;
         this.groupEntityGroupDtoMapper = groupEntityGroupDtoMapper;
     }
 
@@ -43,5 +47,9 @@ public class GroupServiceImpl implements GroupService {
     @Transactional
     public void deleteById(Long groupId) {
         groupRepository.deleteById(groupId);
+    }
+
+    public long getNumStudentsInGroup(String groupName) {
+        return userRepository.countAllByGroupName(groupName);
     }
 }

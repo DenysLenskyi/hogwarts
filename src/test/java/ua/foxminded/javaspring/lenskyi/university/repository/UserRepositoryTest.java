@@ -68,4 +68,10 @@ class UserRepositoryTest {
         assertEquals(1, allProfessorsWithNoSubject.size());
         assertEquals("test", allProfessorsWithNoSubject.get(0).getFirstName());
     }
+
+    @Test
+    void countAllByGroupNameTest() {
+        long numStudsFromGryffindor = userRepository.countAllByGroupName("Gryffindor-7");
+        assertEquals(8, numStudsFromGryffindor);
+    }
 }

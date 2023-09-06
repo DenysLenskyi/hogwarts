@@ -12,7 +12,8 @@
 <body style="padding: 40px">
 <div th:replace="~{fragments/header}"></div>
 
-<div class="container-fluid" sec:authorize="hasAuthority('admin')">
+<div class="container-fluid" >
+<!--     sec:authorize="hasAuthority('admin')"-->
 
     <div class="row" style="margin-bottom: 20px">
         <a th:href="@{/group/create-group-page}">
@@ -20,21 +21,29 @@
         </a>
     </div>
 
+    <div class="row" style="margin-bottom: 20px">
+        <p>You can delete a group if it has no students</p>
+    </div>
+
     <div class="row vertical-center">
         <table class="table table-bordered">
             <thead>
             <tr>
                 <th>Group Name</th>
+                <th>Number of students</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="group : ${groups}">
                 <td th:text="${group.name}"></td>
                 <td>
-                    <div>
+                    <div th:if="${groupService.getNumStudentsInGroup(group.getName())} == 0">
                         <form th:action="@{/group/{id}(id=${group.getId()})}" th:method="delete">
                             <input type="submit" value="DELETE" class="btn btn-danger" style="margin-bottom: 3px">
                         </form>
+                    </div>
+                    <div th:if="${groupService.getNumStudentsInGroup(group.getName())} != 0">
+                        <span th:text="${groupService.getNumStudentsInGroup(group.getName())}"/>
                     </div>
                 </td>
             </tr>

@@ -10,5 +10,6 @@ public abstract class Constants {
     public static final String ERROR_500_TEMPLATE_NAME = "error/500";
     public static final String ERROR_TEMPLATE_NAME = "error/error";
     public static final String EDIT_SUBJECT_TEMPLATE_NAME = "forms/edit-subject-form";
-    public static final String CREATE_SUBJECT_TEMPLATE_NAME = "forms/create-subject";
+    public static final String CREATE_SUBJECT_TEMPLATE_NAME = "forms/create-subject-form";
+    public static final String EDIT_GROUP_TEMPLATE_NAME = "forms/edit-group-form";
 }

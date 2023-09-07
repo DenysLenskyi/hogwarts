@@ -115,7 +115,7 @@ class SubjectControllerTestIT {
         mvc.perform(MockMvcRequestBuilders.get("/subject/create-subject-page")
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("forms/create-subject"))
+                .andExpect(view().name("forms/create-subject-form"))
                 .andExpect(model().attributeExists("subjectDto"))
                 .andExpect(model().attribute("freeClassrooms", classroomService.findAllFreeClassrooms()))
                 .andExpect(model().attribute("freeProfessors", userService.findAllProfessorsWithNoSubject()));

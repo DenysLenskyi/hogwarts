@@ -5,16 +5,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.GroupDto;
+import ua.foxminded.javaspring.lenskyi.university.model.Group;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
+
+import java.util.List;
+
+import static ua.foxminded.javaspring.lenskyi.university.util.Constants.EDIT_GROUP_TEMPLATE_NAME;
+import static ua.foxminded.javaspring.lenskyi.university.util.Constants.ERROR_400_TEMPLATE_NAME;
 
 @Controller
 @RequestMapping("/group")
 public class GroupController {
-
-    // To do:
-    // 1. feature for groups page - a button that shows list of users of current group with features:
-    // 1.1 rebase user to another group
-    // 1.2 delete user
 
     private static final String REDIRECT_TO_GROUPS_PAGE = "redirect:/group/all";
     private GroupService groupService;
@@ -38,9 +39,10 @@ public class GroupController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('admin')")
     public String createNewGroup(GroupDto groupDto) {
         if (groupService.existsByName(groupDto.getName())) {
-            return "error/400";
+            return ERROR_400_TEMPLATE_NAME;
         } else {
             groupService.createNewGroupFromGroupDto(groupDto);
             return REDIRECT_TO_GROUPS_PAGE;
@@ -48,6 +50,7 @@ public class GroupController {
     }
 
     @DeleteMapping("/{groupId}")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public String deleteGroup(@PathVariable("groupId") Long id) {
         if (!groupService.existsById(id)) {
             return "error/400";
@@ -55,5 +58,30 @@ public class GroupController {
             groupService.deleteById(id);
             return REDIRECT_TO_GROUPS_PAGE;
         }
+    }
+
+    @GetMapping("{groupId}/edit-page")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    public String showEditGroupForm(@PathVariable("groupId") Long id, Model model) {
+        if (!groupService.existsById(id)) {
+            return ERROR_400_TEMPLATE_NAME;
+        } else {
+            Group currentGroup = groupService.findById(id);
+            List<Group> groups = groupService.findAll();
+            groups.remove(currentGroup);
+            model.addAttribute("groupsExcludeCurrent", groups);
+            model.addAttribute("currentGroup", currentGroup);
+            model.addAttribute("groupDto", new GroupDto());
+            return EDIT_GROUP_TEMPLATE_NAME;
+        }
+    }
+
+    @PutMapping("{groupId}")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    public String editGroup(@PathVariable("groupId") Long id, GroupDto groupDto) {
+        groupService.moveStudentsFromGroupToAnotherGroup(
+                groupService.findById(id), groupService.findByName(groupDto.getName())
+        );
+        return REDIRECT_TO_GROUPS_PAGE;
     }
 }

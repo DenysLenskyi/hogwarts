@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.GroupDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.mapper.GroupEntityGroupDtoMapper;
 import ua.foxminded.javaspring.lenskyi.university.model.Group;
+import ua.foxminded.javaspring.lenskyi.university.model.User;
 import ua.foxminded.javaspring.lenskyi.university.repository.GroupRepository;
 import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
@@ -51,5 +52,21 @@ public class GroupServiceImpl implements GroupService {
 
     public long getNumStudentsInGroup(String groupName) {
         return userRepository.countAllByGroupName(groupName);
+    }
+
+    public Group findById(Long id) {
+        return groupRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+    }
+
+    public Group findByName(String groupName) {
+        return groupRepository.findByName(groupName);
+    }
+
+    @Transactional
+    public void moveStudentsFromGroupToAnotherGroup(Group groupFrom, Group groupTo) {
+        userRepository.findAllByGroupName(groupFrom.getName()).forEach(student ->
+                student.setGroup(groupRepository.findByName(groupTo.getName())));
+        groupRepository.saveAndFlush(groupFrom);
+        groupRepository.saveAndFlush(groupTo);
     }
 }

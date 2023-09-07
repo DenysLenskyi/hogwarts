@@ -34,7 +34,7 @@ public class User {
     private Set<Role> roles;
 
     @ManyToOne
-    @JoinColumn(name = "GROUP_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "GROUP_ID")
     private Group group;
 
     @OneToOne(mappedBy = "user")

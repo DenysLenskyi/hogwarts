@@ -13,7 +13,6 @@
 <div th:replace="~{fragments/header}"></div>
 
 <div class="container-fluid" >
-<!--     sec:authorize="hasAuthority('admin')"-->
 
     <div class="row" style="margin-bottom: 20px">
         <a th:href="@{/group/create-group-page}">
@@ -43,7 +42,14 @@
                         </form>
                     </div>
                     <div th:if="${groupService.getNumStudentsInGroup(group.getName())} != 0">
-                        <span th:text="${groupService.getNumStudentsInGroup(group.getName())}"/>
+                        <p><span th:text="${groupService.getNumStudentsInGroup(group.getName())}"/></p>
+                        <p>
+                        <div>
+                            <a th:href="@{/group/{id}/edit-page(id=${group.getId()})}">
+                                <input type="submit" value="Move Students" class="btn btn-warning" style="margin-bottom: 3px">
+                            </a>
+                        </div>
+                        </p>
                     </div>
                 </td>
             </tr>

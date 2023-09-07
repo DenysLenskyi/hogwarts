@@ -9,6 +9,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,7 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 class UserRepositoryTest {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Test
     @Transactional
@@ -50,5 +53,25 @@ class UserRepositoryTest {
         List<User> allUsers = userRepository.findAll();
         assertTrue(userRepository.existsById(allUsers.get(0).getId()));
         assertFalse(userRepository.existsById(10000L));
+    }
+
+    @Test
+    @Transactional
+    void findAllProfessorsWithNoSubjectTest() {
+        User user = new User();
+        user.setFirstName("test");
+        user.setUsername("test");
+        user.setPassword("test");
+        user.setRoles(Set.of(roleRepository.findRoleByName("professor").orElseThrow()));
+        userRepository.save(user);
+        List<User> allProfessorsWithNoSubject = userRepository.findAllBySubjectIsNullAndRolesContains(roleRepository.findRoleByName("professor").orElseThrow());
+        assertEquals(1, allProfessorsWithNoSubject.size());
+        assertEquals("test", allProfessorsWithNoSubject.get(0).getFirstName());
+    }
+
+    @Test
+    void countAllByGroupNameTest() {
+        long numStudsFromGryffindor = userRepository.countAllByGroupName("Gryffindor-7");
+        assertEquals(8, numStudsFromGryffindor);
     }
 }

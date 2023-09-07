@@ -25,15 +25,12 @@ public class Subject {
     @JoinColumn(name = "PROFESSOR_ID", referencedColumnName = "ID")
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "CLASSROOM_ID", referencedColumnName = "ID")
     private Classroom classroom;
 
     @OneToMany(mappedBy = "subjectOfTheLesson")
     private Set<Lesson> lessons;
-
-    public Subject() {
-    }
 
     public Long getId() {
         return id;
@@ -81,5 +78,23 @@ public class Subject {
 
     public void setLessons(Set<Lesson> lessons) {
         this.lessons = lessons;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Subject subject)) return false;
+
+        if (!getId().equals(subject.getId())) return false;
+        if (!getName().equals(subject.getName())) return false;
+        return getDescription() != null ? getDescription().equals(subject.getDescription()) : subject.getDescription() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId().hashCode();
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        return result;
     }
 }

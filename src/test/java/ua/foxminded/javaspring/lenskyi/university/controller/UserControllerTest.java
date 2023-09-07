@@ -17,7 +17,7 @@ import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
 import ua.foxminded.javaspring.lenskyi.university.model.Role;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
 import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
-import ua.foxminded.javaspring.lenskyi.university.service.UserService;
+import ua.foxminded.javaspring.lenskyi.university.service.impl.UserServiceImpl;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +37,7 @@ class UserControllerTest {
     @Autowired
     private UserRepository userRepository;
     @MockBean
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
     @Autowired
     private WebApplicationContext context;
     private MockMvc mvc;
@@ -68,7 +68,7 @@ class UserControllerTest {
         testRole.setName("test");
         testUser.setRoles(Set.of(testRole));
         List<User> allUsers = Arrays.asList(testUser);
-        given(userService.findAllUsers()).willReturn(allUsers);
+        given(userServiceImpl.findAllUsers()).willReturn(allUsers);
         mvc.perform(MockMvcRequestBuilders
                         .get("/user/all"))
                 .andExpect(status().isOk())
@@ -81,8 +81,8 @@ class UserControllerTest {
     @WithUserDetails("minervamcgonagall")
     void showEditFormTest() throws Exception {
         UserDto userDto = new UserDto();
-        given(userService.getUserDtoByUserId(isA(Long.class))).willReturn(userDto);
-        given(userService.doesUserExistById(isA(Long.class))).willReturn(true);
+        given(userServiceImpl.getUserDtoByUserId(isA(Long.class))).willReturn(userDto);
+        given(userServiceImpl.doesUserExistById(isA(Long.class))).willReturn(true);
         List<User> allUsers = userRepository.findAll();
         mvc.perform(MockMvcRequestBuilders.get("/user/edit/" + allUsers.get(0).getId()))
                 .andExpect(status().isOk())

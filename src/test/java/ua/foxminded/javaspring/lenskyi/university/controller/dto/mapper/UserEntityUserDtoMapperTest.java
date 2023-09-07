@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
-import ua.foxminded.javaspring.lenskyi.university.service.UserService;
+import ua.foxminded.javaspring.lenskyi.university.service.impl.UserServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,11 +18,11 @@ class UserEntityUserDtoMapperTest {
     @Autowired
     private UserEntityUserDtoMapper mapper;
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @Test
     void mapperTest() {
-        UserDto severusDto = mapper.userEntityToUserDto(userService.findUserByUsername("severussnape"));
+        UserDto severusDto = mapper.userEntityToUserDto(userServiceImpl.findUserByUsername("severussnape"));
         assertEquals("Severus", severusDto.getFirstName());
     }
 }

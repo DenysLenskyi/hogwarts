@@ -37,8 +37,8 @@ public class User {
     @JoinColumn(name = "GROUP_ID", insertable = false, updatable = false)
     private Group group;
 
-//    public User() {
-//    }
+    @OneToOne(mappedBy = "user")
+    private Subject subject;
 
     public Long getId() {
         return id;
@@ -109,5 +109,36 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+
+        if (!getId().equals(user.getId())) return false;
+        if (!getFirstName().equals(user.getFirstName())) return false;
+        if (getLastName() != null ? !getLastName().equals(user.getLastName()) : user.getLastName() != null)
+            return false;
+        if (!getUsername().equals(user.getUsername())) return false;
+        return getPassword().equals(user.getPassword());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId().hashCode();
+        result = 31 * result + getFirstName().hashCode();
+        result = 31 * result + (getLastName() != null ? getLastName().hashCode() : 0);
+        result = 31 * result + getUsername().hashCode();
+        result = 31 * result + getPassword().hashCode();
+        return result;
     }
 }

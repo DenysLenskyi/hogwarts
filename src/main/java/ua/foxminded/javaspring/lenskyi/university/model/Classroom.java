@@ -50,4 +50,30 @@ public class Classroom {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Classroom classroom)) return false;
+
+        if (!getId().equals(classroom.getId())) return false;
+        if (!getName().equals(classroom.getName())) return false;
+        return getDescription() != null ? getDescription().equals(classroom.getDescription()) : classroom.getDescription() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId().hashCode();
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        return result;
+    }
 }

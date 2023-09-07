@@ -7,6 +7,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import ua.foxminded.javaspring.lenskyi.university.model.Classroom;
 import ua.foxminded.javaspring.lenskyi.university.model.Lesson;
+import ua.foxminded.javaspring.lenskyi.university.model.Subject;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -25,7 +26,10 @@ class ClassroomRepositoryTest {
     private static final String expectedNameForHagridsHut = "Hagrid's Hut";
 
     @Autowired
-    ClassroomRepository classroomRepository;
+    private ClassroomRepository classroomRepository;
+
+    @Autowired
+    private SubjectRepository subjectRepository;
 
     @Test
     void entityCorrectnessTest() {
@@ -36,5 +40,19 @@ class ClassroomRepositoryTest {
         assertTrue(forest.getName().equals(expectedNameForForbiddenForest));
         assertTrue(hagridHut.getName().equals(expectedNameForHagridsHut));
         assertTrue(hagridHut.getDescription().length() > 20);
+    }
+
+    @Test
+    void classroomWithNullSubjectTest() {
+        Classroom classroom = classroomRepository.findByName("Dungeon Five").orElseThrow();
+        assertTrue(classroom.getSubject() == null);
+    }
+
+    @Test
+    void findAllFreeClassroomsTest() {
+        List<Classroom> allClassrooms = classroomRepository.findAll();
+        List<Classroom> allFreeClassrooms = classroomRepository.findAllBySubjectIsNull();
+        List<Subject> allSubjects = subjectRepository.findAll();
+        assertEquals(allFreeClassrooms.size(), allClassrooms.size() - allSubjects.size());
     }
 }

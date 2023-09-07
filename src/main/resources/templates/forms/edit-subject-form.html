@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <title>Edit Subject</title>
+</head>
+
+<body style="padding: 40px" sec:authorize="hasAuthority('admin') || hasAuthority('professor')">
+
+<div th:replace="~{fragments/header}"></div>
+
+<div class="container-fluid" style="padding: 40px">
+    <div class="row vertical-center" style="max-width: 700px">
+
+        <h2>Edit Subject</h2>
+        <form th:action="@{/subject/{id}(id=${subjectDto.id})}" th:object="${subjectDto}" th:method="put">
+
+            <input type="hidden" th:field="*{id}"/>
+
+            <div class="form-group">
+
+                <!--                Edit name option for admin-->
+                <div class="form-group" sec:authorize="hasAuthority('admin')">
+                    <label>Edit Name</label>
+                    <p><input type="text" th:field="*{name}"/></p>
+                </div>
+
+                <!--                Edit name option for professor-->
+                <div class="form-group" sec:authorize="hasAuthority('professor') && !hasAuthority('admin')">
+                    <label>Name: <span th:text="*{name}"></span></label>
+                    <input type="hidden" th:field="*{name}" th:value="*{name}"/>
+                </div>
+
+                <!--                Edit descr option for admin-->
+                <div class="form-group" sec:authorize="hasAuthority('admin')">
+                    <label for="comment">Edit Description</label>
+                    <textarea class="form-control" rows="5" id="comment" th:field="*{description}"
+                              placeholder="Type new description here"></textarea>
+                </div>
+
+                <!--                Edit descr option for professor-->
+                <div class="form-group" sec:authorize="hasAuthority('professor') && !hasAuthority('admin')">
+                    <label>Description: </label>
+                    <p><span th:text="*{description}"></span></p>
+                    <input type="hidden" th:field="*{description}" th:value="*{description}"/>
+                </div>
+
+
+                <div class="form-group">
+                    <label>Classroom</label>
+                    <div class="form-group">
+                        <select th:field="${subjectDto.classroomDto.name}">
+                            <option th:each="classroom : ${freeClassrooms}" th:value="${classroom.name}"
+                                    th:text="${classroom.name}">
+                            </option>
+                            <option th:value="*{classroomDto.name}" th:text="*{classroomDto.name + ' (current)'}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <!--            if no free professor available-->
+                <div th:if="${freeProfessors.isEmpty()}" class="form-group" sec:authorize="hasAuthority('admin')">
+                    <p>Can't find any free professor to assign to this subject</p>
+                    <p th:if="*{userDto != null}">
+                        Current professor: <span th:text="*{userDto.firstName + ' ' + userDto.lastName}"></span>
+                    </p>
+                    <p>Add new user with role 'professor' if you'd change a professor for this subject</p>
+                </div>
+
+                <!--            if a free professor available-->
+                <div th:if="${!freeProfessors.isEmpty()}" class="form-group" sec:authorize="hasAuthority('admin')">
+                    <label>Professor</label>
+                    <div>
+                        <select th:field="*{userDto.username}">
+                            <option th:each="user : ${freeProfessors}" th:value="${user.username}"
+                                    th:text="${user.firstName + ' ' + user.lastName}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <p><input type="submit" value="Submit" class="btn btn-success"/></p>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

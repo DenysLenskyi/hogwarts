@@ -10,14 +10,12 @@ import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
 
 import java.util.List;
 
-import static ua.foxminded.javaspring.lenskyi.university.util.Constants.EDIT_GROUP_TEMPLATE_NAME;
-import static ua.foxminded.javaspring.lenskyi.university.util.Constants.ERROR_400_TEMPLATE_NAME;
+import static ua.foxminded.javaspring.lenskyi.university.util.Constants.*;
 
 @Controller
 @RequestMapping("/group")
 public class GroupController {
 
-    private static final String REDIRECT_TO_GROUPS_PAGE = "redirect:/group/all";
     private GroupService groupService;
 
     public GroupController(GroupService groupService) {
@@ -28,14 +26,14 @@ public class GroupController {
     public String getGroupPage(Model model) {
         model.addAttribute("groups", groupService.findAll());
         model.addAttribute("groupService", groupService);
-        return "groups-db-overview";
+        return GROUP_PAGE_TEMPLATE_NAME;
     }
 
     @GetMapping("/create-group-page")
     @PreAuthorize("hasAnyAuthority('admin')")
     public String showCreateGroupForm(Model model) {
         model.addAttribute("groupDto", new GroupDto());
-        return "forms/create-group-form";
+        return CREATE_GROUP_TEMPLATE_NAME;
     }
 
     @PostMapping
@@ -45,7 +43,7 @@ public class GroupController {
             return ERROR_400_TEMPLATE_NAME;
         } else {
             groupService.createNewGroupFromGroupDto(groupDto);
-            return REDIRECT_TO_GROUPS_PAGE;
+            return REDIRECT_GROUPS_PAGE;
         }
     }
 
@@ -56,7 +54,7 @@ public class GroupController {
             return "error/400";
         } else {
             groupService.deleteById(id);
-            return REDIRECT_TO_GROUPS_PAGE;
+            return REDIRECT_GROUPS_PAGE;
         }
     }
 
@@ -82,6 +80,6 @@ public class GroupController {
         groupService.moveStudentsFromGroupToAnotherGroup(
                 groupService.findById(id), groupService.findByName(groupDto.getName())
         );
-        return REDIRECT_TO_GROUPS_PAGE;
+        return REDIRECT_GROUPS_PAGE;
     }
 }

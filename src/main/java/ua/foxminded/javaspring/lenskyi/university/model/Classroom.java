@@ -21,7 +21,7 @@ public class Classroom {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @OneToOne(mappedBy = "classroom")
+    @OneToOne(mappedBy = "classroom", cascade = CascadeType.MERGE)
     private Subject subject;
 
     public Classroom() {

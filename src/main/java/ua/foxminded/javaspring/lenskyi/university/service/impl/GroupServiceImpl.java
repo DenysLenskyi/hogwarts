@@ -59,13 +59,13 @@ public class GroupServiceImpl implements GroupService {
     }
 
     public Group findByName(String groupName) {
-        return groupRepository.findByName(groupName);
+        return groupRepository.findByName(groupName).orElseThrow(IllegalArgumentException::new);
     }
 
     @Transactional
     public void moveStudentsFromGroupToAnotherGroup(Group groupFrom, Group groupTo) {
-        userRepository.findAllByGroupName(groupFrom.getName()).forEach(student ->
-                student.setGroup(groupRepository.findByName(groupTo.getName())));
+        List<User> usersGroupFrom = userRepository.findAllByGroupName(groupFrom.getName());
+        usersGroupFrom.forEach(student -> student.setGroup(groupTo));
         groupRepository.saveAndFlush(groupFrom);
         groupRepository.saveAndFlush(groupTo);
     }

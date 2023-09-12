@@ -1,20 +1,30 @@
 package ua.foxminded.javaspring.lenskyi.university.controller;
 
+import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.form.reader.EditUserFormInputReader;
+import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
+import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 import ua.foxminded.javaspring.lenskyi.university.service.UserService;
+
+import static ua.foxminded.javaspring.lenskyi.university.util.Constants.*;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
     private UserService userService;
+    private GroupService groupService;
+    private SubjectService subjectService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, GroupService groupService, SubjectService subjectService) {
         this.userService = userService;
+        this.groupService = groupService;
+        this.subjectService = subjectService;
     }
 
     @GetMapping(value = {"", "/all"})
@@ -48,5 +58,31 @@ public class UserController {
         }
         return "redirect:/user/all";
     }
+
+    @GetMapping("/student")
+    public String getStudentPage(Model model) {
+        model.addAttribute("students", userService.findAllStudents());
+        return STUDENTS_PAGE_TEMPLATE_NAME;
+    }
+
+    @GetMapping("/student/create-student-page")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    public String getCreateStudentPage(Model model) {
+        model.addAttribute("studentDto", new UserDto());
+        model.addAttribute("groups", groupService.findAll());
+        return CREATE_STUDENT_PAGE_TEMPLATE_NAME;
+    }
+
+    @PostMapping("/student")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    public String createNewStudent(@Valid UserDto userDto) {
+        if (userService.existsByUsername(userDto.getUsername())) {
+            return ERROR_400_TEMPLATE_NAME;
+        } else {
+            userService.createStudentFromUserDto(userDto);
+            return REDIRECT_STUDENT_PAGE;
+        }
+    }
+
     // minervamcgonagall
 }

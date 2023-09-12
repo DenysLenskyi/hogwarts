@@ -20,4 +20,10 @@ public interface UserService {
     UserDto getUserDtoByUserId(Long id);
 
     List<User> findAllProfessorsWithNoSubject();
+
+    List<User> findAllStudents();
+
+    boolean existsByUsername(String username);
+
+    void createStudentFromUserDto(UserDto userDto);
 }

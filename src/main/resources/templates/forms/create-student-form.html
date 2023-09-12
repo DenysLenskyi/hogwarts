@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <title>Create New Student</title>
+
+</head>
+
+<body style="padding: 40px">
+
+<div th:replace="~{fragments/header}"></div>
+
+<div class="container-fluid" style="padding: 40px">
+
+    <div th:if="${groups.isEmpty()}" class="row vertical-center" style="max-width: 700px">
+        <h2>No groups available</h2>
+        <p>Looks like there's no groups to put a new student in Hogwarts at the moment.</p>
+        <p>First, you'd add a new group - <a th:href="@{/group/all}">TO GROUPS PAGE</a></p>
+    </div>
+
+    <div th:if="${!groups.isEmpty()}" class="row vertical-center" style="max-width: 700px">
+        <h2>Create New Student</h2>
+        <form th:action="@{/user/student}" th:object="${studentDto}" method="post">
+
+            <input type="hidden" th:field="*{id}"/>
+
+            <div class="form-group">
+                <div class="form-group">
+                    <label>First name</label>
+                    <p><input type="text" placeholder="Type a name here..." th:field="*{firstName}" required
+                    pattern="[a-z0-9._%+\-]{2,}$"></p>
+                </div>
+
+                <div class="form-group">
+                    <label>Last name</label>
+                    <p><input type="text" placeholder="Type a name here..." th:field="*{lastName}"</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Username</label>
+                    <p><input type="text" placeholder="Type a name here..." th:field="*{username}" required
+                              pattern="[a-z0-9._%+\-]{2,}$"></p>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <p><input type="text" placeholder="Type a name here..." th:field="*{password}" required
+                              pattern="[a-z0-9._%+\-]{2,}$"></p>
+                </div>
+
+                <div class="form-group">
+                    <label>Group</label>
+                    <p>Choose from the list below</p>
+                    <div class="form-group">
+                        <select th:field="*{groupDto.name}">
+                            <option th:each="group : ${groups}" th:value="${group.name}"
+                                    th:text="${group.name}"></option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <p><input type="submit" value="Submit" class="btn btn-success"/></p>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

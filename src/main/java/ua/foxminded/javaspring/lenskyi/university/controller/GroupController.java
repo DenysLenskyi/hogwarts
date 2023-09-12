@@ -43,7 +43,7 @@ public class GroupController {
             return ERROR_400_TEMPLATE_NAME;
         } else {
             groupService.createNewGroupFromGroupDto(groupDto);
-            return REDIRECT_GROUPS_PAGE;
+            return REDIRECT_GROUP_PAGE;
         }
     }
 
@@ -54,7 +54,7 @@ public class GroupController {
             return "error/400";
         } else {
             groupService.deleteById(id);
-            return REDIRECT_GROUPS_PAGE;
+            return REDIRECT_GROUP_PAGE;
         }
     }
 
@@ -80,6 +80,6 @@ public class GroupController {
         groupService.moveStudentsFromGroupToAnotherGroup(
                 groupService.findById(id), groupService.findByName(groupDto.getName())
         );
-        return REDIRECT_GROUPS_PAGE;
+        return REDIRECT_GROUP_PAGE;
     }
 }

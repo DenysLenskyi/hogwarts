@@ -27,4 +27,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     long countAllByGroupName(String groupName);
 
     List<User> findAllByGroupName(String groupName);
+
+    List<User> findAllByRolesContains(Role role);
+
+    boolean existsByUsername(String username);
 }

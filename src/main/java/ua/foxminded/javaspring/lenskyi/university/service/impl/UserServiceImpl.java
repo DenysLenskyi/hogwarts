@@ -1,11 +1,14 @@
 package ua.foxminded.javaspring.lenskyi.university.service.impl;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.mapper.UserEntityUserDtoMapper;
 import ua.foxminded.javaspring.lenskyi.university.model.Role;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
+import ua.foxminded.javaspring.lenskyi.university.repository.GroupRepository;
 import ua.foxminded.javaspring.lenskyi.university.repository.RoleRepository;
 import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
 import ua.foxminded.javaspring.lenskyi.university.service.UserService;
@@ -17,14 +20,22 @@ import java.util.Set;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final String STUDENT_ROLE_NAME = "student";
+    private static final String PROFESSOR_ROLE_NAME = "professor";
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final GroupRepository groupRepository;
     private final UserEntityUserDtoMapper mapper;
+    private PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, UserEntityUserDtoMapper mapper) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
+                           GroupRepository groupRepository, UserEntityUserDtoMapper mapper,
+                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.groupRepository = groupRepository;
         this.mapper = mapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> findAllUsers() {
@@ -86,6 +97,33 @@ public class UserServiceImpl implements UserService {
 
     public List<User> findAllProfessorsWithNoSubject() {
         return userRepository.findAllBySubjectIsNullAndRolesContains(
-                roleRepository.findRoleByName("professor").orElseThrow());
+                roleRepository.findRoleByName(PROFESSOR_ROLE_NAME).orElseThrow(IllegalArgumentException::new));
+    }
+
+    public List<User> findAllStudents() {
+        Role studentRole = roleRepository.findRoleByName(STUDENT_ROLE_NAME).orElseThrow(IllegalArgumentException::new);
+        return userRepository.findAllByRolesContains(studentRole);
+    }
+
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    public void createStudentFromUserDto(@Valid UserDto userDto) {
+        final String emptyString = "";
+        User newStudent = new User();
+        newStudent.setFirstName(userDto.getFirstName());
+        if (userDto.getLastName().isEmpty() || userDto.getLastName().isBlank()) {
+            newStudent.setLastName(emptyString);
+        } else {
+            newStudent.setLastName(userDto.getLastName());
+        }
+        newStudent.setUsername(userDto.getUsername());
+        newStudent.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        Role studentRole = roleRepository.findRoleByName(STUDENT_ROLE_NAME).orElseThrow(IllegalArgumentException::new);
+        newStudent.setRoles(Set.of(studentRole));
+        newStudent.setGroup(groupRepository.findByName(
+                userDto.getGroupDto().getName()).orElseThrow(IllegalArgumentException::new));
+        userRepository.saveAndFlush(newStudent);
     }
 }

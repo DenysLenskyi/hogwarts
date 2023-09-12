@@ -1,6 +1,8 @@
 package ua.foxminded.javaspring.lenskyi.university.service.impl;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
+import ua.foxminded.javaspring.lenskyi.university.controller.dto.ClassroomDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.mapper.ClassroomEntityClassroomDtoMapper;
 import ua.foxminded.javaspring.lenskyi.university.model.Classroom;
 import ua.foxminded.javaspring.lenskyi.university.repository.ClassroomRepository;
@@ -29,5 +31,37 @@ public class ClassroomServiceImpl implements ClassroomService {
 
     public List<Classroom> findAllFreeClassrooms() {
         return classroomRepository.findAllBySubjectIsNull();
+    }
+
+    @Override
+    public boolean existsByName(String classroomName) {
+        return classroomRepository.existsByName(classroomName);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return classroomRepository.existsById(id);
+    }
+
+    @Override
+    public void deleteClassroomById(Long id) {
+        classroomRepository.deleteById(id);
+    }
+
+    @Override
+    public void createNewClassroomFromClassroomDto(@Valid ClassroomDto classroomDto) {
+        classroomRepository.saveAndFlush(mapper.classroomDtoToClassroomEntity(classroomDto));
+    }
+
+    public ClassroomDto findById(Long id) {
+        return mapper.classroomEntityToClassroomDto(
+                classroomRepository.findById(id).orElseThrow(IllegalArgumentException::new));
+    }
+
+    public void updateClassroomFromClassroomDto(@Valid ClassroomDto classroomDto) {
+        Classroom classroomToUpdate = classroomRepository.findById(classroomDto.getId()).orElseThrow();
+        classroomToUpdate.setName(classroomDto.getName());
+        classroomToUpdate.setDescription(classroomDto.getDescription());
+        classroomRepository.saveAndFlush(classroomToUpdate);
     }
 }

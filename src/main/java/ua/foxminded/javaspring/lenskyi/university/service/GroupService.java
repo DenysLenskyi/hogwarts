@@ -18,4 +18,10 @@ public interface GroupService {
     void deleteById(Long groupId);
 
     long getNumStudentsInGroup(String groupName);
+
+    Group findById(Long id);
+
+    Group findByName(String groupName);
+
+    void moveStudentsFromGroupToAnotherGroup(Group groupFrom, Group groupTo);
 }

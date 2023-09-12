@@ -29,7 +29,7 @@
                 <!--                Edit name option for admin-->
                 <div class="form-group" sec:authorize="hasAuthority('admin')">
                     <label>Edit Name</label>
-                    <p><input type="text" th:field="*{name}"/></p>
+                    <p><input type="text" th:field="*{name}" pattern="[a-z0-9._%+\-]{2,}$"/></p>
                 </div>
 
                 <!--                Edit name option for professor-->

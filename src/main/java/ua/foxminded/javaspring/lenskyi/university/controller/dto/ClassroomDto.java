@@ -1,13 +1,16 @@
 package ua.foxminded.javaspring.lenskyi.university.controller.dto;
 
-import ua.foxminded.javaspring.lenskyi.university.model.Subject;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class ClassroomDto {
 
     private Long id;
+    @NotBlank
+    @NotNull
     private String name;
     private String description;
-    private Subject subject;
+    private SubjectDto subjectDto;
 
     public ClassroomDto() {
     }
@@ -36,12 +39,12 @@ public class ClassroomDto {
         this.description = description;
     }
 
-    public Subject getSubject() {
-        return subject;
+    public SubjectDto getSubjectDto() {
+        return subjectDto;
     }
 
-    public void setSubject(Subject subject) {
-        this.subject = subject;
+    public void setSubjectDto(SubjectDto subjectDto) {
+        this.subjectDto = subjectDto;
     }
 
     @Override

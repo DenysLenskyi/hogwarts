@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <title>Edit Group</title>
+</head>
+
+<body style="padding: 40px">
+
+<div th:replace="~{fragments/header}"></div>
+
+<div class="container-fluid" style="padding: 40px">
+    <div class="row vertical-center" style="max-width: 700px">
+
+        <h2>Edit Group</h2>
+
+        <div class="row">
+            <p>Here you can move all students from group <span th:text="${currentGroup.name}"/> to another available group</p>
+            <p>To change group for particular student use edit user option</p>
+        </div>
+
+        <form th:action="@{/group/{id}(id=${currentGroup.id})}" th:object="${groupDto}" th:method="put">
+
+            <input type="hidden" th:field="*{id}"/>
+
+            <div class="form-group">
+
+
+                <div class="form-group">
+                    <label>Choose new group for <span th:text="${currentGroup.name}"/> group students</label>
+                    <div class="form-group">
+                        <select th:field="*{name}">
+                            <option th:each="group : ${groupsExcludeCurrent}" th:value="${group.name}"
+                                    th:text="${group.name}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <p><input type="submit" value="Move Students" class="btn btn-success"/></p>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

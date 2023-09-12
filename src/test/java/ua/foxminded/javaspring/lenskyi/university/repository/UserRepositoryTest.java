@@ -74,4 +74,9 @@ class UserRepositoryTest {
         long numStudsFromGryffindor = userRepository.countAllByGroupName("Gryffindor-7");
         assertEquals(8, numStudsFromGryffindor);
     }
+
+    @Test
+    void findAllByGroupNameTest() {
+        assertEquals(8, userRepository.findAllByGroupName("Gryffindor-7").size());
+    }
 }

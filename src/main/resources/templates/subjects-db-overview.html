@@ -34,7 +34,15 @@
             <tr th:each="subject : ${subjects}">
                 <td th:text="${subject.getName()}"></td>
                 <td th:text="${subject.getDescription()}"></td>
-                <td th:text="${subject.getClassroom().getName()}"></td>
+                <td>
+                    <div th:if="${subject.classroom == null}">
+                        <p class="text-warning">NO CLASSROOM!</p>
+                        <p>Edit this subject to add one</p>
+                    </div>
+                    <div th:if="${subject.classroom != null}">
+                        <p><span th:text="${subject.getClassroom().getName()}"/></p>
+                    </div>
+                </td>
                 <td>
                     <div th:if="${subject.user == null}">No professor... Click 'EDIT' to add one</div>
                     <div th:if="${subject.user != null}"><span

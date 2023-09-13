@@ -34,7 +34,18 @@
                 <td th:text="${student.firstName}"></td>
                 <td th:text="${student.getLastName()}"></td>
                 <td th:text="${student.group.name}"></td>
-                <td><a th:href="@{/user/edit/{id}(id=${student.getId()})}">Edit</a></td>
+                <td>
+                    <div>
+                        <a th:href="@{/user/student/{id}/edit-page(id=${student.getId()})}">
+                            <input type="submit" value="EDIT" class="btn btn-warning" style="margin-bottom: 3px">
+                        </a>
+                    </div>
+                    <div>
+                        <form th:action="@{/user/student/{id}(id=${student.getId()})}" th:method="delete">
+                            <input type="submit" value="DELETE" class="btn btn-danger" style="margin-bottom: 3px">
+                        </form>
+                    </div>
+                </td>
             </tr>
             </tbody>
         </table>

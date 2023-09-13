@@ -12,7 +12,7 @@
     <title>Edit Subject</title>
 </head>
 
-<body style="padding: 40px" sec:authorize="hasAuthority('admin') || hasAuthority('professor')">
+<body style="padding: 40px">
 
 <div th:replace="~{fragments/header}"></div>
 
@@ -60,7 +60,7 @@
                             <option th:each="classroom : ${freeClassrooms}" th:value="${classroom.name}"
                                     th:text="${classroom.name}">
                             </option>
-                            <option th:value="*{classroomDto.name}" th:text="*{classroomDto.name + ' (current)'}"></option>
+                            <option th:value="*{classroomDto.name}" th:text="*{classroomDto.name + ' (current)'}" selected></option>
                         </select>
                     </div>
                 </div>

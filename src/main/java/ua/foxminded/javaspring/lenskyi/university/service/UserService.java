@@ -9,13 +9,13 @@ public interface UserService {
 
     List<User> findAllUsers();
 
-    User findById(Long id);
+    UserDto findById(Long id);
 
     User findUserByUsername(String username);
 
     void updateRolesFromArray(User user, List<String> newRolesArray) throws Exception;
 
-    boolean doesUserExistById(Long userId);
+    boolean existsById(Long userId);
 
     UserDto getUserDtoByUserId(Long id);
 
@@ -26,4 +26,8 @@ public interface UserService {
     boolean existsByUsername(String username);
 
     void createStudentFromUserDto(UserDto userDto);
+
+    void deleteById(Long id);
+
+    void updateStudentFromUserDto(UserDto userDto);
 }

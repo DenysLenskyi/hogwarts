@@ -34,8 +34,9 @@
             <div class="form-group">
                 <div class="form-group">
                     <label>First name</label>
-                    <p><input type="text" placeholder="Type a name here..." th:field="*{firstName}" required
-                    pattern="[a-z0-9._%+\-]{2,}$"></p>
+                    <p>Use more than 2 letters, no numbers or other symbols</p>
+                    <p><input type="text" placeholder="Type a name here..." th:field="*{firstName}"
+                              required pattern="[a-zA-Z]{2,}+$"></p>
                 </div>
 
                 <div class="form-group">
@@ -45,12 +46,15 @@
 
                 <div class="form-group">
                     <label>Username</label>
+                    <p>Use 2 or more lower case letters, numbers or symbols (like ._%\-)</p>
+                    <p>Username must be unique! You'll get "bad request" error if choose not unique username. Don't worry, just try again</p>
                     <p><input type="text" placeholder="Type a name here..." th:field="*{username}" required
                               pattern="[a-z0-9._%+\-]{2,}$"></p>
                 </div>
 
                 <div class="form-group">
                     <label>Password</label>
+                    <p>Use 2 or more lower case letters, numbers or symbols (like ._%\-)</p>
                     <p><input type="text" placeholder="Type a name here..." th:field="*{password}" required
                               pattern="[a-z0-9._%+\-]{2,}$"></p>
                 </div>
@@ -59,7 +63,7 @@
                     <label>Group</label>
                     <p>Choose from the list below</p>
                     <div class="form-group">
-                        <select th:field="*{groupDto.name}">
+                        <select th:field="*{groupDto.name}" required>
                             <option th:each="group : ${groups}" th:value="${group.name}"
                                     th:text="${group.name}"></option>
                         </select>

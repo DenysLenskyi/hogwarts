@@ -22,4 +22,6 @@ public interface SubjectService {
     void deleteSubjectById(Long id);
 
     boolean existsByName(String subjectName);
+
+    List<Subject> findAllSubjectsWithNoProfessor();
 }

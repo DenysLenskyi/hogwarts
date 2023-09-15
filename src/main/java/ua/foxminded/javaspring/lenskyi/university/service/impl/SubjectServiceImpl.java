@@ -115,4 +115,8 @@ public class SubjectServiceImpl implements SubjectService {
     public boolean existsByName(String subjectName) {
         return subjectRepository.existsByNameIgnoreCase(subjectName);
     }
+
+    public List<Subject> findAllSubjectsWithNoProfessor() {
+        return subjectRepository.findAllByUserIsNull();
+    }
 }

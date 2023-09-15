@@ -5,9 +5,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ua.foxminded.javaspring.lenskyi.university.controller.dto.SubjectDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
+import ua.foxminded.javaspring.lenskyi.university.controller.dto.form.ProfessorForm;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
+import ua.foxminded.javaspring.lenskyi.university.service.RoleService;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 import ua.foxminded.javaspring.lenskyi.university.service.UserService;
 
@@ -20,11 +21,14 @@ public class UserController {
     private UserService userService;
     private GroupService groupService;
     private SubjectService subjectService;
+    private RoleService roleService;
 
-    public UserController(UserService userService, GroupService groupService, SubjectService subjectService) {
+    public UserController(UserService userService, GroupService groupService,
+                          SubjectService subjectService, RoleService roleService) {
         this.userService = userService;
         this.groupService = groupService;
         this.subjectService = subjectService;
+        this.roleService = roleService;
     }
 
     @GetMapping(value = {"", "/all"})
@@ -118,6 +122,42 @@ public class UserController {
             userDto.setId(id);
             userService.updateStudentFromUserDto(userDto);
             return REDIRECT_STUDENT_PAGE;
+        }
+    }
+
+    @GetMapping("/professor")
+    public String getProfessorPage(Model model) {
+        model.addAttribute("professorsAndAdmins", userService.findAllProfessorsAndAdmins());
+        return PROFESSORS_PAGE_TEMPLATE_NAME;
+    }
+
+    @GetMapping("/professor/create-professor-page")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    public String getCreateProfessorPage(Model model) {
+        model.addAttribute("professorForm", new ProfessorForm());
+        model.addAttribute("freeSubjects", subjectService.findAllSubjectsWithNoProfessor());
+        return CREATE_PROFESSOR_PAGE_TEMPLATE_NAME;
+    }
+
+    @PostMapping("/professor")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    public String createNewProfessor(ProfessorForm professorForm) {
+        if (userService.existsByUsername(professorForm.getUsername())) {
+            return ERROR_400_TEMPLATE_NAME;
+        } else {
+            userService.createProfessorFromProfessorForm(professorForm);
+            return REDIRECT_PROFESSOR_PAGE;
+        }
+    }
+
+    @DeleteMapping("/professor/{professorId}")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    public String deleteProfessor(@PathVariable("professorId") Long id) {
+        if (!userService.existsById(id)) {
+            return ERROR_400_TEMPLATE_NAME;
+        } else {
+            userService.deleteById(id);
+            return REDIRECT_PROFESSOR_PAGE;
         }
     }
 

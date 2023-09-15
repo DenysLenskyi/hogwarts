@@ -1,6 +1,9 @@
 package ua.foxminded.javaspring.lenskyi.university.service;
 
+import ua.foxminded.javaspring.lenskyi.university.controller.dto.RoleDto;
+import ua.foxminded.javaspring.lenskyi.university.controller.dto.SubjectDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
+import ua.foxminded.javaspring.lenskyi.university.controller.dto.form.ProfessorForm;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
 
 import java.util.List;
@@ -23,9 +26,12 @@ public interface UserService {
 
     List<User> findAllStudents();
 
+    List<User> findAllProfessorsAndAdmins();
+
     boolean existsByUsername(String username);
 
     void createStudentFromUserDto(UserDto userDto);
+    void createProfessorFromProfessorForm(ProfessorForm professorForm);
 
     void deleteById(Long id);
 

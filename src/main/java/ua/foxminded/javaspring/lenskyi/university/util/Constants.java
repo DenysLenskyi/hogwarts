@@ -2,10 +2,12 @@ package ua.foxminded.javaspring.lenskyi.university.util;
 
 public abstract class Constants {
 
+    public static final String ADMIN_ROLE_NAME = "admin";
     public static final String REDIRECT_SUBJECT_PAGE = "redirect:/subject/all";
     public static final String REDIRECT_GROUP_PAGE = "redirect:/group/all";
     public static final String REDIRECT_CLASSROOM_PAGE = "redirect:/classroom/all";
     public static final String REDIRECT_STUDENT_PAGE = "redirect:/user/student";
+    public static final String REDIRECT_PROFESSOR_PAGE = "redirect:/user/professor";
     public static final String SUBJECT_PAGE_TEMPLATE_NAME = "subjects-db-overview";
     public static final String GROUP_PAGE_TEMPLATE_NAME = "groups-db-overview";
     public static final String ERROR_400_TEMPLATE_NAME = "error/400";
@@ -20,6 +22,9 @@ public abstract class Constants {
     public static final String EDIT_GROUP_TEMPLATE_NAME = "forms/edit-group-form";
     public static final String EDIT_CLASSROOM_TEMPLATE_NAME = "forms/edit-classroom-form";
     public static final String STUDENTS_PAGE_TEMPLATE_NAME = "students-page";
+    public static final String PROFESSORS_PAGE_TEMPLATE_NAME = "professors-page";
     public static final String CREATE_STUDENT_PAGE_TEMPLATE_NAME = "forms/create-student-form";
     public static final String EDIT_STUDENT_PAGE_TEMPLATE_NAME = "forms/edit-student-form";
+    public static final String EDIT_PROFESSOR_PAGE_TEMPLATE_NAME = "forms/edit-professor-form";
+    public static final String CREATE_PROFESSOR_PAGE_TEMPLATE_NAME = "forms/create-professor-form";
 }

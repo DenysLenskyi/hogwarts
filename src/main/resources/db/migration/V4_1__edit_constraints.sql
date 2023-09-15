@@ -12,3 +12,8 @@ ALTER TABLE hogwarts.subject
     DROP CONSTRAINT classroom_id_fk;
 ALTER TABLE hogwarts.subject
     ADD CONSTRAINT classroom_id_fk FOREIGN KEY (classroom_id) REFERENCES hogwarts.classroom (ID) ON DELETE SET NULL;
+
+ALTER TABLE hogwarts.subject
+    DROP CONSTRAINT professor_id_fk;
+ALTER TABLE hogwarts.subject
+    ADD CONSTRAINT professor_id_fk FOREIGN KEY (professor_id) REFERENCES hogwarts.user (ID) ON DELETE SET NULL;

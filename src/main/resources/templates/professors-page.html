@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <title>Hogwarts Schedule Manager | Students</title>
+</head>
+<body style="padding: 40px">
+<div th:replace="~{fragments/header}"></div>
+
+<div class="container-fluid">
+
+    <div class="row" style="margin-bottom: 20px">
+        <a th:href="@{/user/professor/create-professor-page}">
+            <button type="submit" class="btn btn-info">CREATE NEW PROFESSOR</button>
+        </a>
+    </div>
+
+    <div class="row vertical-center">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Roles</th>
+                <th>Subject</th>
+                <th>Classroom</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="professor : ${professorsAndAdmins}">
+                <td th:text="${professor.firstName}"></td>
+                <td th:text="${professor.getLastName()}"></td>
+                <td th:text="${professor.getRolesToString()}"></td>
+                <td th:if="${professor.subject != null}" th:text="${professor.subject.name}"></td>
+                <td th:if="${professor.subject != null && professor.subject.classroom != null}" th:text="${professor.subject.classroom.name}"></td>
+                <td>
+<!--                    <div>-->
+<!--                        <a th:href="@{/user/student/{id}/edit-page(id=${student.getId()})}">-->
+<!--                            <input type="submit" value="EDIT" class="btn btn-warning" style="margin-bottom: 3px">-->
+<!--                        </a>-->
+<!--                    </div>-->
+                    <div>
+                        <form th:action="@{/user/professor/{id}(id=${professor.getId()})}" th:method="delete">
+                            <input type="submit" value="DELETE" class="btn btn-danger" style="margin-bottom: 3px">
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>

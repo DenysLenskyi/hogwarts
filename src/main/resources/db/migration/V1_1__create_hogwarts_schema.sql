@@ -118,7 +118,8 @@ BEGIN
     IF EXISTS(SELECT 1
               FROM HOGWARTS.USER_ROLE
               WHERE USER_ID =
-                    (SELECT ID FROM HOGWARTS.USER where FIRST_NAME = OLD.first_name AND LAST_NAME = OLD.last_name)
+                    (SELECT ID FROM HOGWARTS.USER where FIRST_NAME = OLD.first_name AND LAST_NAME = OLD.last_name
+                                                  AND GROUP_ID IS NOT NULL)
                 AND ROLE_ID = (SELECT ID FROM HOGWARTS.ROLE WHERE NAME = 'professor')) THEN
         RAISE unique_violation USING MESSAGE = 'Attempt to assign a professor to the group';
     END IF;
@@ -126,7 +127,8 @@ BEGIN
     IF EXISTS(SELECT 1
               FROM HOGWARTS.USER_ROLE
               WHERE USER_ID =
-                    (SELECT ID FROM HOGWARTS.USER where FIRST_NAME = OLD.first_name AND LAST_NAME = OLD.last_name)
+                    (SELECT ID FROM HOGWARTS.USER where FIRST_NAME = OLD.first_name AND LAST_NAME = OLD.last_name
+                                                    AND GROUP_ID IS NOT NULL)
                 AND ROLE_ID = (SELECT ID FROM HOGWARTS.ROLE WHERE NAME = 'admin')) THEN
         RAISE unique_violation USING MESSAGE = 'Attempt to assign an admin to the group';
     END IF;

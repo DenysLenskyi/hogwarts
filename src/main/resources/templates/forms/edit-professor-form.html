@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <title>Edit Professor</title>
+</head>
+
+<body style="padding: 40px">
+
+<div th:replace="~{fragments/header}"></div>
+
+<div class="container-fluid" style="padding: 40px">
+    <div class="row vertical-center" style="max-width: 700px">
+
+        <h2>Edit Professor</h2>
+        <form th:action="@{/user/professor/{id}(id=${professorForm.id})}" th:object="${professorForm}" th:method="put">
+
+            <input type="hidden" th:field="*{id}"/>
+
+            <div class="form-group">
+
+                <div class="form-group">
+                    <label>Edit first name</label>
+                    <p>Use more than 2 letters, no numbers or other symbols</p>
+                    <p><input type="text" th:field="*{firstName}" required pattern="[a-zA-Z'-]{2,}+$"/></p>
+                </div>
+
+
+                <div class="form-group">
+                    <label>Edit last name</label>
+                    <p><input type="text" th:field="*{lastName}"/></p>
+                </div>
+
+                <div class="form-group">
+                    <label>Edit username</label>
+                    <p>Use 2 or more letters, numbers or symbols (like ._%\-)</p>
+                    <p>Username must be unique! You'll get "bad request" error if choose not unique username. Don't
+                        worry, just try again</p>
+                    <p><input type="text" th:field="*{username}" required pattern="[a-zA-Z0-9._%+\-]{2,}$"/></p>
+                </div>
+
+                <div class="form-group">
+                    <label>Edit password</label>
+                    <p>Use 2 or more lower case letters, numbers or symbols (like ._%\-)</p>
+                    <p><input type="text" th:field="*{password}" required/></p>
+                </div>
+
+<!--                <div class="form-group" th:if="${!freeSubjects.isEmpty()}">-->
+<!--                    <label>Choose a free subject or leave current</label>-->
+<!--                    <div class="form-group">-->
+<!--                        <select th:field="*{subjectName}">-->
+<!--                            <option th:each="subject : ${freeSubjects}" th:value="${subject.name}"-->
+<!--                                    th:text="${subject.name}">-->
+<!--                            </option>-->
+<!--                            <option th:value="*{subjectName}" th:text="*{subjectName + ' (current)'}" selected></option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="form-group" th:if="${freeSubjects.isEmpty()}">-->
+<!--                    <h3>Looks like there's no free subjects</h3>-->
+<!--                    <p>So we'll leave current: <span th:text="${professorForm.subjectName}"/></p>-->
+<!--                    <input type="hidden" th:field="*{subjectName}" th:value="*{subjectName}">-->
+<!--                </div>-->
+
+                <div class="form-group">
+                    <label>Admin role?</label>
+                    <p>Select or unselect the checkbox below</p>
+                    <ul>
+                        <li>
+                            <input type="checkbox" th:checked="*{admin}" th:field="*{admin}"/>
+                            <label th:text="admin"></label>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <p><input type="submit" value="Submit" class="btn btn-success"/></p>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

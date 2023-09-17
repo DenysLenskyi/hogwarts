@@ -21,7 +21,7 @@ public class Subject {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "PROFESSOR_ID", referencedColumnName = "ID")
     private User user;
 

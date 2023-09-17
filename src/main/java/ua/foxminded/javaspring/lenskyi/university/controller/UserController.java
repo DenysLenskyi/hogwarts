@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.form.ProfessorForm;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
-import ua.foxminded.javaspring.lenskyi.university.service.RoleService;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 import ua.foxminded.javaspring.lenskyi.university.service.UserService;
 
@@ -21,47 +20,13 @@ public class UserController {
     private UserService userService;
     private GroupService groupService;
     private SubjectService subjectService;
-    private RoleService roleService;
 
     public UserController(UserService userService, GroupService groupService,
-                          SubjectService subjectService, RoleService roleService) {
+                          SubjectService subjectService) {
         this.userService = userService;
         this.groupService = groupService;
         this.subjectService = subjectService;
-        this.roleService = roleService;
     }
-
-    @GetMapping(value = {"", "/all"})
-    public String getUserPage(Model model) {
-        model.addAttribute("users", userService.findAllUsers());
-        return "users-db-overview";
-    }
-
-//    @GetMapping("/edit/{id}") //to do add test for this
-//    public String showEditUserForm(@PathVariable("id") Long id, Model model) {
-//        if (!userService.existsById(id)) {
-//            return "error/404";
-//        } else {
-//            UserDto userDto = userService.getUserDtoByUserId(id);
-//            EditUserFormInputReader inputReader = new EditUserFormInputReader();
-//            model.addAttribute("user", userDto);
-//            model.addAttribute("inputReader", inputReader);
-//            model.addAttribute("pageTitle", "Change Role For User");
-//
-//            return "forms/edit-user-form";
-//        }
-//    }
-//
-//    @PutMapping(value = "/edit/{id}")
-//    public String editUser(EditUserFormInputReader inputReader, @PathVariable("id") Long id) {
-//        try {
-//            if (inputReader.getCheckboxSelectedValues() != null)
-//                userService.updateRolesFromArray(userService.findById(id), inputReader.getCheckboxSelectedValues());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return "redirect:/user/all";
-//    }
 
     @GetMapping("/student")
     public String getStudentPage(Model model) {
@@ -157,6 +122,32 @@ public class UserController {
             return ERROR_400_TEMPLATE_NAME;
         } else {
             userService.deleteById(id);
+            return REDIRECT_PROFESSOR_PAGE;
+        }
+    }
+
+    @GetMapping("/professor/{professorId}/edit-page")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    public String showEditProfessorForm(@PathVariable("professorId") Long id, Model model) {
+        if (!userService.existsById(id)) {
+            return ERROR_400_TEMPLATE_NAME;
+        } else {
+            ProfessorForm professorForm = userService.createAndFillProfessorFormByUserId(id);
+            model.addAttribute("professorForm", professorForm);
+            model.addAttribute("freeSubjects", subjectService.findAllSubjectsWithNoProfessor());
+            return EDIT_PROFESSOR_PAGE_TEMPLATE_NAME;
+        }
+    }
+
+    @PutMapping("/professor/{professorId}")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    public String editProfessor(@PathVariable("professorId") Long id, ProfessorForm professorForm) {
+        if (userService.existsByUsername(professorForm.getUsername()) && !professorForm.getUsername()
+                .equals(userService.findById(id).getUsername())) {
+            return ERROR_400_TEMPLATE_NAME;
+        } else {
+            professorForm.setId(id);
+            userService.updateProfessorFromProfessorForm(professorForm);
             return REDIRECT_PROFESSOR_PAGE;
         }
     }

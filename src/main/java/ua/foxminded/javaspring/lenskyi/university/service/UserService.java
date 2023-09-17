@@ -1,7 +1,6 @@
 package ua.foxminded.javaspring.lenskyi.university.service;
 
-import ua.foxminded.javaspring.lenskyi.university.controller.dto.RoleDto;
-import ua.foxminded.javaspring.lenskyi.university.controller.dto.SubjectDto;
+import jakarta.validation.Valid;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.form.ProfessorForm;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
@@ -36,4 +35,8 @@ public interface UserService {
     void deleteById(Long id);
 
     void updateStudentFromUserDto(UserDto userDto);
+
+    ProfessorForm createAndFillProfessorFormByUserId(Long id);
+
+    void updateProfessorFromProfessorForm(ProfessorForm professorForm);
 }

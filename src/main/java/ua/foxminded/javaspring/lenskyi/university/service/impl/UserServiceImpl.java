@@ -4,8 +4,6 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ua.foxminded.javaspring.lenskyi.university.controller.dto.RoleDto;
-import ua.foxminded.javaspring.lenskyi.university.controller.dto.SubjectDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.form.ProfessorForm;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.mapper.GroupEntityGroupDtoMapper;
@@ -22,6 +20,7 @@ import ua.foxminded.javaspring.lenskyi.university.service.UserService;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,6 +36,7 @@ public class UserServiceImpl implements UserService {
     private final UserEntityUserDtoMapper userDtoMapper;
     private final GroupEntityGroupDtoMapper groupDtoMapper;
     private PasswordEncoder passwordEncoder;
+    private Pattern bcryptPattern = Pattern.compile("\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
 
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
                            GroupRepository groupRepository, SubjectRepository subjectRepository,
@@ -137,7 +137,11 @@ public class UserServiceImpl implements UserService {
             userToUpdate.setLastName(userDto.getLastName());
         }
         userToUpdate.setUsername(userDto.getUsername());
-        userToUpdate.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        if (bcryptPattern.matcher(userDto.getPassword()).matches()) {
+            userToUpdate.setPassword(userDto.getPassword());
+        } else {
+            userToUpdate.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        }
         userToUpdate.setGroup(groupRepository.findByName(
                 userDto.getGroupDto().getName()).orElseThrow(IllegalArgumentException::new));
         userRepository.saveAndFlush(userToUpdate);
@@ -179,5 +183,43 @@ public class UserServiceImpl implements UserService {
             subject.setUser(newProfessor);
             subjectRepository.saveAndFlush(subject);
         }
+    }
+
+    public ProfessorForm createAndFillProfessorFormByUserId(Long id) {
+        User user = userRepository.findById(id).orElseThrow();
+        ProfessorForm professorForm = new ProfessorForm();
+        professorForm.setId(user.getId());
+        professorForm.setFirstName(user.getFirstName());
+        professorForm.setLastName(user.getLastName());
+        professorForm.setUsername(user.getUsername());
+        professorForm.setPassword(user.getPassword());
+        if (user.getSubject() != null) {
+            professorForm.setSubjectName(user.getSubject().getName());
+        }
+        professorForm.setAdmin(user.getRoles().contains(roleRepository.findRoleByName(ADMIN_ROLE_NAME).orElseThrow()));
+        return professorForm;
+    }
+
+    @Transactional
+    public void updateProfessorFromProfessorForm(@Valid ProfessorForm professorForm) {
+        User userToUpdate = userRepository.findById(professorForm.getId()).orElseThrow(IllegalArgumentException::new);
+        userToUpdate.setFirstName(professorForm.getFirstName());
+        if (professorForm.getLastName().isEmpty() || professorForm.getLastName().isBlank()) {
+            userToUpdate.setLastName(EMPTY_STRING);
+        } else {
+            userToUpdate.setLastName(professorForm.getLastName());
+        }
+        userToUpdate.setUsername(professorForm.getUsername());
+        if (bcryptPattern.matcher(professorForm.getPassword()).matches()) {
+            userToUpdate.setPassword(professorForm.getPassword());
+        } else {
+            userToUpdate.setPassword(passwordEncoder.encode(professorForm.getPassword()));
+        }
+        if (professorForm.isAdmin()) {
+            userToUpdate.getRoles().add(roleRepository.findRoleByName(ADMIN_ROLE_NAME).orElseThrow());
+        } else {
+            userToUpdate.getRoles().remove(roleRepository.findRoleByName(ADMIN_ROLE_NAME).orElseThrow());
+        }
+        userRepository.saveAndFlush(userToUpdate);
     }
 }

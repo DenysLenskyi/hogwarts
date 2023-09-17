@@ -39,11 +39,11 @@
                 <td th:if="${professor.subject != null}" th:text="${professor.subject.name}"></td>
                 <td th:if="${professor.subject != null && professor.subject.classroom != null}" th:text="${professor.subject.classroom.name}"></td>
                 <td>
-<!--                    <div>-->
-<!--                        <a th:href="@{/user/student/{id}/edit-page(id=${student.getId()})}">-->
-<!--                            <input type="submit" value="EDIT" class="btn btn-warning" style="margin-bottom: 3px">-->
-<!--                        </a>-->
-<!--                    </div>-->
+                    <div>
+                        <a th:href="@{/user/professor/{id}/edit-page(id=${professor.getId()})}">
+                            <input type="submit" value="EDIT" class="btn btn-warning" style="margin-bottom: 3px">
+                        </a>
+                    </div>
                     <div>
                         <form th:action="@{/user/professor/{id}(id=${professor.getId()})}" th:method="delete">
                             <input type="submit" value="DELETE" class="btn btn-danger" style="margin-bottom: 3px">

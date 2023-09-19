@@ -45,6 +45,10 @@ public class ClassroomServiceImpl implements ClassroomService {
 
     @Override
     public void deleteClassroomById(Long id) {
+        Classroom classroom = classroomRepository.findById(id).orElseThrow();
+        if (classroom.getSubject() != null) {
+            classroom.getSubject().setClassroom(null);
+        }
         classroomRepository.deleteById(id);
     }
 

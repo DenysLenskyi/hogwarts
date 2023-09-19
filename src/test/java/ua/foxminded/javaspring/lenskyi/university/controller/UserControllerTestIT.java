@@ -11,19 +11,18 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ua.foxminded.javaspring.lenskyi.university.controller.dto.SubjectDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
-import ua.foxminded.javaspring.lenskyi.university.model.Subject;
+import ua.foxminded.javaspring.lenskyi.university.controller.dto.form.ProfessorForm;
+import ua.foxminded.javaspring.lenskyi.university.model.Role;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
-import ua.foxminded.javaspring.lenskyi.university.service.ClassroomService;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
+import ua.foxminded.javaspring.lenskyi.university.service.RoleService;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 import ua.foxminded.javaspring.lenskyi.university.service.UserService;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -38,11 +37,9 @@ class UserControllerTestIT {
     @Autowired
     private MockMvc mvc;
     @Autowired
-    private SubjectService subjectService;
+    private RoleService roleService;
     @Autowired
     private GroupService groupService;
-    @Autowired
-    private ClassroomService classroomService;
     @Autowired
     private UserService userService;
 
@@ -183,6 +180,150 @@ class UserControllerTestIT {
         User student = students.get(0);
         long wrongStudentId = student.getId() - 100L;
         mvc.perform(MockMvcRequestBuilders.delete("/user/student/" + wrongStudentId)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(Matchers.containsString(YOU_INPUTTED_WRONG_DATA)));
+    }
+
+    @Test
+    @WithUserDetails("minervamcgonagall")
+    void getAllProfessorsPageTest() throws Exception {
+        List<User> professors = userService.findAllProfessorsAndAdmins();
+        mvc.perform(MockMvcRequestBuilders
+                        .get("/user/professor"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("professors-page"))
+                .andExpect(model().attribute("professorsAndAdmins", professors))
+                .andExpect(model().attribute("professorsAndAdmins", Matchers.hasSize(professors.size())));
+    }
+
+    @Test
+    @WithUserDetails("minervamcgonagall")
+    void showEditProfessorFormTest() throws Exception {
+        List<User> professors = userService.findAllProfessorsAndAdmins();
+        User professor = professors.get(0);
+        ProfessorForm professorForm = userService.createAndFillProfessorFormByUserId(professor.getId());
+        mvc.perform(MockMvcRequestBuilders
+                        .get("/user/professor/" + professor.getId() + "/edit-page"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("forms/edit-professor-form"))
+                .andExpect(model().attribute("professorForm", professorForm));
+    }
+
+    @Test
+    @WithUserDetails("minervamcgonagall")
+    void showEditProfessorFormWrongIdTest() throws Exception {
+        List<User> professors = userService.findAllProfessorsAndAdmins();
+        User professor = professors.get(0);
+        long wrongProfessorId = professor.getId() - 100L;
+        mvc.perform(MockMvcRequestBuilders
+                        .get("/user/professor/" + wrongProfessorId + "/edit-page"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(Matchers.containsString(YOU_INPUTTED_WRONG_DATA)));
+    }
+
+    @Test
+    @WithUserDetails("minervamcgonagall")
+    void editProfessorTest() throws Exception {
+        List<User> professors = userService.findAllProfessorsAndAdmins();
+        User professor = professors.get(0);
+        Role adminRole = roleService.findRoleByName("admin");
+        mvc.perform(MockMvcRequestBuilders
+                        .put("/user/professor/" + professor.getId())
+                        .param("firstName", "test")
+                        .param("lastName", "test")
+                        .param("username", "testUsername")
+                        .param("password", "test")
+                        .param("admin", "true")
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection());
+        assertEquals("test", professor.getFirstName());
+        assertEquals("test", professor.getLastName());
+        assertEquals("testUsername", professor.getUsername());
+        assertTrue(professor.getRoles().contains(adminRole));
+    }
+
+    @Test
+    @WithUserDetails("minervamcgonagall")
+    void editProfessorWrongUsernameTest() throws Exception {
+        List<User> professors = userService.findAllProfessorsAndAdmins();
+        User professor = professors.get(0);
+        User anotherProfessor = professors.get(1);
+        mvc.perform(MockMvcRequestBuilders
+                        .put("/user/professor/" + professor.getId())
+                        .param("firstName", professor.getFirstName())
+                        .param("lastName", "test")
+                        .param("username", anotherProfessor.getUsername())
+                        .param("password", "test")
+                        .param("admin", "false")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(Matchers.containsString(YOU_INPUTTED_WRONG_DATA)));
+        assertFalse(professor.getLastName().contains("test"));
+    }
+
+    @Test
+    @WithUserDetails("minervamcgonagall")
+    void showCreateNewProfessorFormTest() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/user/professor/create-professor-page")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("forms/create-professor-form"))
+                .andExpect(model().attributeExists("professorForm"));
+    }
+
+    @Test
+    @WithUserDetails("minervamcgonagall")
+    void createNewProfessorTest() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.post("/user/professor")
+                        .param("firstName", "testName")
+                        .param("lastName", "lastName")
+                        .param("username", "createNewProfessorTest")
+                        .param("password", "test")
+                        .param("admin", "false")
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection());
+        User user = userService.findUserByUsername("createNewProfessorTest");
+        assertEquals("testName", user.getFirstName());
+        assertEquals("lastName", user.getLastName());
+        assertEquals(user.getRoles().size(), 1);
+        assertTrue(user.getRoles().contains(roleService.findRoleByName("professor")));
+    }
+
+    @Test
+    @WithUserDetails("minervamcgonagall")
+    void createNewProfessorNotUniqueUsernameTest() throws Exception {
+        List<User> professors = userService.findAllProfessorsAndAdmins();
+        User anotherProfessor = professors.get(1);
+        mvc.perform(MockMvcRequestBuilders.post("/user/professor")
+                        .param("firstName", "testName")
+                        .param("lastName", "lastName")
+                        .param("username", anotherProfessor.getUsername())
+                        .param("password", "test")
+                        .param("admin", "false")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(Matchers.containsString(YOU_INPUTTED_WRONG_DATA)));
+    }
+
+    @Test
+    @WithUserDetails("minervamcgonagall")
+    void deleteProfessorTest() throws Exception {
+        List<User> professors = userService.findAllProfessorsAndAdmins();
+        User professor = professors.get(0);
+        mvc.perform(MockMvcRequestBuilders.delete("/user/professor/" + professor.getId())
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection());
+        assertFalse(userService.existsById(professor.getId()));
+    }
+
+    @Test
+    @WithUserDetails("minervamcgonagall")
+    void deleteProfessorWrongIdTest() throws Exception {
+        List<User> professors = userService.findAllProfessorsAndAdmins();
+        User professor = professors.get(0);
+        long wrongProfessorId = professor.getId() - 100L;
+        mvc.perform(MockMvcRequestBuilders.delete("/user/professor/" + wrongProfessorId)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(content().string(Matchers.containsString(YOU_INPUTTED_WRONG_DATA)));

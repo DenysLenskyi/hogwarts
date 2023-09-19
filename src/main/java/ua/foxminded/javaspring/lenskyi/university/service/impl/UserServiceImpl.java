@@ -124,6 +124,10 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public void deleteById(Long id) {
+        User user = userRepository.findById(id).orElseThrow();
+        if (user.getSubject() != null) {
+            user.getSubject().setUser(null);
+        }
         userRepository.deleteById(id);
     }
 

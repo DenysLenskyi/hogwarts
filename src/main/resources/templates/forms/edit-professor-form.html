@@ -52,24 +52,6 @@
                     <p><input type="text" th:field="*{password}" required/></p>
                 </div>
 
-<!--                <div class="form-group" th:if="${!freeSubjects.isEmpty()}">-->
-<!--                    <label>Choose a free subject or leave current</label>-->
-<!--                    <div class="form-group">-->
-<!--                        <select th:field="*{subjectName}">-->
-<!--                            <option th:each="subject : ${freeSubjects}" th:value="${subject.name}"-->
-<!--                                    th:text="${subject.name}">-->
-<!--                            </option>-->
-<!--                            <option th:value="*{subjectName}" th:text="*{subjectName + ' (current)'}" selected></option>-->
-<!--                        </select>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <div class="form-group" th:if="${freeSubjects.isEmpty()}">-->
-<!--                    <h3>Looks like there's no free subjects</h3>-->
-<!--                    <p>So we'll leave current: <span th:text="${professorForm.subjectName}"/></p>-->
-<!--                    <input type="hidden" th:field="*{subjectName}" th:value="*{subjectName}">-->
-<!--                </div>-->
-
                 <div class="form-group">
                     <label>Admin role?</label>
                     <p>Select or unselect the checkbox below</p>

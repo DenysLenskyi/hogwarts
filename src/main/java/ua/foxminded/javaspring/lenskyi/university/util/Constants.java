@@ -27,4 +27,5 @@ public abstract class Constants {
     public static final String EDIT_STUDENT_PAGE_TEMPLATE_NAME = "forms/edit-student-form";
     public static final String EDIT_PROFESSOR_PAGE_TEMPLATE_NAME = "forms/edit-professor-form";
     public static final String CREATE_PROFESSOR_PAGE_TEMPLATE_NAME = "forms/create-professor-form";
+    public static final String CLASSROOM_PAGE_TEMPLATE_NAME = "classrooms-db-overview";
 }

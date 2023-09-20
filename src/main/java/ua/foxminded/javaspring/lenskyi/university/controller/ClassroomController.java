@@ -1,5 +1,6 @@
 package ua.foxminded.javaspring.lenskyi.university.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +23,7 @@ public class ClassroomController {
     @GetMapping("/all")
     public String getClassroomPage(Model model) {
         model.addAttribute("classrooms", classroomService.findAll());
-        return "classrooms-db-overview";
+        return CLASSROOM_PAGE_TEMPLATE_NAME;
     }
 
     @GetMapping("/create-classroom-page")
@@ -34,7 +35,7 @@ public class ClassroomController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String createNewClassroom(ClassroomDto classroomDto) {
+    public String createNewClassroom(@Valid ClassroomDto classroomDto) {
         if (classroomService.existsByName(classroomDto.getName())) {
             return ERROR_400_TEMPLATE_NAME;
         }
@@ -65,7 +66,7 @@ public class ClassroomController {
 
     @PutMapping("/{classroomId}")
     @PreAuthorize("hasAnyAuthority('admin', 'professor')")
-    public String editClassroom(@PathVariable("classroomId") Long id, ClassroomDto classroomDto) {
+    public String editClassroom(@PathVariable("classroomId") Long id, @Valid ClassroomDto classroomDto) {
         if (classroomService.existsByName(classroomDto.getName()) && !classroomDto.getName()
                 .equals(classroomService.findById(id).getName())) {
             return ERROR_400_TEMPLATE_NAME;

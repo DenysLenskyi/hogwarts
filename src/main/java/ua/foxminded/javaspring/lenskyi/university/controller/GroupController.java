@@ -1,5 +1,6 @@
 package ua.foxminded.javaspring.lenskyi.university.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,11 +38,11 @@ public class GroupController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String createNewGroup(GroupDto groupDto) {
+    public String createNewGroup(@Valid GroupDto groupDto) {
         if (groupService.existsByName(groupDto.getName())) {
             return ERROR_400_TEMPLATE_NAME;
         }
-        groupService.createNewGroupFromGroupDto(groupDto);
+        groupService.createNewGroup(groupDto);
         return REDIRECT_GROUP_PAGE;
     }
 
@@ -49,7 +50,7 @@ public class GroupController {
     @PreAuthorize("hasAnyAuthority('admin')")
     public String deleteGroup(@PathVariable("groupId") Long id) {
         if (!groupService.existsById(id)) {
-            return "error/400";
+            return ERROR_400_TEMPLATE_NAME;
         }
         groupService.deleteById(id);
         return REDIRECT_GROUP_PAGE;
@@ -72,7 +73,7 @@ public class GroupController {
 
     @PutMapping("{groupId}")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String editGroup(@PathVariable("groupId") Long id, GroupDto groupDto) {
+    public String editGroup(@PathVariable("groupId") Long id, @Valid GroupDto groupDto) {
         groupService.moveStudentsFromGroupToAnotherGroup(
                 groupService.findById(id), groupService.findByName(groupDto.getName())
         );

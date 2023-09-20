@@ -11,7 +11,7 @@ public interface GroupService {
 
     boolean existsByName(String groupName);
 
-    void createNewGroupFromGroupDto(GroupDto groupDto);
+    void createNewGroup(GroupDto groupDto);
 
     boolean existsById(Long groupId);
 

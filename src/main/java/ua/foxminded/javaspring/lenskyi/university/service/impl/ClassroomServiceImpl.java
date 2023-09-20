@@ -1,6 +1,5 @@
 package ua.foxminded.javaspring.lenskyi.university.service.impl;
 
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.ClassroomDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.mapper.ClassroomEntityClassroomDtoMapper;
@@ -53,7 +52,7 @@ public class ClassroomServiceImpl implements ClassroomService {
     }
 
     @Override
-    public void createNewClassroomFromClassroomDto(@Valid ClassroomDto classroomDto) {
+    public void createNewClassroomFromClassroomDto(ClassroomDto classroomDto) {
         classroomRepository.saveAndFlush(mapper.classroomDtoToClassroomEntity(classroomDto));
     }
 
@@ -62,7 +61,7 @@ public class ClassroomServiceImpl implements ClassroomService {
                 classroomRepository.findById(id).orElseThrow(IllegalArgumentException::new));
     }
 
-    public void updateClassroomFromClassroomDto(@Valid ClassroomDto classroomDto) {
+    public void updateClassroomFromClassroomDto(ClassroomDto classroomDto) {
         Classroom classroomToUpdate = classroomRepository.findById(classroomDto.getId()).orElseThrow();
         classroomToUpdate.setName(classroomDto.getName());
         classroomToUpdate.setDescription(classroomDto.getDescription());

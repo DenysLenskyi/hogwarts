@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import ua.foxminded.javaspring.lenskyi.university.model.Role;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
 
 import java.util.List;
@@ -78,5 +79,14 @@ class UserRepositoryTest {
     @Test
     void findAllByGroupNameTest() {
         assertEquals(8, userRepository.findAllByGroupName("Gryffindor-7").size());
+    }
+
+    @Test
+    void findAllNonStudentTest() {
+        Role admin = roleRepository.findRoleByName("admin").orElseThrow();
+        Role professor = roleRepository.findRoleByName("professor").orElseThrow();
+        List<Role> roles = List.of(admin, professor);
+        List<User> professorsAndAdmins = userRepository.findAllByRolesIsIn(roles);
+        assertEquals(12, professorsAndAdmins.size());
     }
 }

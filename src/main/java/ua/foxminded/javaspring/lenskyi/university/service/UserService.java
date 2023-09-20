@@ -1,6 +1,5 @@
 package ua.foxminded.javaspring.lenskyi.university.service;
 
-import jakarta.validation.Valid;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.form.ProfessorForm;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
@@ -13,13 +12,9 @@ public interface UserService {
 
     UserDto findById(Long id);
 
-    User findUserByUsername(String username);
-
-    void updateRolesFromArray(User user, List<String> newRolesArray) throws Exception;
+    User findByUsername(String username);
 
     boolean existsById(Long userId);
-
-    UserDto getUserDtoByUserId(Long id);
 
     List<User> findAllProfessorsWithNoSubject();
 
@@ -30,13 +25,13 @@ public interface UserService {
     boolean existsByUsername(String username);
 
     void createStudentFromUserDto(UserDto userDto);
-    void createProfessorFromProfessorForm(ProfessorForm professorForm);
+    void createProfessor(ProfessorForm professorForm);
 
     void deleteById(Long id);
 
-    void updateStudentFromUserDto(UserDto userDto);
+    void updateStudent(UserDto userDto);
 
-    ProfessorForm createAndFillProfessorFormByUserId(Long id);
+    ProfessorForm createProfessorFormDto(Long id);
 
-    void updateProfessorFromProfessorForm(ProfessorForm professorForm);
+    void updateProfessor(ProfessorForm professorForm);
 }

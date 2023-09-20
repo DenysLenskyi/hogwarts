@@ -1,5 +1,6 @@
 package ua.foxminded.javaspring.lenskyi.university.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,7 +47,7 @@ public class SubjectController {
 
     @PutMapping("/{subjectId}")
     @PreAuthorize("hasAnyAuthority('admin', 'professor')")
-    public String editSubject(@PathVariable("subjectId") Long id, SubjectDto subjectDto) {
+    public String editSubject(@PathVariable("subjectId") Long id, @Valid SubjectDto subjectDto) {
         if (subjectService.existsByName(subjectDto.getName()) && !subjectDto.getName()
                 .equals(subjectService.findById(id).getName())) {
             return ERROR_400_TEMPLATE_NAME;
@@ -67,7 +68,7 @@ public class SubjectController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String createNewSubject(SubjectDto subjectDto) {
+    public String createNewSubject(@Valid SubjectDto subjectDto) {
         if (subjectService.existsByName(subjectDto.getName())) {
             return ERROR_400_TEMPLATE_NAME;
         }

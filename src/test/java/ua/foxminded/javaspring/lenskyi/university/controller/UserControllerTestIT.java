@@ -17,7 +17,6 @@ import ua.foxminded.javaspring.lenskyi.university.model.Role;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
 import ua.foxminded.javaspring.lenskyi.university.service.RoleService;
-import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 import ua.foxminded.javaspring.lenskyi.university.service.UserService;
 
 import java.util.List;
@@ -141,7 +140,7 @@ class UserControllerTestIT {
                         .param("groupDto.name", groupService.findAll().get(0).getName())
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection());
-        User user = userService.findUserByUsername("test");
+        User user = userService.findByUsername("test");
         assertEquals("lastName", user.getLastName());
     }
 
@@ -202,7 +201,7 @@ class UserControllerTestIT {
     void showEditProfessorFormTest() throws Exception {
         List<User> professors = userService.findAllProfessorsAndAdmins();
         User professor = professors.get(0);
-        ProfessorForm professorForm = userService.createAndFillProfessorFormByUserId(professor.getId());
+        ProfessorForm professorForm = userService.createProfessorFormDto(professor.getId());
         mvc.perform(MockMvcRequestBuilders
                         .get("/user/professor/" + professor.getId() + "/edit-page"))
                 .andExpect(status().isOk())
@@ -283,7 +282,7 @@ class UserControllerTestIT {
                         .param("admin", "false")
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection());
-        User user = userService.findUserByUsername("createNewProfessorTest");
+        User user = userService.findByUsername("createNewProfessorTest");
         assertEquals("testName", user.getFirstName());
         assertEquals("lastName", user.getLastName());
         assertEquals(user.getRoles().size(), 1);

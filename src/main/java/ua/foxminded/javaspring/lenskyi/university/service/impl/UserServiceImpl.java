@@ -1,13 +1,13 @@
 package ua.foxminded.javaspring.lenskyi.university.service.impl;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.form.ProfessorForm;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.mapper.GroupEntityGroupDtoMapper;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.mapper.UserEntityUserDtoMapper;
+import ua.foxminded.javaspring.lenskyi.university.model.Group;
 import ua.foxminded.javaspring.lenskyi.university.model.Role;
 import ua.foxminded.javaspring.lenskyi.university.model.Subject;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
@@ -28,7 +28,6 @@ public class UserServiceImpl implements UserService {
     private static final String STUDENT_ROLE_NAME = "student";
     private static final String PROFESSOR_ROLE_NAME = "professor";
     private static final String ADMIN_ROLE_NAME = "admin";
-    private static final String EMPTY_STRING = "";
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final GroupRepository groupRepository;
@@ -59,35 +58,19 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).orElseThrow(IllegalArgumentException::new);
         UserDto userDto = userDtoMapper.userEntityToUserDto(user);
         if (user.getGroup() != null) {
-            userDto.setGroupDto(groupDtoMapper.groupEntityToGroupDto(groupRepository.findByName(
-                    user.getGroup().getName()).orElseThrow(IllegalArgumentException::new)));
+            Group group = groupRepository.findByName(user.getGroup().getName())
+                    .orElseThrow(IllegalArgumentException::new);
+            userDto.setGroupDto(groupDtoMapper.groupEntityToGroupDto(group));
         }
         return userDto;
     }
 
-    public User findUserByUsername(String username) {
+    public User findByUsername(String username) {
         return userRepository.findUserByUsername(username);
-    }
-
-    @Transactional
-    public void updateRolesFromArray(User user, List<String> newRolesArray) throws Exception {
-        if (!newRolesArray.isEmpty()) {
-            Set<Role> updatedRoles = new HashSet<>();
-            newRolesArray.forEach(roleName ->
-                    updatedRoles.add(roleRepository.findRoleByName(roleName).orElseThrow())
-            );
-            user.setRoles(updatedRoles);
-            userRepository.save(user);
-            userRepository.flush();
-        }
     }
 
     public boolean existsById(Long userId) {
         return userRepository.existsById(userId);
-    }
-
-    public UserDto getUserDtoByUserId(Long id) {
-        return userDtoMapper.userEntityToUserDto(userRepository.findById(id).orElseThrow());
     }
 
     public List<User> findAllProfessorsWithNoSubject() {
@@ -105,14 +88,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void createStudentFromUserDto(@Valid UserDto userDto) {
+    public void createStudentFromUserDto(UserDto userDto) {
         User newStudent = new User();
         newStudent.setFirstName(userDto.getFirstName());
-        if (userDto.getLastName().isEmpty() || userDto.getLastName().isBlank()) {
-            newStudent.setLastName(EMPTY_STRING);
-        } else {
-            newStudent.setLastName(userDto.getLastName());
-        }
+        newStudent.setLastName(userDto.getLastName());
         newStudent.setUsername(userDto.getUsername());
         newStudent.setPassword(passwordEncoder.encode(userDto.getPassword()));
         Role studentRole = roleRepository.findRoleByName(STUDENT_ROLE_NAME).orElseThrow(IllegalArgumentException::new);
@@ -132,14 +111,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void updateStudentFromUserDto(@Valid UserDto userDto) {
+    public void updateStudent(UserDto userDto) {
         User userToUpdate = userRepository.findById(userDto.getId()).orElseThrow(IllegalArgumentException::new);
         userToUpdate.setFirstName(userDto.getFirstName());
-        if (userDto.getLastName().isEmpty() || userDto.getLastName().isBlank()) {
-            userToUpdate.setLastName(EMPTY_STRING);
-        } else {
-            userToUpdate.setLastName(userDto.getLastName());
-        }
+        userToUpdate.setLastName(userDto.getLastName());
         userToUpdate.setUsername(userDto.getUsername());
         if (bcryptPattern.matcher(userDto.getPassword()).matches()) {
             userToUpdate.setPassword(userDto.getPassword());
@@ -152,25 +127,15 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<User> findAllProfessorsAndAdmins() {
-        Role professorRole = roleRepository.findRoleByName(PROFESSOR_ROLE_NAME).orElseThrow(IllegalArgumentException::new);
-        Role adminRole = roleRepository.findRoleByName(ADMIN_ROLE_NAME).orElseThrow(IllegalArgumentException::new);
-        List<User> professors = userRepository.findAllByRolesContains(professorRole);
-        List<User> admins = userRepository.findAllByRolesContains(adminRole);
-        Set<User> professorsAndAdmins = new HashSet<>();
-        professors.forEach(professorsAndAdmins::add);
-        admins.forEach(professorsAndAdmins::add);
-        return professorsAndAdmins.stream().toList();
+        return userRepository.findAllByRolesIsIn(
+                roleRepository.findAllByNameIsIn(List.of(ADMIN_ROLE_NAME, PROFESSOR_ROLE_NAME)));
     }
 
     @Transactional
-    public void createProfessorFromProfessorForm(@Valid ProfessorForm professorForm) {
+    public void createProfessor(ProfessorForm professorForm) {
         User newProfessor = new User();
         newProfessor.setFirstName(professorForm.getFirstName());
-        if (professorForm.getLastName().isEmpty() || professorForm.getLastName().isBlank()) {
-            newProfessor.setLastName(EMPTY_STRING);
-        } else {
-            newProfessor.setLastName(professorForm.getLastName());
-        }
+        newProfessor.setLastName(professorForm.getLastName());
         newProfessor.setUsername(professorForm.getUsername());
         newProfessor.setPassword(passwordEncoder.encode(professorForm.getPassword()));
         Subject subject = subjectRepository.findSubjectByName(professorForm.getSubjectName()).orElse(null);
@@ -189,7 +154,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public ProfessorForm createAndFillProfessorFormByUserId(Long id) {
+    public ProfessorForm createProfessorFormDto(Long id) {
         User user = userRepository.findById(id).orElseThrow();
         ProfessorForm professorForm = new ProfessorForm();
         professorForm.setId(user.getId());
@@ -200,19 +165,18 @@ public class UserServiceImpl implements UserService {
         if (user.getSubject() != null) {
             professorForm.setSubjectName(user.getSubject().getName());
         }
-        professorForm.setAdmin(user.getRoles().contains(roleRepository.findRoleByName(ADMIN_ROLE_NAME).orElseThrow()));
+        boolean isAdmin = user.getRoles().stream()
+                .map(Role::getName)
+                .anyMatch(ADMIN_ROLE_NAME::equals);
+        professorForm.setAdmin(isAdmin);
         return professorForm;
     }
 
     @Transactional
-    public void updateProfessorFromProfessorForm(@Valid ProfessorForm professorForm) {
+    public void updateProfessor(ProfessorForm professorForm) {
         User userToUpdate = userRepository.findById(professorForm.getId()).orElseThrow(IllegalArgumentException::new);
         userToUpdate.setFirstName(professorForm.getFirstName());
-        if (professorForm.getLastName().isEmpty() || professorForm.getLastName().isBlank()) {
-            userToUpdate.setLastName(EMPTY_STRING);
-        } else {
-            userToUpdate.setLastName(professorForm.getLastName());
-        }
+        userToUpdate.setLastName(professorForm.getLastName());
         userToUpdate.setUsername(professorForm.getUsername());
         if (bcryptPattern.matcher(professorForm.getPassword()).matches()) {
             userToUpdate.setPassword(professorForm.getPassword());

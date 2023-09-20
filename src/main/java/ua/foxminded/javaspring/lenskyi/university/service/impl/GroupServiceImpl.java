@@ -36,7 +36,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Transactional
-    public void createNewGroupFromGroupDto(GroupDto groupDto) {
+    public void createNewGroup(GroupDto groupDto) {
         if (!groupDto.getName().isEmpty() && !groupDto.getName().isBlank()) {
             groupRepository.saveAndFlush(groupEntityGroupDtoMapper.groupDtoToGroupEntity(groupDto));
         }

@@ -76,13 +76,13 @@ public class UserController {
 
     @PutMapping("/student/{studentId}")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String editStudent(@PathVariable("studentId") Long id, UserDto userDto) {
+    public String editStudent(@PathVariable("studentId") Long id, @Valid UserDto userDto) {
         if (userService.existsByUsername(userDto.getUsername()) && !userDto.getUsername()
                 .equals(userService.findById(id).getUsername())) {
             return ERROR_400_TEMPLATE_NAME;
         }
         userDto.setId(id);
-        userService.updateStudentFromUserDto(userDto);
+        userService.updateStudent(userDto);
         return REDIRECT_STUDENT_PAGE;
     }
 
@@ -102,11 +102,11 @@ public class UserController {
 
     @PostMapping("/professor")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String createNewProfessor(ProfessorForm professorForm) {
+    public String createNewProfessor(@Valid ProfessorForm professorForm) {
         if (userService.existsByUsername(professorForm.getUsername())) {
             return ERROR_400_TEMPLATE_NAME;
         }
-        userService.createProfessorFromProfessorForm(professorForm);
+        userService.createProfessor(professorForm);
         return REDIRECT_PROFESSOR_PAGE;
     }
 
@@ -126,7 +126,7 @@ public class UserController {
         if (!userService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
         }
-        ProfessorForm professorForm = userService.createAndFillProfessorFormByUserId(id);
+        ProfessorForm professorForm = userService.createProfessorFormDto(id);
         model.addAttribute("professorForm", professorForm);
         model.addAttribute("freeSubjects", subjectService.findAllSubjectsWithNoProfessor());
         return EDIT_PROFESSOR_PAGE_TEMPLATE_NAME;
@@ -134,13 +134,13 @@ public class UserController {
 
     @PutMapping("/professor/{professorId}")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String editProfessor(@PathVariable("professorId") Long id, ProfessorForm professorForm) {
+    public String editProfessor(@PathVariable("professorId") Long id, @Valid ProfessorForm professorForm) {
         if (userService.existsByUsername(professorForm.getUsername()) && !professorForm.getUsername()
                 .equals(userService.findById(id).getUsername())) {
             return ERROR_400_TEMPLATE_NAME;
         }
         professorForm.setId(id);
-        userService.updateProfessorFromProfessorForm(professorForm);
+        userService.updateProfessor(professorForm);
         return REDIRECT_PROFESSOR_PAGE;
     }
 

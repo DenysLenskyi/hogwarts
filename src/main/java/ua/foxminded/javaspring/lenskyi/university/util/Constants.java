@@ -9,7 +9,7 @@ public abstract class Constants {
     public static final String REDIRECT_STUDENT_PAGE = "redirect:/user/student";
     public static final String REDIRECT_PROFESSOR_PAGE = "redirect:/user/professor";
     public static final String SUBJECT_PAGE_TEMPLATE_NAME = "subjects-db-overview";
-    public static final String GROUP_PAGE_TEMPLATE_NAME = "groups-db-overview";
+    public static final String GROUP_PAGE_TEMPLATE_NAME = "groups-page";
     public static final String ERROR_400_TEMPLATE_NAME = "error/400";
     public static final String ERROR_403_TEMPLATE_NAME = "error/403";
     public static final String ERROR_404_TEMPLATE_NAME = "error/404";

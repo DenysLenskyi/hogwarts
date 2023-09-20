@@ -36,13 +36,13 @@
             <tr th:each="group : ${groups}">
                 <td th:text="${group.name}"></td>
                 <td>
-                    <div th:if="${groupService.getNumStudentsInGroup(group.getName())} == 0">
+                    <div th:if="${group.numStudentsInGroup} == 0">
                         <form th:action="@{/group/{id}(id=${group.getId()})}" th:method="delete">
                             <input type="submit" value="DELETE" class="btn btn-danger" style="margin-bottom: 3px">
                         </form>
                     </div>
-                    <div th:if="${groupService.getNumStudentsInGroup(group.getName())} != 0">
-                        <p><span th:text="${groupService.getNumStudentsInGroup(group.getName())}"/></p>
+                    <div th:if="${group.numStudentsInGroup} != 0">
+                        <p><span th:text="${group.numStudentsInGroup}"/></p>
                         <p>
                         <div>
                             <a th:href="@{/group/{id}/edit-page(id=${group.getId()})}">

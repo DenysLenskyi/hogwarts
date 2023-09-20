@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
@@ -52,12 +51,12 @@ class GroupControllerTestIT {
 
     @Test
     @WithUserDetails("minervamcgonagall")
-    void givenGroups_whenFindAllGroups_thenReturnJsonArray() throws Exception {
+    void showGroupsPageTest() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                         .get("/group/all"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("groups-db-overview"))
-                .andExpect(model().attribute("groups", groupService.findAll()));
+                .andExpect(view().name("groups-page"))
+                .andExpect(model().attribute("groups", groupService.getAllGroupDtoWithNumStudents()));
     }
 
     @Test

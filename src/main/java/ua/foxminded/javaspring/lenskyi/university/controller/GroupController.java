@@ -24,8 +24,7 @@ public class GroupController {
 
     @GetMapping("/all")
     public String getGroupPage(Model model) {
-        model.addAttribute("groups", groupService.findAll());
-        model.addAttribute("groupService", groupService);
+        model.addAttribute("groups", groupService.getAllGroupDtoWithNumStudents());
         return GROUP_PAGE_TEMPLATE_NAME;
     }
 

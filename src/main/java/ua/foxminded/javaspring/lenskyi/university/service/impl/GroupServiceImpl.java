@@ -10,6 +10,7 @@ import ua.foxminded.javaspring.lenskyi.university.repository.GroupRepository;
 import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -68,5 +69,16 @@ public class GroupServiceImpl implements GroupService {
         usersGroupFrom.forEach(student -> student.setGroup(groupTo));
         groupRepository.saveAndFlush(groupFrom);
         groupRepository.saveAndFlush(groupTo);
+    }
+
+    public List<GroupDto> getAllGroupDtoWithNumStudents() {
+        List<GroupDto> list = new ArrayList<>();
+        groupRepository.findAll().stream()
+                .forEach(group -> {
+                    GroupDto groupDto = groupEntityGroupDtoMapper.groupEntityToGroupDto(group);
+                    groupDto.setNumStudentsInGroup(userRepository.countAllByGroupName(group.getName()));
+                    list.add(groupDto);
+                });
+        return list;
     }
 }

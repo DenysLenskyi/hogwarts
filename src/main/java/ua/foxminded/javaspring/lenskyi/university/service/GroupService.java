@@ -24,4 +24,6 @@ public interface GroupService {
     Group findByName(String groupName);
 
     void moveStudentsFromGroupToAnotherGroup(Group groupFrom, Group groupTo);
+
+    List<GroupDto> getAllGroupDtoWithNumStudents();
 }

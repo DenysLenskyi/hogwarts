@@ -6,6 +6,7 @@ public class GroupDto {
 
     private Long id;
     private String name;
+    private long numStudentsInGroup;
     private Set<UserDto> users;
     private Set<LessonDto> lessons;
 
@@ -23,6 +24,14 @@ public class GroupDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getNumStudentsInGroup() {
+        return numStudentsInGroup;
+    }
+
+    public void setNumStudentsInGroup(long numStudentsInGroup) {
+        this.numStudentsInGroup = numStudentsInGroup;
     }
 
     public Set<UserDto> getUsers() {

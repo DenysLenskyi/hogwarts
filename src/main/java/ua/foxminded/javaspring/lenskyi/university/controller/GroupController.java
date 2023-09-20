@@ -40,10 +40,9 @@ public class GroupController {
     public String createNewGroup(GroupDto groupDto) {
         if (groupService.existsByName(groupDto.getName())) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            groupService.createNewGroupFromGroupDto(groupDto);
-            return REDIRECT_GROUP_PAGE;
         }
+        groupService.createNewGroupFromGroupDto(groupDto);
+        return REDIRECT_GROUP_PAGE;
     }
 
     @DeleteMapping("/{groupId}")
@@ -51,10 +50,9 @@ public class GroupController {
     public String deleteGroup(@PathVariable("groupId") Long id) {
         if (!groupService.existsById(id)) {
             return "error/400";
-        } else {
-            groupService.deleteById(id);
-            return REDIRECT_GROUP_PAGE;
         }
+        groupService.deleteById(id);
+        return REDIRECT_GROUP_PAGE;
     }
 
     @GetMapping("{groupId}/edit-page")
@@ -62,15 +60,14 @@ public class GroupController {
     public String showEditGroupForm(@PathVariable("groupId") Long id, Model model) {
         if (!groupService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            Group currentGroup = groupService.findById(id);
-            List<Group> groups = groupService.findAll();
-            groups.remove(currentGroup);
-            model.addAttribute("groupsExcludeCurrent", groups);
-            model.addAttribute("currentGroup", currentGroup);
-            model.addAttribute("groupDto", new GroupDto());
-            return EDIT_GROUP_TEMPLATE_NAME;
         }
+        Group currentGroup = groupService.findById(id);
+        List<Group> groups = groupService.findAll();
+        groups.remove(currentGroup);
+        model.addAttribute("groupsExcludeCurrent", groups);
+        model.addAttribute("currentGroup", currentGroup);
+        model.addAttribute("groupDto", new GroupDto());
+        return EDIT_GROUP_TEMPLATE_NAME;
     }
 
     @PutMapping("{groupId}")

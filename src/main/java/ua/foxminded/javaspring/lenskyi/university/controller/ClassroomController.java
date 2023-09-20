@@ -37,10 +37,9 @@ public class ClassroomController {
     public String createNewClassroom(ClassroomDto classroomDto) {
         if (classroomService.existsByName(classroomDto.getName())) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            classroomService.createNewClassroomFromClassroomDto(classroomDto);
-            return REDIRECT_CLASSROOM_PAGE;
         }
+        classroomService.createNewClassroomFromClassroomDto(classroomDto);
+        return REDIRECT_CLASSROOM_PAGE;
     }
 
     @DeleteMapping("/{classroomId}")
@@ -48,10 +47,9 @@ public class ClassroomController {
     public String deleteClassroom(@PathVariable("classroomId") Long id) {
         if (!classroomService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            classroomService.deleteClassroomById(id);
-            return REDIRECT_CLASSROOM_PAGE;
         }
+        classroomService.deleteClassroomById(id);
+        return REDIRECT_CLASSROOM_PAGE;
     }
 
     @GetMapping("/{classroomId}/edit-page")
@@ -59,11 +57,10 @@ public class ClassroomController {
     public String showEditClassroomForm(@PathVariable("classroomId") Long id, Model model) {
         if (!classroomService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            ClassroomDto classroomDto = classroomService.findById(id);
-            model.addAttribute("classroomDto", classroomDto);
-            return EDIT_CLASSROOM_TEMPLATE_NAME;
         }
+        ClassroomDto classroomDto = classroomService.findById(id);
+        model.addAttribute("classroomDto", classroomDto);
+        return EDIT_CLASSROOM_TEMPLATE_NAME;
     }
 
     @PutMapping("/{classroomId}")
@@ -72,12 +69,9 @@ public class ClassroomController {
         if (classroomService.existsByName(classroomDto.getName()) && !classroomDto.getName()
                 .equals(classroomService.findById(id).getName())) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            classroomDto.setId(id);
-            classroomService.updateClassroomFromClassroomDto(classroomDto);
-            return REDIRECT_CLASSROOM_PAGE;
         }
+        classroomDto.setId(id);
+        classroomService.updateClassroomFromClassroomDto(classroomDto);
+        return REDIRECT_CLASSROOM_PAGE;
     }
 }
-
-// minervamcgonagall

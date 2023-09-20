@@ -47,10 +47,9 @@ public class UserController {
     public String createNewStudent(@Valid UserDto userDto) {
         if (userService.existsByUsername(userDto.getUsername())) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            userService.createStudentFromUserDto(userDto);
-            return REDIRECT_STUDENT_PAGE;
         }
+        userService.createStudentFromUserDto(userDto);
+        return REDIRECT_STUDENT_PAGE;
     }
 
     @DeleteMapping("/student/{studentId}")
@@ -58,10 +57,9 @@ public class UserController {
     public String deleteStudent(@PathVariable("studentId") Long id) {
         if (!userService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            userService.deleteById(id);
-            return REDIRECT_STUDENT_PAGE;
         }
+        userService.deleteById(id);
+        return REDIRECT_STUDENT_PAGE;
     }
 
     @GetMapping("/student/{studentId}/edit-page")
@@ -69,12 +67,11 @@ public class UserController {
     public String showEditStudentForm(@PathVariable("studentId") Long id, Model model) {
         if (!userService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            UserDto studentDto = userService.findById(id);
-            model.addAttribute("studentDto", studentDto);
-            model.addAttribute("groups", groupService.findAll());
-            return EDIT_STUDENT_PAGE_TEMPLATE_NAME;
         }
+        UserDto studentDto = userService.findById(id);
+        model.addAttribute("studentDto", studentDto);
+        model.addAttribute("groups", groupService.findAll());
+        return EDIT_STUDENT_PAGE_TEMPLATE_NAME;
     }
 
     @PutMapping("/student/{studentId}")
@@ -83,11 +80,10 @@ public class UserController {
         if (userService.existsByUsername(userDto.getUsername()) && !userDto.getUsername()
                 .equals(userService.findById(id).getUsername())) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            userDto.setId(id);
-            userService.updateStudentFromUserDto(userDto);
-            return REDIRECT_STUDENT_PAGE;
         }
+        userDto.setId(id);
+        userService.updateStudentFromUserDto(userDto);
+        return REDIRECT_STUDENT_PAGE;
     }
 
     @GetMapping("/professor")
@@ -109,10 +105,9 @@ public class UserController {
     public String createNewProfessor(ProfessorForm professorForm) {
         if (userService.existsByUsername(professorForm.getUsername())) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            userService.createProfessorFromProfessorForm(professorForm);
-            return REDIRECT_PROFESSOR_PAGE;
         }
+        userService.createProfessorFromProfessorForm(professorForm);
+        return REDIRECT_PROFESSOR_PAGE;
     }
 
     @DeleteMapping("/professor/{professorId}")
@@ -120,10 +115,9 @@ public class UserController {
     public String deleteProfessor(@PathVariable("professorId") Long id) {
         if (!userService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            userService.deleteById(id);
-            return REDIRECT_PROFESSOR_PAGE;
         }
+        userService.deleteById(id);
+        return REDIRECT_PROFESSOR_PAGE;
     }
 
     @GetMapping("/professor/{professorId}/edit-page")
@@ -131,12 +125,11 @@ public class UserController {
     public String showEditProfessorForm(@PathVariable("professorId") Long id, Model model) {
         if (!userService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            ProfessorForm professorForm = userService.createAndFillProfessorFormByUserId(id);
-            model.addAttribute("professorForm", professorForm);
-            model.addAttribute("freeSubjects", subjectService.findAllSubjectsWithNoProfessor());
-            return EDIT_PROFESSOR_PAGE_TEMPLATE_NAME;
         }
+        ProfessorForm professorForm = userService.createAndFillProfessorFormByUserId(id);
+        model.addAttribute("professorForm", professorForm);
+        model.addAttribute("freeSubjects", subjectService.findAllSubjectsWithNoProfessor());
+        return EDIT_PROFESSOR_PAGE_TEMPLATE_NAME;
     }
 
     @PutMapping("/professor/{professorId}")
@@ -145,11 +138,10 @@ public class UserController {
         if (userService.existsByUsername(professorForm.getUsername()) && !professorForm.getUsername()
                 .equals(userService.findById(id).getUsername())) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            professorForm.setId(id);
-            userService.updateProfessorFromProfessorForm(professorForm);
-            return REDIRECT_PROFESSOR_PAGE;
         }
+        professorForm.setId(id);
+        userService.updateProfessorFromProfessorForm(professorForm);
+        return REDIRECT_PROFESSOR_PAGE;
     }
 
     // minervamcgonagall

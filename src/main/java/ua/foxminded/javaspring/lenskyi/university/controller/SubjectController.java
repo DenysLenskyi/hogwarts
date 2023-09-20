@@ -36,13 +36,12 @@ public class SubjectController {
     public String showEditSubjectForm(@PathVariable("subjectId") Long id, Model model) {
         if (!subjectService.doesSubjectExistById(id)) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            SubjectDto subjectDto = subjectService.findById(id);
-            model.addAttribute("subjectDto", subjectDto);
-            model.addAttribute("freeClassrooms", classroomService.findAllFreeClassrooms());
-            model.addAttribute("freeProfessors", userService.findAllProfessorsWithNoSubject());
-            return EDIT_SUBJECT_TEMPLATE_NAME;
         }
+        SubjectDto subjectDto = subjectService.findById(id);
+        model.addAttribute("subjectDto", subjectDto);
+        model.addAttribute("freeClassrooms", classroomService.findAllFreeClassrooms());
+        model.addAttribute("freeProfessors", userService.findAllProfessorsWithNoSubject());
+        return EDIT_SUBJECT_TEMPLATE_NAME;
     }
 
     @PutMapping("/{subjectId}")
@@ -51,11 +50,10 @@ public class SubjectController {
         if (subjectService.existsByName(subjectDto.getName()) && !subjectDto.getName()
                 .equals(subjectService.findById(id).getName())) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            subjectDto.setId(id);
-            subjectService.updateSubjectFromSubjectDto(subjectDto);
-            return REDIRECT_SUBJECT_PAGE;
         }
+        subjectDto.setId(id);
+        subjectService.updateSubjectFromSubjectDto(subjectDto);
+        return REDIRECT_SUBJECT_PAGE;
     }
 
     @GetMapping("/create-subject-page")
@@ -72,10 +70,9 @@ public class SubjectController {
     public String createNewSubject(SubjectDto subjectDto) {
         if (subjectService.existsByName(subjectDto.getName())) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            subjectService.createNewSubjectFromSubjectDto(subjectDto);
-            return REDIRECT_SUBJECT_PAGE;
         }
+        subjectService.createNewSubjectFromSubjectDto(subjectDto);
+        return REDIRECT_SUBJECT_PAGE;
     }
 
     @DeleteMapping("/{subjectId}")
@@ -83,9 +80,8 @@ public class SubjectController {
     public String deleteSubject(@PathVariable("subjectId") Long id) {
         if (!subjectService.doesSubjectExistById(id)) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            subjectService.deleteSubjectById(id);
-            return REDIRECT_SUBJECT_PAGE;
         }
+        subjectService.deleteSubjectById(id);
+        return REDIRECT_SUBJECT_PAGE;
     }
 }

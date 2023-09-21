@@ -22,7 +22,7 @@ public class Lesson {
 
     @ManyToOne
     @JoinColumn(name = "SUBJECT_ID", insertable = false, updatable = false)
-    private Subject subjectOfTheLesson;
+    private Subject subject;
 
     @ManyToOne
     @JoinColumn(name = "GROUP_ID", insertable = false, updatable = false)
@@ -55,12 +55,12 @@ public class Lesson {
         this.lessonStartEndTime = lessonStartEndTime;
     }
 
-    public Subject getSubjectOfTheLesson() {
-        return subjectOfTheLesson;
+    public Subject getSubject() {
+        return subject;
     }
 
-    public void setSubjectOfTheLesson(Subject subjectLessons) {
-        this.subjectOfTheLesson = subjectLessons;
+    public void setSubject(Subject subjectLessons) {
+        this.subject = subjectLessons;
     }
 
     public Group getGroup() {

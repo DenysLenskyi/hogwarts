@@ -57,6 +57,6 @@ class EntitiesCorrelationTest {
                 LocalDate.of(2023, 9, 4), lessonStartEndTimeRepository.findById(1L).get());
 
         assertEquals("Gryffindor-7", lesson.getGroup().getName());
-        assertEquals("Potions", lesson.getSubjectOfTheLesson().getName());
+        assertEquals("Potions", lesson.getSubject().getName());
     }
 }

@@ -4,10 +4,8 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -56,13 +54,13 @@ class LessonControllerTest {
         testLesson.setDate(LocalDate.of(1994, 1, 20));
         testLesson.setLessonStartEndTime(new LessonStartEndTime());
         testLesson.setGroup(new Group());
-        testLesson.setSubjectOfTheLesson(new Subject());
+        testLesson.setSubject(new Subject());
         List<Lesson> allLessons = Arrays.asList(testLesson);
         given(lessonRepository.findAll()).willReturn(allLessons);
         mvc.perform(MockMvcRequestBuilders
                         .get("/lesson/all"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("lessons-db-overview"))
+                .andExpect(view().name("lessons-page"))
                 .andExpect(model().attribute("lessons", allLessons))
                 .andExpect(model().attribute("lessons", Matchers.hasSize(1)));
     }

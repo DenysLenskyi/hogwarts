@@ -37,16 +37,16 @@ public class LessonStartEndTimeDto {
         if (this == o) return true;
         if (!(o instanceof LessonStartEndTimeDto that)) return false;
 
-        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
-        if (getStart() != null ? !getStart().equals(that.getStart()) : that.getStart() != null) return false;
-        return getEnd() != null ? getEnd().equals(that.getEnd()) : that.getEnd() == null;
+        if (!getId().equals(that.getId())) return false;
+        if (!getStart().equals(that.getStart())) return false;
+        return getEnd().equals(that.getEnd());
     }
 
     @Override
     public int hashCode() {
-        int result = getId() != null ? getId().hashCode() : 0;
-        result = 31 * result + (getStart() != null ? getStart().hashCode() : 0);
-        result = 31 * result + (getEnd() != null ? getEnd().hashCode() : 0);
+        int result = getId().hashCode();
+        result = 31 * result + getStart().hashCode();
+        result = 31 * result + getEnd().hashCode();
         return result;
     }
 }

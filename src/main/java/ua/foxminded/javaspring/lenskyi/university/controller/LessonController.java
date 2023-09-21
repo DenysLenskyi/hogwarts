@@ -5,20 +5,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ua.foxminded.javaspring.lenskyi.university.repository.LessonRepository;
+import ua.foxminded.javaspring.lenskyi.university.service.LessonService;
 
 @Controller
 @RequestMapping("/lesson")
 public class LessonController {
 
-    private LessonRepository lessonRepository;
+   private LessonService lessonService;
 
-    public LessonController(LessonRepository lessonRepository) {
-        this.lessonRepository = lessonRepository;
+    public LessonController(LessonService lessonService) {
+        this.lessonService = lessonService;
     }
 
     @GetMapping("/all")
     public String getLessonPage(Model model) {
-        model.addAttribute("lessons", lessonRepository.findAll());
-        return "lessons-db-overview";
+        model.addAttribute("lessons", lessonService.findAllLessonDto());
+        return "lessons-page";
     }
 }

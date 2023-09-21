@@ -33,6 +33,6 @@ class LessonRepositoryTest {
     void lessonGotSubjectTest() {
         List<Lesson> testLessons = lessonRepository.findLessonsByDate(LocalDate.of(2023, 9, 18));
         Lesson lesson = lessonRepository.findById(testLessons.get(0).getId()).orElseThrow();
-        assertTrue(!lesson.getSubjectOfTheLesson().getName().isEmpty());
+        assertTrue(!lesson.getSubject().getName().isEmpty());
     }
 }

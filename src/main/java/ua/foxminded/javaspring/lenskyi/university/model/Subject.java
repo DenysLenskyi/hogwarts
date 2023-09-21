@@ -29,7 +29,7 @@ public class Subject {
     @JoinColumn(name = "CLASSROOM_ID", referencedColumnName = "ID")
     private Classroom classroom;
 
-    @OneToMany(mappedBy = "subjectOfTheLesson")
+    @OneToMany(mappedBy = "subject")
     private Set<Lesson> lessons;
 
     public Long getId() {

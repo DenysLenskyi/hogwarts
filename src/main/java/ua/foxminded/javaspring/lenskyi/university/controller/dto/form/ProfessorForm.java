@@ -13,7 +13,6 @@ public class ProfessorForm {
     @NotNull
     @NotBlank
     private String username;
-    @NotNull
     private String password;
     private String subjectName;
     private boolean isAdmin;

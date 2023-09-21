@@ -15,8 +15,6 @@ public class UserDto {
     @NotNull
     @NotBlank
     private String username;
-    @NotNull
-    @NotBlank
     private String password;
     private Set<RoleDto> roles;
     private GroupDto groupDto;

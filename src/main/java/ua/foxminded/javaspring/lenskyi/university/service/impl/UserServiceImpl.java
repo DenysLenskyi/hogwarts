@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void createStudentFromUserDto(UserDto userDto) {
+    public void createStudent(UserDto userDto) {
         User newStudent = new User();
         newStudent.setFirstName(userDto.getFirstName());
         newStudent.setLastName(userDto.getLastName());
@@ -116,9 +116,7 @@ public class UserServiceImpl implements UserService {
         userToUpdate.setFirstName(userDto.getFirstName());
         userToUpdate.setLastName(userDto.getLastName());
         userToUpdate.setUsername(userDto.getUsername());
-        if (bcryptPattern.matcher(userDto.getPassword()).matches()) {
-            userToUpdate.setPassword(userDto.getPassword());
-        } else {
+        if (!userDto.getPassword().isEmpty() && !userDto.getPassword().isBlank()) {
             userToUpdate.setPassword(passwordEncoder.encode(userDto.getPassword()));
         }
         userToUpdate.setGroup(groupRepository.findByName(
@@ -178,9 +176,7 @@ public class UserServiceImpl implements UserService {
         userToUpdate.setFirstName(professorForm.getFirstName());
         userToUpdate.setLastName(professorForm.getLastName());
         userToUpdate.setUsername(professorForm.getUsername());
-        if (bcryptPattern.matcher(professorForm.getPassword()).matches()) {
-            userToUpdate.setPassword(professorForm.getPassword());
-        } else {
+        if (!professorForm.getPassword().isEmpty() && !professorForm.getPassword().isBlank()) {
             userToUpdate.setPassword(passwordEncoder.encode(professorForm.getPassword()));
         }
         if (professorForm.isAdmin()) {

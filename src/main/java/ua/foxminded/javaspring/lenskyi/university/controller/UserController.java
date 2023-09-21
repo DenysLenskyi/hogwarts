@@ -48,7 +48,7 @@ public class UserController {
         if (userService.existsByUsername(userDto.getUsername())) {
             return ERROR_400_TEMPLATE_NAME;
         }
-        userService.createStudentFromUserDto(userDto);
+        userService.createStudent(userDto);
         return REDIRECT_STUDENT_PAGE;
     }
 

@@ -24,7 +24,7 @@ public interface UserService {
 
     boolean existsByUsername(String username);
 
-    void createStudentFromUserDto(UserDto userDto);
+    void createStudent(UserDto userDto);
     void createProfessor(ProfessorForm professorForm);
 
     void deleteById(Long id);

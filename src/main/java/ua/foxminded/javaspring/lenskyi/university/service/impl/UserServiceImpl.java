@@ -7,20 +7,17 @@ import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.form.ProfessorForm;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.mapper.GroupEntityGroupDtoMapper;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.mapper.UserEntityUserDtoMapper;
-import ua.foxminded.javaspring.lenskyi.university.model.Group;
-import ua.foxminded.javaspring.lenskyi.university.model.Role;
-import ua.foxminded.javaspring.lenskyi.university.model.Subject;
-import ua.foxminded.javaspring.lenskyi.university.model.User;
+import ua.foxminded.javaspring.lenskyi.university.model.*;
 import ua.foxminded.javaspring.lenskyi.university.repository.GroupRepository;
 import ua.foxminded.javaspring.lenskyi.university.repository.RoleRepository;
 import ua.foxminded.javaspring.lenskyi.university.repository.SubjectRepository;
 import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
+import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 import ua.foxminded.javaspring.lenskyi.university.service.UserService;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -32,15 +29,15 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final GroupRepository groupRepository;
     private final SubjectRepository subjectRepository;
+    private final SubjectService subjectService;
     private final UserEntityUserDtoMapper userDtoMapper;
     private final GroupEntityGroupDtoMapper groupDtoMapper;
     private PasswordEncoder passwordEncoder;
-    private Pattern bcryptPattern = Pattern.compile("\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
 
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
                            GroupRepository groupRepository, SubjectRepository subjectRepository,
                            UserEntityUserDtoMapper userDtoMapper, GroupEntityGroupDtoMapper groupDtoMapper,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder, SubjectService subjectService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.groupRepository = groupRepository;
@@ -48,6 +45,7 @@ public class UserServiceImpl implements UserService {
         this.userDtoMapper = userDtoMapper;
         this.groupDtoMapper = groupDtoMapper;
         this.passwordEncoder = passwordEncoder;
+        this.subjectService = subjectService;
     }
 
     public List<User> findAllUsers() {
@@ -62,6 +60,11 @@ public class UserServiceImpl implements UserService {
                     .orElseThrow(IllegalArgumentException::new);
             userDto.setGroupDto(groupDtoMapper.groupEntityToGroupDto(group));
         }
+        if (user.getSubject() != null) {
+            Subject subject = subjectRepository.findSubjectByName(user.getSubject().getName())
+                    .orElseThrow(IllegalArgumentException::new);
+            userDto.setSubjectDto(subjectService.findById(subject.getId()));
+        }
         return userDto;
     }
 
@@ -73,14 +76,20 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsById(userId);
     }
 
-    public List<User> findAllProfessorsWithNoSubject() {
+    public List<User> findAllProfessorWithNoSubject() {
         return userRepository.findAllBySubjectIsNullAndRolesContains(
                 roleRepository.findRoleByName(PROFESSOR_ROLE_NAME).orElseThrow(IllegalArgumentException::new));
     }
 
-    public List<User> findAllStudents() {
+    public List<User> findAllStudent() {
         Role studentRole = roleRepository.findRoleByName(STUDENT_ROLE_NAME).orElseThrow(IllegalArgumentException::new);
         return userRepository.findAllByRolesContains(studentRole);
+    }
+
+    public List<UserDto> findAllStudentDto() {
+        return findAllStudent().stream()
+                .map(student -> findById(student.getId()))
+                .toList();
     }
 
     public boolean existsByUsername(String username) {
@@ -124,9 +133,15 @@ public class UserServiceImpl implements UserService {
         userRepository.saveAndFlush(userToUpdate);
     }
 
-    public List<User> findAllProfessorsAndAdmins() {
+    public List<User> findAllProfessorAndAdmin() {
         return userRepository.findAllByRolesIsIn(
                 roleRepository.findAllByNameIsIn(List.of(ADMIN_ROLE_NAME, PROFESSOR_ROLE_NAME)));
+    }
+
+    public List<UserDto> findAllProfessorAndAdminDto() {
+        return findAllProfessorAndAdmin().stream()
+                .map(prof -> findById(prof.getId()))
+                .toList();
     }
 
     @Transactional

@@ -16,11 +16,11 @@ public interface UserService {
 
     boolean existsById(Long userId);
 
-    List<User> findAllProfessorsWithNoSubject();
+    List<User> findAllProfessorWithNoSubject();
 
-    List<User> findAllStudents();
+    List<User> findAllStudent();
 
-    List<User> findAllProfessorsAndAdmins();
+    List<User> findAllProfessorAndAdmin();
 
     boolean existsByUsername(String username);
 
@@ -34,4 +34,7 @@ public interface UserService {
     ProfessorForm createProfessorFormDto(Long id);
 
     void updateProfessor(ProfessorForm professorForm);
+
+    List<UserDto> findAllProfessorAndAdminDto();
+    List<UserDto> findAllStudentDto();
 }

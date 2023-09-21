@@ -33,7 +33,7 @@
             <tr th:each="student : ${students}">
                 <td th:text="${student.firstName}"></td>
                 <td th:text="${student.getLastName()}"></td>
-                <td th:text="${student.group.name}"></td>
+                <td th:text="${student.groupDto.name}"></td>
                 <td>
                     <div>
                         <a th:href="@{/user/student/{id}/edit-page(id=${student.getId()})}">

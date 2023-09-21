@@ -64,7 +64,7 @@ class SubjectControllerTestIT {
                 .andExpect(view().name("forms/edit-subject-form"))
                 .andExpect(model().attribute("subjectDto", expectedSubjectDto))
                 .andExpect(model().attribute("freeClassrooms", classroomService.findAllFreeClassrooms()))
-                .andExpect(model().attribute("freeProfessors", userService.findAllProfessorsWithNoSubject()));
+                .andExpect(model().attribute("freeProfessors", userService.findAllProfessorWithNoSubject()));
     }
 
     @Test
@@ -118,7 +118,7 @@ class SubjectControllerTestIT {
                 .andExpect(view().name("forms/create-subject-form"))
                 .andExpect(model().attributeExists("subjectDto"))
                 .andExpect(model().attribute("freeClassrooms", classroomService.findAllFreeClassrooms()))
-                .andExpect(model().attribute("freeProfessors", userService.findAllProfessorsWithNoSubject()));
+                .andExpect(model().attribute("freeProfessors", userService.findAllProfessorWithNoSubject()));
     }
 
     @Test

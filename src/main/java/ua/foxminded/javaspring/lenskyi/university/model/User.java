@@ -68,21 +68,6 @@ public class User {
         return roles;
     }
 
-    public String getRolesToString() {
-        StringBuilder output = new StringBuilder();
-        final String emptyString = "";
-        this.getRoles().forEach(r ->
-                output.append(r.getName())
-                        .append(',')
-                        .append(' ')
-        );
-        if (this.getRoles().isEmpty()) {
-            return emptyString;
-        } else {
-            return output.substring(0, output.length() - 2);
-        }
-    }
-
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }

@@ -41,7 +41,7 @@ public class SubjectController {
         SubjectDto subjectDto = subjectService.findById(id);
         model.addAttribute("subjectDto", subjectDto);
         model.addAttribute("freeClassrooms", classroomService.findAllFreeClassrooms());
-        model.addAttribute("freeProfessors", userService.findAllProfessorsWithNoSubject());
+        model.addAttribute("freeProfessors", userService.findAllProfessorWithNoSubject());
         return EDIT_SUBJECT_TEMPLATE_NAME;
     }
 
@@ -62,7 +62,7 @@ public class SubjectController {
     public String showCreateNewSubjectForm(Model model) {
         model.addAttribute("subjectDto", new SubjectDto());
         model.addAttribute("freeClassrooms", classroomService.findAllFreeClassrooms());
-        model.addAttribute("freeProfessors", userService.findAllProfessorsWithNoSubject());
+        model.addAttribute("freeProfessors", userService.findAllProfessorWithNoSubject());
         return CREATE_SUBJECT_TEMPLATE_NAME;
     }
 

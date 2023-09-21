@@ -45,7 +45,7 @@ class UserControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void getAllStudentsPageTest() throws Exception {
-        List<User> students = userService.findAllStudents();
+        List<User> students = userService.findAllStudent();
         mvc.perform(MockMvcRequestBuilders
                         .get("/user/student"))
                 .andExpect(status().isOk())
@@ -57,7 +57,7 @@ class UserControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void showEditStudentFormTest() throws Exception {
-        List<User> students = userService.findAllStudents();
+        List<User> students = userService.findAllStudent();
         User student = students.get(0);
         UserDto studentDto = userService.findById(student.getId());
         mvc.perform(MockMvcRequestBuilders
@@ -71,7 +71,7 @@ class UserControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void showEditStudentFormWrongIdTest() throws Exception {
-        List<User> students = userService.findAllStudents();
+        List<User> students = userService.findAllStudent();
         User student = students.get(0);
         long wrongStudentId = student.getId() - 100L;
         mvc.perform(MockMvcRequestBuilders
@@ -83,7 +83,7 @@ class UserControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void editStudentTest() throws Exception {
-        List<User> students = userService.findAllStudents();
+        List<User> students = userService.findAllStudent();
         User student = students.get(0);
         UserDto studentDto = userService.findById(student.getId());
         mvc.perform(MockMvcRequestBuilders
@@ -101,7 +101,7 @@ class UserControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void editStudentWrongUsernameTest() throws Exception {
-        List<User> students = userService.findAllStudents();
+        List<User> students = userService.findAllStudent();
         User student = students.get(0);
         UserDto studentDto = userService.findById(student.getId());
         User student2 = students.get(1);
@@ -147,7 +147,7 @@ class UserControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void createNewStudentNotUniqueUsernameTest() throws Exception {
-        List<User> students = userService.findAllStudents();
+        List<User> students = userService.findAllStudent();
         User student = students.get(0);
         User student2 = students.get(1);
         mvc.perform(MockMvcRequestBuilders.post("/user/student")
@@ -164,7 +164,7 @@ class UserControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void deleteStudentTest() throws Exception {
-        List<User> students = userService.findAllStudents();
+        List<User> students = userService.findAllStudent();
         User student = students.get(0);
         mvc.perform(MockMvcRequestBuilders.delete("/user/student/" + student.getId())
                         .with(csrf()))
@@ -175,7 +175,7 @@ class UserControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void deleteStudentWrongIdTest() throws Exception {
-        List<User> students = userService.findAllStudents();
+        List<User> students = userService.findAllStudent();
         User student = students.get(0);
         long wrongStudentId = student.getId() - 100L;
         mvc.perform(MockMvcRequestBuilders.delete("/user/student/" + wrongStudentId)
@@ -187,7 +187,7 @@ class UserControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void getAllProfessorsPageTest() throws Exception {
-        List<User> professors = userService.findAllProfessorsAndAdmins();
+        List<User> professors = userService.findAllProfessorAndAdmin();
         mvc.perform(MockMvcRequestBuilders
                         .get("/user/professor"))
                 .andExpect(status().isOk())
@@ -199,7 +199,7 @@ class UserControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void showEditProfessorFormTest() throws Exception {
-        List<User> professors = userService.findAllProfessorsAndAdmins();
+        List<User> professors = userService.findAllProfessorAndAdmin();
         User professor = professors.get(0);
         ProfessorForm professorForm = userService.createProfessorFormDto(professor.getId());
         mvc.perform(MockMvcRequestBuilders
@@ -212,7 +212,7 @@ class UserControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void showEditProfessorFormWrongIdTest() throws Exception {
-        List<User> professors = userService.findAllProfessorsAndAdmins();
+        List<User> professors = userService.findAllProfessorAndAdmin();
         User professor = professors.get(0);
         long wrongProfessorId = professor.getId() - 100L;
         mvc.perform(MockMvcRequestBuilders
@@ -224,7 +224,7 @@ class UserControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void editProfessorTest() throws Exception {
-        List<User> professors = userService.findAllProfessorsAndAdmins();
+        List<User> professors = userService.findAllProfessorAndAdmin();
         User professor = professors.get(0);
         Role adminRole = roleService.findRoleByName("admin");
         mvc.perform(MockMvcRequestBuilders
@@ -245,7 +245,7 @@ class UserControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void editProfessorWrongUsernameTest() throws Exception {
-        List<User> professors = userService.findAllProfessorsAndAdmins();
+        List<User> professors = userService.findAllProfessorAndAdmin();
         User professor = professors.get(0);
         User anotherProfessor = professors.get(1);
         mvc.perform(MockMvcRequestBuilders
@@ -292,7 +292,7 @@ class UserControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void createNewProfessorNotUniqueUsernameTest() throws Exception {
-        List<User> professors = userService.findAllProfessorsAndAdmins();
+        List<User> professors = userService.findAllProfessorAndAdmin();
         User anotherProfessor = professors.get(1);
         mvc.perform(MockMvcRequestBuilders.post("/user/professor")
                         .param("firstName", "testName")
@@ -308,7 +308,7 @@ class UserControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void deleteProfessorTest() throws Exception {
-        List<User> professors = userService.findAllProfessorsAndAdmins();
+        List<User> professors = userService.findAllProfessorAndAdmin();
         User professor = professors.get(0);
         mvc.perform(MockMvcRequestBuilders.delete("/user/professor/" + professor.getId())
                         .with(csrf()))
@@ -319,7 +319,7 @@ class UserControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void deleteProfessorWrongIdTest() throws Exception {
-        List<User> professors = userService.findAllProfessorsAndAdmins();
+        List<User> professors = userService.findAllProfessorAndAdmin();
         User professor = professors.get(0);
         long wrongProfessorId = professor.getId() - 100L;
         mvc.perform(MockMvcRequestBuilders.delete("/user/professor/" + wrongProfessorId)

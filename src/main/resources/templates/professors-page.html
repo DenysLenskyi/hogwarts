@@ -36,8 +36,8 @@
                 <td th:text="${professor.firstName}"></td>
                 <td th:text="${professor.getLastName()}"></td>
                 <td th:text="${professor.getRolesToString()}"></td>
-                <td th:if="${professor.subject != null}" th:text="${professor.subject.name}"></td>
-                <td th:if="${professor.subject != null && professor.subject.classroom != null}" th:text="${professor.subject.classroom.name}"></td>
+                <td th:if="${professor.subjectDto != null}" th:text="${professor.subjectDto.name}"></td>
+                <td th:if="${professor.subjectDto != null && professor.subjectDto.classroomDto != null}" th:text="${professor.subjectDto.classroomDto.name}"></td>
                 <td>
                     <div>
                         <a th:href="@{/user/professor/{id}/edit-page(id=${professor.getId()})}">

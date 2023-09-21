@@ -72,13 +72,14 @@ public class GroupServiceImpl implements GroupService {
     }
 
     public List<GroupDto> getAllGroupDtoWithNumStudents() {
-        List<GroupDto> list = new ArrayList<>();
-        groupRepository.findAll().stream()
-                .forEach(group -> {
-                    GroupDto groupDto = groupEntityGroupDtoMapper.groupEntityToGroupDto(group);
-                    groupDto.setNumStudentsInGroup(userRepository.countAllByGroupName(group.getName()));
-                    list.add(groupDto);
-                });
-        return list;
+        return groupRepository.findAll().stream()
+                .map(groupEntityGroupDtoMapper::groupEntityToGroupDto)
+                .map(this::setNumOfStudents)
+                .toList();
+    }
+
+    private GroupDto setNumOfStudents(GroupDto groupDto) {
+        groupDto.setNumStudentsInGroup(userRepository.countAllByGroupName(groupDto.getName()));
+        return groupDto;
     }
 }

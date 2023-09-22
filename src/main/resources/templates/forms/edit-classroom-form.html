@@ -28,7 +28,7 @@
 
                 <div class="form-group">
                     <label>Edit Name</label>
-                    <p><input type="text" th:placeholder="*{name}" th:field="*{name}" required pattern="[a-z0-9._%+\-]{2,}$"/></p>
+                    <p><input type="text" th:placeholder="*{name}" th:field="*{name}" required pattern="^(?!\s*$).+"/></p>
                 </div>
 
                 <div class="form-group">

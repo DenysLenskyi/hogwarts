@@ -10,7 +10,6 @@ import ua.foxminded.javaspring.lenskyi.university.repository.GroupRepository;
 import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,7 +31,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     public boolean existsByName(String groupName) {
-        return groupRepository.existsByNameIgnoreCase(groupName);
+        return groupRepository.existsByName(groupName);
     }
 
     @Transactional

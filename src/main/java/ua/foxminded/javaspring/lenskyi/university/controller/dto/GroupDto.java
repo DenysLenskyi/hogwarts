@@ -10,6 +10,9 @@ public class GroupDto {
     private Set<UserDto> users;
     private Set<LessonDto> lessons;
 
+    public GroupDto() {
+    }
+
     public Long getId() {
         return id;
     }

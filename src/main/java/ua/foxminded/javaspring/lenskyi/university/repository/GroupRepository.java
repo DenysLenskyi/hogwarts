@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface GroupRepository extends JpaRepository<Group, Long> {
 
-    boolean existsByNameIgnoreCase(String groupName);
+    boolean existsByName(String groupName);
 
     boolean existsById(Long groupId);
 

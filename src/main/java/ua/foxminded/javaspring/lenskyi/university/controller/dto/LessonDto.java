@@ -13,6 +13,12 @@ public class LessonDto {
     public LessonDto() {
     }
 
+    public LessonDto(LessonStartEndTimeDto lessonStartEndTimeDto, SubjectDto subjectDto, GroupDto groupDto) {
+        this.lessonStartEndTimeDto = lessonStartEndTimeDto;
+        this.subjectDto = subjectDto;
+        this.groupDto = groupDto;
+    }
+
     public Long getId() {
         return id;
     }

@@ -1,26 +1,43 @@
 package ua.foxminded.javaspring.lenskyi.university.repository;
 
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import ua.foxminded.javaspring.lenskyi.university.controller.dto.GroupDto;
+import ua.foxminded.javaspring.lenskyi.university.model.Group;
 import ua.foxminded.javaspring.lenskyi.university.model.Lesson;
+import ua.foxminded.javaspring.lenskyi.university.model.LessonStartEndTime;
+import ua.foxminded.javaspring.lenskyi.university.model.Subject;
+import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
+import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 
 @SpringBootTest
 @ActiveProfiles("test")
 @Testcontainers
+@Transactional
 class LessonRepositoryTest {
 
     @Autowired
-    LessonRepository lessonRepository;
+    private LessonRepository lessonRepository;
+    @Autowired
+    private LessonStartEndTimeRepository lessonStartEndTimeRepository;
+    @Autowired
+    private GroupRepository groupRepository;
+    @Autowired
+    private SubjectRepository subjectRepository;
+    @Autowired
+    private GroupService groupService;
+    @Autowired
+    private SubjectService subjectService;
 
     @Test
     void lessonGotGroupTest() {

@@ -29,8 +29,8 @@
                 <!--                Edit name option for admin-->
                 <div class="form-group" sec:authorize="hasAuthority('admin')">
                     <label>Edit Name</label>
-                    <p>Use 2 or more letters, numbers or symbols (like ._%\-)</p>
-                    <p><input type="text" th:field="*{name}" pattern="[a-zA-Z0-9._%+\-]{2,}$"/></p>
+                    <p>Use 2 or more letters, numbers or symbols, do not leave this field empty or filled with whitespaces</p>
+                    <p><input type="text" th:field="*{name}" required pattern="^(?!\s*$).+"/></p>
                 </div>
 
                 <!--                Edit name option for professor-->

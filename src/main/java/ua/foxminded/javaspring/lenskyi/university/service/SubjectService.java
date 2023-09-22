@@ -9,7 +9,11 @@ public interface SubjectService {
 
     List<Subject> findAll();
 
+    List<SubjectDto> findAllDto();
+
     SubjectDto findById(Long subjectId);
+
+    Subject findSubjectById(Long id);
 
     SubjectDto findByName(String subjectName);
 

@@ -11,6 +11,14 @@ public class SubjectDto {
     private ClassroomDto classroomDto;
     private Set<LessonDto> lessonsDto;
 
+    public SubjectDto() {
+    }
+
+    public SubjectDto(UserDto userDto, ClassroomDto classroomDto) {
+        this.userDto = userDto;
+        this.classroomDto = classroomDto;
+    }
+
     public Long getId() {
         return id;
     }

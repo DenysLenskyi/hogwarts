@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <title>Create New Lesson</title>
+
+</head>
+
+<body sec:authorize="hasAuthority('admin')" style="padding: 40px">
+
+<div th:replace="~{fragments/header}"></div>
+
+<div class="container-fluid" style="padding: 40px">
+    <div class="row vertical-center" style="max-width: 700px">
+        <h2>Create New Lesson</h2>
+        <form th:action="@{/lesson}" th:object="${lessonDto}" method="post">
+
+            <input type="hidden" th:field="*{id}"/>
+
+            <div class="form-group">
+                <div class="form-group">
+                    <label>Choose a date for the lesson</label>
+                    <p><input type="date" placeholder="Type a name here..." th:field="*{date}" required></p>
+                </div>
+
+                <div class="form-group">
+                    <label>Time</label>
+                    <p>Choose a time from the list below</p>
+                    <div class="form-group">
+                        <select th:field="${lessonDto.lessonStartEndTimeDto.id}" required>
+                            <option th:each="time : ${startEndTimeList}" th:value="${time.id}"
+                                    th:text="${time.start + ' - ' + time.end}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Group</label>
+                    <p>Choose a group from the list below</p>
+                    <div class="form-group">
+                        <select th:field="${lessonDto.groupDto.id}" required>
+                            <option th:each="group : ${groups}" th:value="${group.id}"
+                                    th:text="${group.name}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Subject</label>
+                    <p>Choose a subject from the list below</p>
+                    <div class="form-group">
+                        <select th:field="${lessonDto.subjectDto.id}" required>
+                            <option th:each="subject : ${subjects}" th:value="${subject.id}"
+                                    th:text="${subject.name}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <p><input type="submit" value="Submit" class="btn btn-success"/></p>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

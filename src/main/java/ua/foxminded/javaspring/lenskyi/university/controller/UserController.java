@@ -143,6 +143,4 @@ public class UserController {
         userService.updateProfessor(professorForm);
         return REDIRECT_PROFESSOR_PAGE;
     }
-
-    // minervamcgonagall
 }

@@ -9,6 +9,9 @@ public class RoleDto {
     private String name;
     private Set<UserDto> users;
 
+    public RoleDto() {
+    }
+
     public Long getId() {
         return id;
     }

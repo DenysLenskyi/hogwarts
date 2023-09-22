@@ -20,6 +20,9 @@ public class UserDto {
     private GroupDto groupDto;
     private SubjectDto subjectDto;
 
+    public UserDto() {
+    }
+
     public String getRolesToString() {
         StringBuilder output = new StringBuilder();
         final String emptyString = "";

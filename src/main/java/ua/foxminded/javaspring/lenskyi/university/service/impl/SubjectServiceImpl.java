@@ -47,6 +47,12 @@ public class SubjectServiceImpl implements SubjectService {
         return subjectRepository.findAll();
     }
 
+    public List<SubjectDto> findAllDto() {
+        return subjectRepository.findAll().stream()
+                .map(subject -> findById(subject.getId()))
+                .toList();
+    }
+
     public SubjectDto findById(Long subjectId) {
         Subject subject = subjectRepository.findById(subjectId).orElseThrow(NoSuchElementException::new);
         SubjectDto subjectDto = subjectMapper.subjectEntityToSubjectDto(subject);
@@ -56,6 +62,10 @@ public class SubjectServiceImpl implements SubjectService {
                 .collect(Collectors.toSet()));
         subjectDto.setUserDto(userMapper.userEntityToUserDto(subject.getUser()));
         return subjectDto;
+    }
+
+    public Subject findSubjectById(Long id) {
+        return subjectRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
     public SubjectDto findByName(String subjectName) {
@@ -113,7 +123,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     public boolean existsByName(String subjectName) {
-        return subjectRepository.existsByNameIgnoreCase(subjectName);
+        return subjectRepository.existsByName(subjectName);
     }
 
     public List<Subject> findAllSubjectsWithNoProfessor() {

@@ -14,11 +14,11 @@
 
 <div class="container-fluid">
 
-<!--    <div class="row" style="margin-bottom: 20px">-->
-<!--        <a th:href="@{/user/professor/create-professor-page}">-->
-<!--            <button type="submit" class="btn btn-info">CREATE NEW PROFESSOR</button>-->
-<!--        </a>-->
-<!--    </div>-->
+    <div class="row" style="margin-bottom: 20px">
+        <a th:href="@{/lesson/create-lesson-page}">
+            <button type="submit" class="btn btn-info">CREATE NEW LESSON</button>
+        </a>
+    </div>
 
     <div class="row vertical-center">
         <table class="table table-bordered">
@@ -36,8 +36,8 @@
             <tbody>
             <tr th:each="lesson : ${lessons}">
                 <td th:text="${lesson.date}"></td>
-                <td th:text="${lesson.lessonStartEndTimeDto.start}"></td>
-                <td th:text="${lesson.lessonStartEndTimeDto.end}"></td>
+                <td th:if="${lesson.lessonStartEndTimeDto != null}" th:text="${lesson.lessonStartEndTimeDto.start}"></td>
+                <td th:if="${lesson.lessonStartEndTimeDto != null}" th:text="${lesson.lessonStartEndTimeDto.end}"></td>
                 <td th:if="${lesson.groupDto != null}" th:text="${lesson.groupDto.name}"></td>
                 <td th:if="${lesson.subjectDto != null}" th:text="${lesson.subjectDto.name}"></td>
                 <td th:if="${lesson.subjectDto.userDto != null}" th:text="${lesson.subjectDto.userDto.firstName

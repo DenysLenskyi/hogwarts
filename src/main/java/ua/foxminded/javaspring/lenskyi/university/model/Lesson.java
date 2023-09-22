@@ -17,15 +17,15 @@ public class Lesson {
     private LocalDate date;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "START_END_TIME_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @JoinColumn(name = "START_END_TIME_ID", referencedColumnName = "ID")
     private LessonStartEndTime lessonStartEndTime;
 
     @ManyToOne
-    @JoinColumn(name = "SUBJECT_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "SUBJECT_ID")
     private Subject subject;
 
     @ManyToOne
-    @JoinColumn(name = "GROUP_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "GROUP_ID")
     private Group group;
 
     public Lesson() {

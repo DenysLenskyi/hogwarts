@@ -8,6 +8,9 @@ public class LessonStartEndTimeDto {
     private LocalTime start;
     private LocalTime end;
 
+    public LessonStartEndTimeDto() {
+    }
+
     public Long getId() {
         return id;
     }

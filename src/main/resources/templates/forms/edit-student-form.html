@@ -28,8 +28,8 @@
 
                 <div class="form-group">
                     <label>Edit first name</label>
-                    <p>Use more than 2 letters, no numbers or other symbols</p>
-                    <p><input type="text" th:field="*{firstName}" required pattern="[a-zA-Z]{2,}+$"/></p>
+                    <p>Use 2 or more letters, numbers or symbols, do not leave this field empty or filled with whitespaces</p>
+                    <p><input type="text" th:field="*{firstName}" required pattern="^(?!\s*$).+"/></p>
                 </div>
 
 
@@ -40,16 +40,16 @@
 
                 <div class="form-group">
                     <label>Edit username</label>
-                    <p>Use 2 or more letters, numbers or symbols (like ._%\-)</p>
+                    <p>Use 2 or more letters, numbers or symbols, do not leave this field empty or filled with whitespaces</p>
                     <p>Username must be unique! You'll get "bad request" error if choose not unique username. Don't worry, just try again</p>
-                    <p><input type="text" th:field="*{username}" required pattern="[a-zA-Z0-9._%+\-]{2,}$"/></p>
+                    <p><input type="text" th:field="*{username}" required pattern="^(?!\s*$).+"/></p>
                 </div>
 
                 <div class="form-group">
                     <label>Edit password</label>
-                    <p>Use 2 or more letters, numbers or symbols (like ._%\-)</p>
+                    <p>Use 2 or more letters, numbers or symbols, do not fill with whitespaces (be creative)</p>
                     <p>Leave this field empty to keep current password for this user</p>
-                    <p><input type="text" id="password" name="password" th:value="''"/></p>
+                    <p><input type="text" id="password" name="password" pattern="^(?!\s*$).+" th:value="''"/></p>
                 </div>
 
                 <div class="form-group">

@@ -16,6 +16,8 @@ import static ua.foxminded.javaspring.lenskyi.university.util.Constants.*;
 @RequestMapping("/subject")
 public class SubjectController {
 
+    private static final String NOT_UNIQUE_SUBJECT_NAME_ERROR_MESSAGE =
+            "Subject name should be unique. We do not repeat ourselves in Hogwarts. This name is in use already: ";
     private SubjectService subjectService;
     private ClassroomService classroomService;
     private UserService userService;
@@ -68,8 +70,10 @@ public class SubjectController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String createNewSubject(@Valid SubjectDto subjectDto) {
+    public String createNewSubject(@Valid SubjectDto subjectDto, Model model) {
         if (subjectService.existsByName(subjectDto.getName())) {
+            model.addAttribute("message", NOT_UNIQUE_SUBJECT_NAME_ERROR_MESSAGE);
+            model.addAttribute("subjectName", subjectDto.getName());
             return ERROR_400_TEMPLATE_NAME;
         }
         subjectService.createNewSubjectFromSubjectDto(subjectDto);

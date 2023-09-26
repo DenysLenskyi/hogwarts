@@ -43,6 +43,22 @@ public class Group {
         this.name = name;
     }
 
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    public Set<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(Set<Lesson> lessons) {
+        this.lessons = lessons;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -54,7 +54,7 @@ public class LessonController {
                 new SubjectDto(new UserDto(), new ClassroomDto()),
                 new GroupDto()));
         model.addAttribute("startEndTimeList", lessonStartEndTimeService.findAllDto());
-        model.addAttribute("groups", groupService.getAllGroupDtoWithNumStudents());
+        model.addAttribute("groups", groupService.findAll());
         model.addAttribute("subjects", subjectService.findAllDto());
         return CREATE_LESSON_PAGE_TEMPLATE_NAME;
     }

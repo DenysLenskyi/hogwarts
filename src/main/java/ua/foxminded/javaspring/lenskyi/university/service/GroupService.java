@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface GroupService {
 
-    List<Group> findAll();
+    List<GroupDto> findAll();
 
     boolean existsByName(String groupName);
 
@@ -17,13 +17,11 @@ public interface GroupService {
 
     void deleteById(Long groupId);
 
-    long getNumStudentsInGroup(String groupName);
+    GroupDto findById(Long id);
 
-    Group findById(Long id);
+    Group findGroupById(Long id);
 
     Group findByName(String groupName);
 
     void moveStudentsFromGroupToAnotherGroup(Group groupFrom, Group groupTo);
-
-    List<GroupDto> getAllGroupDtoWithNumStudents();
 }

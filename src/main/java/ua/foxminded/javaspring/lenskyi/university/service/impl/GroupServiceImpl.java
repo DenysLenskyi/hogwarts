@@ -10,7 +10,9 @@ import ua.foxminded.javaspring.lenskyi.university.repository.GroupRepository;
 import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GroupServiceImpl implements GroupService {
@@ -26,8 +28,11 @@ public class GroupServiceImpl implements GroupService {
         this.groupEntityGroupDtoMapper = groupEntityGroupDtoMapper;
     }
 
-    public List<Group> findAll() {
-        return groupRepository.findAll();
+    public List<GroupDto> findAll() {
+        List<Group> groups = groupRepository.findAll();
+        return groups.stream()
+                .map(groupEntityGroupDtoMapper::groupEntityToGroupDto)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public boolean existsByName(String groupName) {
@@ -50,11 +55,11 @@ public class GroupServiceImpl implements GroupService {
         groupRepository.deleteById(groupId);
     }
 
-    public long getNumStudentsInGroup(String groupName) {
-        return userRepository.countAllByGroupName(groupName);
+    public GroupDto findById(Long id) {
+        return groupEntityGroupDtoMapper.groupEntityToGroupDto(findGroupById(id));
     }
 
-    public Group findById(Long id) {
+    public Group findGroupById(Long id) {
         return groupRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
@@ -68,17 +73,5 @@ public class GroupServiceImpl implements GroupService {
         usersGroupFrom.forEach(student -> student.setGroup(groupTo));
         groupRepository.saveAndFlush(groupFrom);
         groupRepository.saveAndFlush(groupTo);
-    }
-
-    public List<GroupDto> getAllGroupDtoWithNumStudents() {
-        return groupRepository.findAll().stream()
-                .map(groupEntityGroupDtoMapper::groupEntityToGroupDto)
-                .map(this::setNumOfStudents)
-                .toList();
-    }
-
-    private GroupDto setNumOfStudents(GroupDto groupDto) {
-        groupDto.setNumStudentsInGroup(userRepository.countAllByGroupName(groupDto.getName()));
-        return groupDto;
     }
 }

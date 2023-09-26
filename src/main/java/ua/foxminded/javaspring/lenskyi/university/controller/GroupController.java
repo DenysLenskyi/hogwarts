@@ -25,7 +25,7 @@ public class GroupController {
 
     @GetMapping("/all")
     public String getGroupPage(Model model) {
-        model.addAttribute("groups", groupService.getAllGroupDtoWithNumStudents());
+        model.addAttribute("groups", groupService.findAll());
         return GROUP_PAGE_TEMPLATE_NAME;
     }
 
@@ -62,8 +62,8 @@ public class GroupController {
         if (!groupService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
         }
-        Group currentGroup = groupService.findById(id);
-        List<Group> groups = groupService.findAll();
+        GroupDto currentGroup = groupService.findById(id);
+        List<GroupDto> groups = groupService.findAll();
         groups.remove(currentGroup);
         model.addAttribute("groupsExcludeCurrent", groups);
         model.addAttribute("currentGroup", currentGroup);
@@ -75,7 +75,7 @@ public class GroupController {
     @PreAuthorize("hasAnyAuthority('admin')")
     public String editGroup(@PathVariable("groupId") Long id, @Valid GroupDto groupDto) {
         groupService.moveStudentsFromGroupToAnotherGroup(
-                groupService.findById(id), groupService.findByName(groupDto.getName())
+                groupService.findGroupById(id), groupService.findByName(groupDto.getName())
         );
         return REDIRECT_GROUP_PAGE;
     }

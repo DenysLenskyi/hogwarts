@@ -50,7 +50,7 @@ public class LessonServiceImpl implements LessonService {
         return lessonRepository.existsByDateAndLessonStartEndTimeAndGroup(localDate,
                 lessonStartEndTimeRepository.findById(lessonStartEndTimeDto.getId())
                         .orElseThrow(IllegalArgumentException::new),
-                groupService.findById(groupDto.getId()));
+                groupService.findGroupById(groupDto.getId()));
     }
 
     public boolean isBusyBySubject(LocalDate localDate, LessonStartEndTimeDto lessonStartEndTimeDto, SubjectDto subjectDto) {
@@ -84,7 +84,7 @@ public class LessonServiceImpl implements LessonService {
         LessonStartEndTime lessonStartEndTime = lessonStartEndTimeRepository.findById(
                 lessonDto.getLessonStartEndTimeDto().getId()).orElseThrow(IllegalArgumentException::new);
         Subject subject = subjectService.findSubjectById(lessonDto.getSubjectDto().getId());
-        Group group = groupService.findById(lessonDto.getGroupDto().getId());
+        Group group = groupService.findGroupById(lessonDto.getGroupDto().getId());
         Lesson lesson = new Lesson();
         lesson.setDate(lessonDto.getDate());
         lesson.setLessonStartEndTime(lessonStartEndTime);

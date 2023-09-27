@@ -6,7 +6,7 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "LESSON_START_END_TIME", schema = "HOGWARTS")
-public class LessonStartEndTime {
+public class LessonTime {
 
     @Id
     @Column(name = "ID")
@@ -23,7 +23,7 @@ public class LessonStartEndTime {
     @Column(name = "END_TIME", nullable = false, unique = true)
     private LocalTime end;
 
-    public LessonStartEndTime() {
+    public LessonTime() {
     }
 
     public Long getId() {

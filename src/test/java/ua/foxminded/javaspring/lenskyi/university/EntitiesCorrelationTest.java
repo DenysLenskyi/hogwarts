@@ -25,7 +25,7 @@ class EntitiesCorrelationTest {
     @Autowired
     private ClassroomRepository classroomRepository;
     @Autowired
-    private LessonStartEndTimeRepository lessonStartEndTimeRepository;
+    private LessonTimeRepository lessonTimeRepository;
     @Autowired
     private GroupRepository groupRepository;
 
@@ -40,12 +40,12 @@ class EntitiesCorrelationTest {
     void entityCorrectnessTest() {
         assertTrue(groupRepository.findAll().size() == 1);
         assertTrue(classroomRepository.findAll().size() > 1);
-        assertTrue(lessonStartEndTimeRepository.findAll().size() == 5);
+        assertTrue(lessonTimeRepository.findAll().size() == 5);
         assertTrue(roleRepository.findAll().size() == 3);
 
-        assertEquals(Long.valueOf(1), lessonStartEndTimeRepository.findAll().get(0).getId());
-        assertEquals(Long.valueOf(2), lessonStartEndTimeRepository.findAll().get(1).getId());
-        assertEquals(Long.valueOf(3), lessonStartEndTimeRepository.findAll().get(2).getId());
+        assertEquals(Long.valueOf(1), lessonTimeRepository.findAll().get(0).getId());
+        assertEquals(Long.valueOf(2), lessonTimeRepository.findAll().get(1).getId());
+        assertEquals(Long.valueOf(3), lessonTimeRepository.findAll().get(2).getId());
 
         User severus = userRepository.findUserByLastName("Snape");
         assertEquals("Severus", severus.getFirstName());
@@ -53,8 +53,8 @@ class EntitiesCorrelationTest {
 
         assertEquals("Gryffindor-7", lessonRepository.findAll().get(0).getGroup().getName());
 
-        Lesson lesson = lessonRepository.findLessonByDateAndLessonStartEndTime(
-                LocalDate.of(2023, 9, 4), lessonStartEndTimeRepository.findById(1L).get());
+        Lesson lesson = lessonRepository.findLessonByDateAndLessonTime(
+                LocalDate.of(2023, 9, 4), lessonTimeRepository.findById(1L).get());
 
         assertEquals("Gryffindor-7", lesson.getGroup().getName());
         assertEquals("Potions", lesson.getSubject().getName());

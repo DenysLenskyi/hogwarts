@@ -36,8 +36,8 @@
             <tbody>
             <tr th:each="lesson : ${lessons}">
                 <td th:text="${lesson.date}"></td>
-                <td th:if="${lesson.lessonStartEndTimeDto != null}" th:text="${lesson.lessonStartEndTimeDto.start}"></td>
-                <td th:if="${lesson.lessonStartEndTimeDto != null}" th:text="${lesson.lessonStartEndTimeDto.end}"></td>
+                <td th:if="${lesson.lessonTimeDto != null}" th:text="${lesson.lessonTimeDto.start}"></td>
+                <td th:if="${lesson.lessonTimeDto != null}" th:text="${lesson.lessonTimeDto.end}"></td>
                 <td th:if="${lesson.groupDto != null}" th:text="${lesson.groupDto.name}"></td>
                 <td th:if="${lesson.subjectDto != null}" th:text="${lesson.subjectDto.name}"></td>
                 <td th:if="${lesson.subjectDto.userDto != null}" th:text="${lesson.subjectDto.userDto.firstName

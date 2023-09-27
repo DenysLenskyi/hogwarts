@@ -17,9 +17,9 @@ public interface ClassroomService {
 
     void deleteClassroomById(Long id);
 
-    void createNewClassroomFromClassroomDto(ClassroomDto classroomDto);
+    void createClassroom(ClassroomDto classroomDto);
 
     ClassroomDto findById(Long id);
 
-    void updateClassroomFromClassroomDto(ClassroomDto classroomDto);
+    void updateClassroom(ClassroomDto classroomDto);
 }

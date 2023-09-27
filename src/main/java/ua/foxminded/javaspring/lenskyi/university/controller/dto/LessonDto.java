@@ -6,15 +6,15 @@ public class LessonDto {
 
     private Long id;
     private LocalDate date;
-    private LessonStartEndTimeDto lessonStartEndTimeDto;
+    private LessonTimeDto lessonTimeDto;
     private SubjectDto subjectDto;
     private GroupDto groupDto;
 
     public LessonDto() {
     }
 
-    public LessonDto(LessonStartEndTimeDto lessonStartEndTimeDto, SubjectDto subjectDto, GroupDto groupDto) {
-        this.lessonStartEndTimeDto = lessonStartEndTimeDto;
+    public LessonDto(LessonTimeDto lessonTimeDto, SubjectDto subjectDto, GroupDto groupDto) {
+        this.lessonTimeDto = lessonTimeDto;
         this.subjectDto = subjectDto;
         this.groupDto = groupDto;
     }
@@ -35,12 +35,12 @@ public class LessonDto {
         this.date = date;
     }
 
-    public LessonStartEndTimeDto getLessonStartEndTimeDto() {
-        return lessonStartEndTimeDto;
+    public LessonTimeDto getLessonTimeDto() {
+        return lessonTimeDto;
     }
 
-    public void setLessonStartEndTimeDto(LessonStartEndTimeDto lessonStartEndTimeDto) {
-        this.lessonStartEndTimeDto = lessonStartEndTimeDto;
+    public void setLessonTimeDto(LessonTimeDto lessonTimeDto) {
+        this.lessonTimeDto = lessonTimeDto;
     }
 
     public SubjectDto getSubjectDto() {

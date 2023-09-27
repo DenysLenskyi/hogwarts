@@ -2,13 +2,13 @@ package ua.foxminded.javaspring.lenskyi.university.controller.dto;
 
 import java.time.LocalTime;
 
-public class LessonStartEndTimeDto {
+public class LessonTimeDto {
 
     private Long id;
     private LocalTime start;
     private LocalTime end;
 
-    public LessonStartEndTimeDto() {
+    public LessonTimeDto() {
     }
 
     public Long getId() {
@@ -38,18 +38,18 @@ public class LessonStartEndTimeDto {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof LessonStartEndTimeDto that)) return false;
+        if (!(o instanceof LessonTimeDto that)) return false;
 
-        if (!getId().equals(that.getId())) return false;
-        if (!getStart().equals(that.getStart())) return false;
-        return getEnd().equals(that.getEnd());
+        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
+        if (getStart() != null ? !getStart().equals(that.getStart()) : that.getStart() != null) return false;
+        return getEnd() != null ? getEnd().equals(that.getEnd()) : that.getEnd() == null;
     }
 
     @Override
     public int hashCode() {
-        int result = getId().hashCode();
-        result = 31 * result + getStart().hashCode();
-        result = 31 * result + getEnd().hashCode();
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getStart() != null ? getStart().hashCode() : 0);
+        result = 31 * result + (getEnd() != null ? getEnd().hashCode() : 0);
         return result;
     }
 }

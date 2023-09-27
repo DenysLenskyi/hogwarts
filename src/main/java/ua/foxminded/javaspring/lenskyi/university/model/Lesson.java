@@ -18,7 +18,7 @@ public class Lesson {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "START_END_TIME_ID", referencedColumnName = "ID")
-    private LessonStartEndTime lessonStartEndTime;
+    private LessonTime lessonTime;
 
     @ManyToOne
     @JoinColumn(name = "SUBJECT_ID")
@@ -47,12 +47,12 @@ public class Lesson {
         this.date = date;
     }
 
-    public LessonStartEndTime getLessonStartEndTime() {
-        return lessonStartEndTime;
+    public LessonTime getLessonTime() {
+        return lessonTime;
     }
 
-    public void setLessonStartEndTime(LessonStartEndTime lessonStartEndTime) {
-        this.lessonStartEndTime = lessonStartEndTime;
+    public void setLessonTime(LessonTime lessonTime) {
+        this.lessonTime = lessonTime;
     }
 
     public Subject getSubject() {

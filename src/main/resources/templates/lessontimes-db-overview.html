@@ -20,8 +20,8 @@
 <div th:replace="~{fragments/header}"></div>
 <h1>Here's the list of Hogwarts classrooms</h1>
 
-<div th:switch="${lessonstartendtimes}">
-    <h2 th:case="null">No lessonstartendtimes yet!</h2>
+<div th:switch="${lessontimes}">
+    <h2 th:case="null">No lessontimes yet!</h2>
     <div th:case="*">
         <table>
             <thead>
@@ -31,9 +31,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="lessonstartendtime : ${lessonstartendtimes}">
-                <td th:text="${lessonstartendtime.getStart()}"></td>
-                <td th:text="${lessonstartendtime.getEnd()}"></td>
+            <tr th:each="lessontime : ${lessontimes}">
+                <td th:text="${lessontime.getStart()}"></td>
+                <td th:text="${lessontime.getEnd()}"></td>
             </tr>
             </tbody>
         </table>

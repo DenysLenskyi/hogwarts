@@ -52,7 +52,7 @@ public class ClassroomServiceImpl implements ClassroomService {
     }
 
     @Override
-    public void createNewClassroomFromClassroomDto(ClassroomDto classroomDto) {
+    public void createClassroom(ClassroomDto classroomDto) {
         classroomRepository.saveAndFlush(mapper.classroomDtoToClassroomEntity(classroomDto));
     }
 
@@ -61,7 +61,7 @@ public class ClassroomServiceImpl implements ClassroomService {
                 classroomRepository.findById(id).orElseThrow(IllegalArgumentException::new));
     }
 
-    public void updateClassroomFromClassroomDto(ClassroomDto classroomDto) {
+    public void updateClassroom(ClassroomDto classroomDto) {
         Classroom classroomToUpdate = classroomRepository.findById(classroomDto.getId()).orElseThrow();
         classroomToUpdate.setName(classroomDto.getName());
         classroomToUpdate.setDescription(classroomDto.getDescription());

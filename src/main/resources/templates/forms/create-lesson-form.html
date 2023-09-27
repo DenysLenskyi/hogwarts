@@ -34,8 +34,8 @@
                     <label>Time</label>
                     <p>Choose a time from the list below</p>
                     <div class="form-group">
-                        <select th:field="${lessonDto.lessonStartEndTimeDto.id}" required>
-                            <option th:each="time : ${startEndTimeList}" th:value="${time.id}"
+                        <select th:field="${lessonDto.lessonTimeDto.id}" required>
+                            <option th:each="time : ${lessonTimeList}" th:value="${time.id}"
                                     th:text="${time.start + ' - ' + time.end}">
                             </option>
                         </select>

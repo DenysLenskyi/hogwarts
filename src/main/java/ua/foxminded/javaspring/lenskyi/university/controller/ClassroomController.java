@@ -39,7 +39,7 @@ public class ClassroomController {
         if (classroomService.existsByName(classroomDto.getName())) {
             return ERROR_400_TEMPLATE_NAME;
         }
-        classroomService.createNewClassroomFromClassroomDto(classroomDto);
+        classroomService.createClassroom(classroomDto);
         return REDIRECT_CLASSROOM_PAGE;
     }
 
@@ -72,7 +72,7 @@ public class ClassroomController {
             return ERROR_400_TEMPLATE_NAME;
         }
         classroomDto.setId(id);
-        classroomService.updateClassroomFromClassroomDto(classroomDto);
+        classroomService.updateClassroom(classroomDto);
         return REDIRECT_CLASSROOM_PAGE;
     }
 }

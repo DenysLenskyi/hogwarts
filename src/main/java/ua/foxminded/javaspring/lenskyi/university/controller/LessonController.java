@@ -4,9 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.*;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
 import ua.foxminded.javaspring.lenskyi.university.service.LessonService;
@@ -74,6 +72,16 @@ public class LessonController {
             return ERROR_400_TEMPLATE_NAME;
         }
         lessonService.createLesson(lessonDto);
+        return REDIRECT_LESSON_PAGE;
+    }
+
+    @DeleteMapping("/{lessonId}")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    public String deleteLesson(@PathVariable("lessonId") Long id) {
+        if (!lessonService.existsById(id)) {
+            return ERROR_400_TEMPLATE_NAME;
+        }
+        lessonService.deleteById(id);
         return REDIRECT_LESSON_PAGE;
     }
 }

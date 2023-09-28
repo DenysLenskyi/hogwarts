@@ -16,7 +16,7 @@ public class Lesson {
     @Column(name = "LESSON_DATE", nullable = false)
     private LocalDate date;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "START_END_TIME_ID", referencedColumnName = "ID")
     private LessonTime lessonTime;
 

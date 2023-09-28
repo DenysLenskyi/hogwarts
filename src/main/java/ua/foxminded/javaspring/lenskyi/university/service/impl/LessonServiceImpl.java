@@ -20,6 +20,8 @@ import ua.foxminded.javaspring.lenskyi.university.service.LessonService;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -70,6 +72,8 @@ public class LessonServiceImpl implements LessonService {
                     lessonDto.setSubjectDto(subjectDtoMapper.subjectEntityToSubjectDto(lesson.getSubject()));
                     return lessonDto;
                 })
+                .sorted(Comparator.comparing(LessonDto::getDate)
+                        .thenComparing(lesson -> lesson.getLessonTimeDto().getStart()))
                 .toList();
     }
 
@@ -93,5 +97,13 @@ public class LessonServiceImpl implements LessonService {
         lesson.setSubject(subject);
         lesson.setGroup(group);
         lessonRepository.saveAndFlush(lesson);
+    }
+
+    public boolean existsById(Long id) {
+        return lessonRepository.existsById(id);
+    }
+
+    public void deleteById(Long id) {
+        lessonRepository.deleteById(id);
     }
 }

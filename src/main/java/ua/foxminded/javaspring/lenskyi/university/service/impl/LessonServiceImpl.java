@@ -21,7 +21,6 @@ import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class LessonServiceImpl implements LessonService {
@@ -67,12 +66,8 @@ public class LessonServiceImpl implements LessonService {
         return lessons.stream()
                 .map(lesson -> {
                     LessonDto lessonDto = lessonDtoMapper.lessonEntityToLessonDto(lesson);
-                    if (lesson.getGroup() != null) {
-                        lessonDto.setGroupDto(groupDtoMapper.groupEntityToGroupDto(lesson.getGroup()));
-                    }
-                    if (lesson.getSubject() != null) {
-                        lessonDto.setSubjectDto(subjectDtoMapper.subjectEntityToSubjectDto(lesson.getSubject()));
-                    }
+                    lessonDto.setGroupDto(groupDtoMapper.groupEntityToGroupDto(lesson.getGroup()));
+                    lessonDto.setSubjectDto(subjectDtoMapper.subjectEntityToSubjectDto(lesson.getSubject()));
                     return lessonDto;
                 })
                 .toList();
@@ -81,12 +76,8 @@ public class LessonServiceImpl implements LessonService {
     public LessonDto findById(Long id) {
         Lesson lesson = lessonRepository.findById(id).orElseThrow(IllegalArgumentException::new);
         LessonDto lessonDto = lessonDtoMapper.lessonEntityToLessonDto(lesson);
-        if (lesson.getGroup() != null) {
-            lessonDto.setGroupDto(groupDtoMapper.groupEntityToGroupDto(lesson.getGroup()));
-        }
-        if (lesson.getSubject() != null) {
-            lessonDto.setSubjectDto(subjectService.findById(lesson.getSubject().getId()));
-        }
+        lessonDto.setGroupDto(groupDtoMapper.groupEntityToGroupDto(lesson.getGroup()));
+        lessonDto.setSubjectDto(subjectService.findById(lesson.getSubject().getId()));
         return lessonDto;
     }
 

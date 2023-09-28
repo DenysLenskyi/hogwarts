@@ -1,97 +1,97 @@
-How to use APP:
-1. Download source code
-2. Build jar
-3. Build Docker image
-4. Execute docker-compose file
-5. Go to webpage
-6. Sign in as student, professor or admin
-7. View schedule
+# HOGWARTS SCHEDULE MANAGER APP
 
-Run DB with docker:
+Thank you for your attention to my web application. Next, I will tell you what it is and how to use it.
 
-docker run --name=hogwarts_db -d -e POSTGRES_DB=hogwarts_db -e POSTGRES_USER=lenskyi -e POSTGRES_PASSWORD=lenskyi -p 5432:5432 postgres:15-alpine
+## TABLE OF CONTENTS
 
-Hogwarts Schedule Manager
++ Summary
++ Application structure
+  1. Login
+  2. Users
+  3. Permissions
+  4. adjustments
++ How to use
 
-One teacher one subject
+## SUMMARY
 
-One subject one classroom
+### Personal
 
-Classes default daily schedule (max 5 classes a day):
+HOGWARTS SCHEDULE MANAGER is my educational project, so it shouldn't be treated as an enterprise application. It's more like an alpha version that may have some issues. My goal was to use and implement certain backend technologies, while all other development aspects either remain at a very basic level or are completely absent.
 
-1. 09:30 - 10:50
-2. 11:00 - 12:20
-3. 13:00 - 14:20
-4. 14:30 - 15:50
-5. 16:00 - 17:20
+The development process itself was interesting for me; I got acquainted with technologies like Spring MVC, Security, Thymeleaf, CI/CD, and AWS. I would say I'm proud of the result.
 
-Houses (faculties): Gryffindor, Hufflepuff, Ravenclaw, Slytherin
-The sample of a students group name: «Gryffindor-7-1»; «houseName-yearOfStudy-groupId». They study 7 years at Hogwarts.
-User has one of 3 available roles: student, professor, admin
+### About the APP
 
-Admin options:
-Edit database (CRUD student, teacher, course and relations between them)
-User options:
-Navigate to MySchedule
-Choose a time window for schedule viewing (default «current month»)
+The main function of the application is the ability to create schedules for Hogwarts School of Witchcraft and Wizardry. The schedule includes date, time, student group, teacher (professor), subject, and classroom. The administrator has the ability to create, delete, and edit all these components. Some sample data is provided by default for demonstration purposes.
 
-List of used subjects:
+Only the names and titles are taken from the Harry Potter lore. We do not claim any adherence to the books or movies or to any canonical lore.
 
-Potions,
-Care of Magical Creatures,
-Defence Against the Dark Arts,
-Herbology,
-Transfiguration,
-Field Studies,
-Divination,
-Charms,
-Study of Ancient Runes,
-Flying,
-History of Magic,
-Arithmancy.
+## APPLICATION STRUCTURE
 
-List of Users (first name, last name, username (password is the same), authority):
+### Login
 
-Severus Snape, severussnape, professor,
-Rubeus Hagrid, rubeushagrid, professor,
-Remus Lupin, remuslupin, professor,
-Pomona Sprout, pomonasprout, professor,
-Minerva McGonagall, minervamcgonagall, professor, admin,
-Luna Scamander, lunascamander, professor
-Firenze, firenze, professor,
-Filius Flitwick, filiusflitwick, professor,
-Elspeth MacGillony, elspethmacgillony, professor,
-Rolanda Hooch, rolandahooch, professor,
-Jakub Gorski, jakubgorski, professor,
-Septima Vector, septimavector, professor,
-Harry Potter, harrypotter, student,
-Hermione Granger, hermionegranger, student,
-Neville Longbottom, nevillelongbottom, student,
-Ronald Weasley, ronaldweasley, student,
-Lavender Brown, lavenderbrown, student,
-Dean Thomas, deanthomas, student,
-Seamus Finnigan, seamusfinnigan, student,
-Parvati Patil, parvatipatil, student.
+To use the APP you have to login first. You may login as:
++ student
++ professor
++ admin
 
-List of classrooms:
+By default Minerva McGonagall has professor and admin roles. Any professor could have the admin role. Student can't.
 
-Dungeon Five,
-Potion-Mixing Room,
-Potions Classroom,
-Hagrid's Hut,
-Forbidden Forest,
-Class 31,
-Classroom 3C,
-Greenhouse 1-7,
-Class 102,
-Classroom 1B,
-Class 1,
-Class 34,
-Backyard,
-Classroom 1,
-Divination Classroom,
-Classroom 2E,
-Classroom 6A,
-Backyard,
-Classroom 4F,
-Classroom 7A.
+### Default users
+
+**IMPORTANT!** This application is open to the world, so anyone can log in with administrator privileges and make changes to users list. If you can't log in, please contact the developer at denislensky94@gmail.com.
+
+List of Users (first name, last name, username (password is the same as username), authority):
+
++ Severus Snape, severussnape, professor,
++ Rubeus Hagrid, rubeushagrid, professor,
++ Remus Lupin, remuslupin, professor,
++ Pomona Sprout, pomonasprout, professor,
++ Minerva McGonagall, minervamcgonagall, professor, admin,
++ Luna Scamander, lunascamander, professor
++ Firenze, firenze, professor,
++ Filius Flitwick, filiusflitwick, professor,
++ Elspeth MacGillony, elspethmacgillony, professor,
++ Rolanda Hooch, rolandahooch, professor,
++ Jakub Gorski, jakubgorski, professor,
++ Septima Vector, septimavector, professor,
++ Harry Potter, harrypotter, student,
++ Hermione Granger, hermionegranger, student,
++ Neville Longbottom, nevillelongbottom, student,
++ Ronald Weasley, ronaldweasley, student,
++ Lavender Brown, lavenderbrown, student,
++ Dean Thomas, deanthomas, student,
++ Seamus Finnigan, seamusfinnigan, student,
++ Parvati Patil, parvatipatil, student.
+
+### Permissions
+
+Student can only read.
+Professor can read and edit the classroom for a subject.
+Admin can perform any CRUD operation with classrooms, subjects, users, groups, schedule.
+
+### Default adjustments
++ A subject has only one classroom
++ Could be subjects with no classroom and vice versa
++ Possible role combinations for users:
+  + student
+  + professor
+  + admin
+  + professor, admin
++ Professors have only one subject
++ Could be a professor with no subject and vice versa
+
+## HOW TO USE THE APP
+
+### Remote server
+
+Copy this address to your browser - 3.16.216.231:8080 (no http://, no www, just this numbers). You should get the log in page.
+
+### Localhost
++ Download source code
++ Download and install Docker
++ Run the command:
+  + docker run --name=hogwarts_db -d -e POSTGRES_DB=hogwarts_db -e POSTGRES_USER=lenskyi -e POSTGRES_PASSWORD=lenskyi -p 5432:5432 postgres:15-alpine
++ Free 8080 port
++ Execute code from IDE
++ Another option is to build .jar and docker image, and execute docker-compose file

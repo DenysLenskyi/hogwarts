@@ -14,7 +14,7 @@
 
 <div class="container-fluid">
 
-    <div class="row" style="margin-bottom: 20px">
+    <div sec:authorize="hasAuthority('admin')" class="row" style="margin-bottom: 20px">
         <a th:href="@{/classroom/create-classroom-page}">
             <button type="submit" class="btn btn-info">CREATE NEW CLASSROOM</button>
         </a>
@@ -41,7 +41,7 @@
                         <p><span th:text="${classroom.subject.name}"/></p>
                     </div>
                 </td>
-                <td>
+                <td sec:authorize="hasAuthority('admin')">
                     <div>
                         <a th:href="@{/classroom/{id}/edit-page(id=${classroom.getId()})}">
                             <input type="submit" value="EDIT" class="btn btn-warning" style="margin-bottom: 3px">

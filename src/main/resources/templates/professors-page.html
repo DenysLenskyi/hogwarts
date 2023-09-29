@@ -14,7 +14,7 @@
 
 <div class="container-fluid">
 
-    <div class="row" style="margin-bottom: 20px">
+    <div sec:authorize="hasAuthority('admin')" class="row" style="margin-bottom: 20px">
         <a th:href="@{/user/professor/create-professor-page}">
             <button type="submit" class="btn btn-info">CREATE NEW PROFESSOR</button>
         </a>
@@ -38,7 +38,7 @@
                 <td th:text="${professor.getRolesToString()}"></td>
                 <td th:if="${professor.subjectDto != null}" th:text="${professor.subjectDto.name}"></td>
                 <td th:if="${professor.subjectDto != null && professor.subjectDto.classroomDto != null}" th:text="${professor.subjectDto.classroomDto.name}"></td>
-                <td>
+                <td sec:authorize="hasAuthority('admin')">
                     <div>
                         <a th:href="@{/user/professor/{id}/edit-page(id=${professor.getId()})}">
                             <input type="submit" value="EDIT" class="btn btn-warning" style="margin-bottom: 3px">

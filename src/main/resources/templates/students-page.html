@@ -14,7 +14,7 @@
 
 <div class="container-fluid">
 
-    <div class="row" style="margin-bottom: 20px">
+    <div sec:authorize="hasAuthority('admin')" class="row" style="margin-bottom: 20px">
         <a th:href="@{/user/student/create-student-page}">
             <button type="submit" class="btn btn-info">CREATE NEW STUDENT</button>
         </a>
@@ -34,7 +34,7 @@
                 <td th:text="${student.firstName}"></td>
                 <td th:text="${student.getLastName()}"></td>
                 <td th:text="${student.groupDto.name}"></td>
-                <td>
+                <td sec:authorize="hasAuthority('admin')">
                     <div>
                         <a th:href="@{/user/student/{id}/edit-page(id=${student.getId()})}">
                             <input type="submit" value="EDIT" class="btn btn-warning" style="margin-bottom: 3px">

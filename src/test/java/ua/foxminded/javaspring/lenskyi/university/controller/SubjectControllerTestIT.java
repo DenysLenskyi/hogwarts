@@ -47,7 +47,7 @@ class SubjectControllerTestIT {
         mvc.perform(MockMvcRequestBuilders
                         .get("/subject/all"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("subjects-db-overview"))
+                .andExpect(view().name("subjects-page"))
                 .andExpect(model().attribute("subjects", Matchers.equalToObject(allSubjects)))
                 .andExpect(model().attribute("subjects", Matchers.hasSize(12)));
     }

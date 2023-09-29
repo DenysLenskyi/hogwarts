@@ -41,7 +41,7 @@ class ClassroomControllerTestIT {
         mvc.perform(MockMvcRequestBuilders
                         .get("/classroom/all"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("classrooms-db-overview"))
+                .andExpect(view().name("classrooms-page"))
                 .andExpect(model().attribute("classrooms", Matchers.equalToObject(allClassrooms)));
     }
 

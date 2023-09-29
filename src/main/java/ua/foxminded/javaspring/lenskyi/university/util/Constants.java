@@ -10,7 +10,7 @@ public abstract class Constants {
     public static final String REDIRECT_STUDENT_PAGE = "redirect:/user/student";
     public static final String REDIRECT_PROFESSOR_PAGE = "redirect:/user/professor";
     public static final String REDIRECT_LESSON_PAGE = "redirect:/lesson/all";
-    public static final String SUBJECT_PAGE_TEMPLATE_NAME = "subjects-db-overview";
+    public static final String SUBJECT_PAGE_TEMPLATE_NAME = "subjects-page";
     public static final String GROUP_PAGE_TEMPLATE_NAME = "groups-page";
     public static final String ERROR_400_TEMPLATE_NAME = "error/400";
     public static final String ERROR_403_TEMPLATE_NAME = "error/403";
@@ -29,7 +29,7 @@ public abstract class Constants {
     public static final String EDIT_STUDENT_PAGE_TEMPLATE_NAME = "forms/edit-student-form";
     public static final String EDIT_PROFESSOR_PAGE_TEMPLATE_NAME = "forms/edit-professor-form";
     public static final String CREATE_PROFESSOR_PAGE_TEMPLATE_NAME = "forms/create-professor-form";
-    public static final String CLASSROOM_PAGE_TEMPLATE_NAME = "classrooms-db-overview";
+    public static final String CLASSROOM_PAGE_TEMPLATE_NAME = "classrooms-page";
     public static final String LESSON_PAGE_TEMPLATE_NAME = "lessons-page";
     public static final String CREATE_LESSON_PAGE_TEMPLATE_NAME = "forms/create-lesson-form";
 }

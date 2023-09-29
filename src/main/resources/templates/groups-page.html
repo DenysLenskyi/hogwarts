@@ -14,7 +14,7 @@
 
 <div class="container-fluid">
 
-    <div class="row" style="margin-bottom: 20px">
+    <div sec:authorize="hasAuthority('admin')" class="row" style="margin-bottom: 20px">
         <a th:href="@{/group/create-group-page}">
             <button type="submit" class="btn btn-info">CREATE NEW Group</button>
         </a>
@@ -36,7 +36,7 @@
             <tr th:each="group : ${groups}">
                 <td th:text="${group.name}"></td>
                 <td>
-                    <div th:if="${group.numStudentsInGroup} == 0">
+                    <div sec:authorize="hasAuthority('admin')" th:if="${group.numStudentsInGroup} == 0">
                         <form th:action="@{/group/{id}(id=${group.getId()})}" th:method="delete">
                             <input type="submit" value="DELETE" class="btn btn-danger" style="margin-bottom: 3px">
                         </form>
@@ -44,7 +44,7 @@
                     <div th:if="${group.numStudentsInGroup} != 0">
                         <p><span th:text="${group.numStudentsInGroup}"/></p>
                         <p>
-                        <div>
+                        <div sec:authorize="hasAuthority('admin')">
                             <a th:href="@{/group/{id}/edit-page(id=${group.getId()})}">
                                 <input type="submit" value="Move Students" class="btn btn-warning" style="margin-bottom: 3px">
                             </a>

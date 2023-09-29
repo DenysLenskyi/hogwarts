@@ -14,7 +14,7 @@
 
 <div class="container-fluid">
 
-    <div class="row" style="margin-bottom: 20px">
+    <div sec:authorize="hasAuthority('admin')" class="row" style="margin-bottom: 20px">
         <a th:href="@{/lesson/create-lesson-page}">
             <button type="submit" class="btn btn-info">CREATE NEW LESSON</button>
         </a>
@@ -50,7 +50,7 @@
 <!--                            <input type="submit" value="EDIT" class="btn btn-warning" style="margin-bottom: 3px">-->
 <!--                        </a>-->
 <!--                    </div>-->
-                    <div>
+                    <div sec:authorize="hasAuthority('admin')">
                         <form th:action="@{/lesson/{id}(id=${lesson.getId()})}" th:method="delete">
                             <input type="submit" value="DELETE" class="btn btn-danger" style="margin-bottom: 3px">
                         </form>

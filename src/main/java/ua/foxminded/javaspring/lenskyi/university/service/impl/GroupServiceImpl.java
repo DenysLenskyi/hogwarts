@@ -11,6 +11,7 @@ import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +33,7 @@ public class GroupServiceImpl implements GroupService {
         List<Group> groups = groupRepository.findAll();
         return groups.stream()
                 .map(groupEntityGroupDtoMapper::groupEntityToGroupDto)
+                .sorted(Comparator.comparing(GroupDto::getId))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 

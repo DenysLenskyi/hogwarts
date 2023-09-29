@@ -15,6 +15,7 @@ import ua.foxminded.javaspring.lenskyi.university.repository.SubjectRepository;
 import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -59,6 +60,7 @@ public class SubjectServiceImpl implements SubjectService {
                     subjectDto.setUserDto(userMapper.userEntityToUserDto(subject.getUser()));
                     return subjectDto;
                 })
+                .sorted(Comparator.comparing(SubjectDto::getId))
                 .toList();
     }
 

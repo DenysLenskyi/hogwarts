@@ -72,7 +72,9 @@ public class LessonServiceImpl implements LessonService {
                     return lessonDto;
                 })
                 .sorted(Comparator.comparing(LessonDto::getDate)
-                        .thenComparing(lesson -> lesson.getLessonTimeDto().getStart()))
+                        .thenComparing(lesson -> lesson.getLessonTimeDto().getStart())
+                        .thenComparing(lesson -> lesson.getGroupDto().getName())
+                        .thenComparing(lesson -> lesson.getSubjectDto().getName()))
                 .toList();
     }
 

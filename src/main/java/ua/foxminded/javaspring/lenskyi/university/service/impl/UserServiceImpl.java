@@ -15,6 +15,7 @@ import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 import ua.foxminded.javaspring.lenskyi.university.service.UserService;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -89,6 +90,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> findAllStudentDto() {
         return findAllStudent().stream()
                 .map(student -> findById(student.getId()))
+                .sorted(Comparator.comparing(UserDto::getId))
                 .toList();
     }
 
@@ -141,6 +143,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> findAllProfessorAndAdminDto() {
         return findAllProfessorAndAdmin().stream()
                 .map(prof -> findById(prof.getId()))
+                .sorted(Comparator.comparing(UserDto::getId))
                 .toList();
     }
 

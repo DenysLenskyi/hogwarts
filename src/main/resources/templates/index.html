@@ -12,7 +12,45 @@
 <body style="padding: 40px">
 <div th:replace="~{fragments/header}"></div>
 <div class="container-fluid">
-    <h1>Hogwarts schedule manager homepage</h1>
+<!--    login info-->
+    <div class="row">
+        <h2>Your LOG IN Information</h2>
+<!--        info for student-->
+        <div sec:authorize="hasAuthority('student')">
+            <p>First name: <span th:text="${#authentication.principal.firstName}"/></p>
+            <p th:if="${!#authentication.principal.lastName.isEmpty()}">
+                Last name: <span th:text="${#authentication.principal.lastName}"/></p>
+            <p>Role: student</p>
+            <p>Group: <span th:text="${#authentication.principal.getGroup().getName()}"/></p>
+            <p>Permissions: observe only</p>
+        </div>
+<!--        info for professor-->
+        <div sec:authorize="hasAuthority('professor') && !hasAuthority('admin')">
+            <p>First name: <span th:text="${#authentication.principal.firstName}"/></p>
+            <p th:if="${!#authentication.principal.lastName.isEmpty()}">
+                Last name: <span th:text="${#authentication.principal.lastName}"/></p>
+            <p>Role: professor</p>
+            <p>Subject: <span th:text="${#authentication.principal.getSubject().getName()}"/></p>
+            <p>Permissions: observe, subject editing</p>
+        </div>
+<!--        info for admin-->
+        <div sec:authorize="!hasAuthority('professor') && hasAuthority('admin')">
+            <p>First name: <span th:text="${#authentication.principal.firstName}"/></p>
+            <p th:if="${!#authentication.principal.lastName.isEmpty()}">
+                Last name: <span th:text="${#authentication.principal.lastName}"/></p>
+            <p>Role: administrator</p>
+            <p>Permissions: observe, create, edit, delete</p>
+        </div>
+<!--        info for professor-admin-->
+        <div sec:authorize="hasAuthority('professor') && hasAuthority('admin')">
+            <p>First name: <span th:text="${#authentication.principal.firstName}"/></p>
+            <p th:if="${!#authentication.principal.lastName.isEmpty()}">
+                Last name: <span th:text="${#authentication.principal.lastName}"/></p>
+            <p>Role: professor, administrator</p>
+            <p>Subject: <span th:text="${#authentication.principal.getSubject().getName()}"/></p>
+            <p>Permissions: observe, create, edit, delete</p>
+        </div>
+    </div>
     <h2>Here's what we have in Hogwarts Database</h2>
     <div>
         <ul>

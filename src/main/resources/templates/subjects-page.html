@@ -20,6 +20,10 @@
         </a>
     </div>
 
+    <div sec:authorize="!hasAuthority('admin')" class="row">
+        <p class="lead text-info">Log in with admin rights to create/delete a subject</p>
+    </div>
+
     <div class="row vertical-center">
         <table class="table table-bordered">
             <thead>

@@ -85,7 +85,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Transactional
-    public void updateSubjectFromSubjectDto(SubjectDto subjectDto) {
+    public void updateSubject(SubjectDto subjectDto) {
         Subject subjectToUpdate = subjectRepository.findById(subjectDto.getId()).orElseThrow();
         if (!subjectDto.getName().isEmpty()) {
             subjectToUpdate.setName(subjectDto.getName());
@@ -109,7 +109,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Transactional
-    public void createNewSubjectFromSubjectDto(SubjectDto subjectDto) {
+    public void createNewSubject(SubjectDto subjectDto) {
         Subject newSubject = new Subject();
         if (!subjectDto.getName().isEmpty()) {
             newSubject.setName(subjectDto.getName());

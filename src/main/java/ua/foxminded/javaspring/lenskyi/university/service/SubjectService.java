@@ -17,11 +17,11 @@ public interface SubjectService {
 
     SubjectDto findByName(String subjectName);
 
-    void updateSubjectFromSubjectDto(SubjectDto subjectDto);
+    void updateSubject(SubjectDto subjectDto);
 
     boolean doesSubjectExistById(Long subjectId);
 
-    void createNewSubjectFromSubjectDto(SubjectDto subjectDto);
+    void createNewSubject(SubjectDto subjectDto);
 
     void deleteSubjectById(Long id);
 

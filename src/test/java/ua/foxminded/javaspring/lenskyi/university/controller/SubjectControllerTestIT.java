@@ -151,7 +151,7 @@ class SubjectControllerTestIT {
         SubjectDto newSubject = new SubjectDto();
         newSubject.setName("testDeleteSubject");
         newSubject.setDescription("test");
-        subjectService.createNewSubjectFromSubjectDto(newSubject);
+        subjectService.createNewSubject(newSubject);
         SubjectDto subjectToDelete = subjectService.findByName("testDeleteSubject");
         mvc.perform(MockMvcRequestBuilders.delete("/subject/" + subjectToDelete.getId())
                         .with(csrf()))

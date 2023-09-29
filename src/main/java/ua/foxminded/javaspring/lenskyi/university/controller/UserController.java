@@ -30,7 +30,7 @@ public class UserController {
 
     @GetMapping("/student")
     public String getStudentPage(Model model) {
-        model.addAttribute("students", userService.findAllStudentDto());
+        model.addAttribute("students", userService.findAllStudent());
         return STUDENTS_PAGE_TEMPLATE_NAME;
     }
 
@@ -88,7 +88,7 @@ public class UserController {
 
     @GetMapping("/professor")
     public String getProfessorPage(Model model) {
-        model.addAttribute("professorsAndAdmins", userService.findAllProfessorAndAdminDto());
+        model.addAttribute("professorsAndAdmins", userService.findAllProfessorAndAdmin());
         return PROFESSORS_PAGE_TEMPLATE_NAME;
     }
 

@@ -49,9 +49,6 @@ public class UserServiceImpl implements UserService {
         this.subjectService = subjectService;
     }
 
-    public List<User> findAllUsers() {
-        return userRepository.findAll();
-    }
 
     public UserDto findById(Long id) {
         User user = userRepository.findById(id).orElseThrow(IllegalArgumentException::new);
@@ -69,6 +66,10 @@ public class UserServiceImpl implements UserService {
         return userDto;
     }
 
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
     public User findByUsername(String username) {
         return userRepository.findUserByUsername(username);
     }
@@ -77,25 +78,22 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsById(userId);
     }
 
-    public List<User> findAllProfessorWithNoSubject() {
-        return userRepository.findAllBySubjectIsNullAndRolesContains(
-                roleRepository.findRoleByName(PROFESSOR_ROLE_NAME).orElseThrow(IllegalArgumentException::new));
-    }
-
-    public List<User> findAllStudent() {
-        Role studentRole = roleRepository.findRoleByName(STUDENT_ROLE_NAME).orElseThrow(IllegalArgumentException::new);
-        return userRepository.findAllByRolesContains(studentRole);
-    }
-
-    public List<UserDto> findAllStudentDto() {
-        return findAllStudent().stream()
-                .map(student -> findById(student.getId()))
+    public List<UserDto> findAllProfessorWithNoSubject() {
+        Role professor = roleRepository.findRoleByName(PROFESSOR_ROLE_NAME).orElseThrow(IllegalArgumentException::new);
+        List<User> professors = userRepository.findAllBySubjectIsNullAndRolesContains(professor);
+        return professors.stream()
+                .map(userDtoMapper::userEntityToUserDto)
                 .sorted(Comparator.comparing(UserDto::getId))
                 .toList();
     }
 
-    public boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
+    public List<UserDto> findAllStudent() {
+        Role studentRole = roleRepository.findRoleByName(STUDENT_ROLE_NAME).orElseThrow(IllegalArgumentException::new);
+        List<User> students = userRepository.findAllByRolesContains(studentRole);
+        return students.stream()
+                .map(student -> findById(student.getId()))
+                .sorted(Comparator.comparing(UserDto::getId))
+                .toList();
     }
 
     @Transactional
@@ -135,13 +133,10 @@ public class UserServiceImpl implements UserService {
         userRepository.saveAndFlush(userToUpdate);
     }
 
-    public List<User> findAllProfessorAndAdmin() {
-        return userRepository.findAllByRolesIsIn(
+    public List<UserDto> findAllProfessorAndAdmin() {
+        List<User> professorsAndAdmins = userRepository.findAllByRolesIsIn(
                 roleRepository.findAllByNameIsIn(List.of(ADMIN_ROLE_NAME, PROFESSOR_ROLE_NAME)));
-    }
-
-    public List<UserDto> findAllProfessorAndAdminDto() {
-        return findAllProfessorAndAdmin().stream()
+        return professorsAndAdmins.stream()
                 .map(prof -> findById(prof.getId()))
                 .sorted(Comparator.comparing(UserDto::getId))
                 .toList();

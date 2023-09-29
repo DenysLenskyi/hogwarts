@@ -8,33 +8,26 @@ import java.util.List;
 
 public interface UserService {
 
-    List<User> findAllUsers();
-
     UserDto findById(Long id);
+
+    boolean existsByUsername(String username);
 
     User findByUsername(String username);
 
     boolean existsById(Long userId);
 
-    List<User> findAllProfessorWithNoSubject();
+    List<UserDto> findAllProfessorWithNoSubject();
 
-    List<User> findAllStudent();
-
-    List<User> findAllProfessorAndAdmin();
-
-    boolean existsByUsername(String username);
-
+    List<UserDto> findAllStudent();
     void createStudent(UserDto userDto);
-    void createProfessor(ProfessorForm professorForm);
-
     void deleteById(Long id);
-
     void updateStudent(UserDto userDto);
+
+    List<UserDto> findAllProfessorAndAdmin();
+
+    void createProfessor(ProfessorForm professorForm);
 
     ProfessorForm createProfessorFormDto(Long id);
 
     void updateProfessor(ProfessorForm professorForm);
-
-    List<UserDto> findAllProfessorAndAdminDto();
-    List<UserDto> findAllStudentDto();
 }

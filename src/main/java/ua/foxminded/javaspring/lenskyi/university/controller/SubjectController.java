@@ -55,7 +55,7 @@ public class SubjectController {
             return ERROR_400_TEMPLATE_NAME;
         }
         subjectDto.setId(id);
-        subjectService.updateSubjectFromSubjectDto(subjectDto);
+        subjectService.updateSubject(subjectDto);
         return REDIRECT_SUBJECT_PAGE;
     }
 
@@ -76,7 +76,7 @@ public class SubjectController {
             model.addAttribute("subjectName", subjectDto.getName());
             return ERROR_400_TEMPLATE_NAME;
         }
-        subjectService.createNewSubjectFromSubjectDto(subjectDto);
+        subjectService.createNewSubject(subjectDto);
         return REDIRECT_SUBJECT_PAGE;
     }
 

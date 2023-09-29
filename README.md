@@ -48,7 +48,7 @@ List of Users (first name, last name, username (password is the same as username
 + Remus Lupin, remuslupin, professor,
 + Pomona Sprout, pomonasprout, professor,
 + Minerva McGonagall, minervamcgonagall, professor, admin,
-+ Luna Scamander, lunascamander, professor
++ Luna Scamander, lunascamander, professor,
 + Firenze, firenze, professor,
 + Filius Flitwick, filiusflitwick, professor,
 + Elspeth MacGillony, elspethmacgillony, professor,

@@ -20,7 +20,6 @@ import ua.foxminded.javaspring.lenskyi.university.service.LessonService;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 

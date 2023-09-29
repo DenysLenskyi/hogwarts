@@ -2,7 +2,8 @@ package ua.foxminded.javaspring.lenskyi.university.util;
 
 public abstract class Constants {
 
-    public static final String ADMIN_ROLE_NAME = "admin";
+    public static final String LOGIN_PAGE_TEMPLATE_NAME = "login";
+    public static final String README_PAGE_TEMPLATE_NAME = "readme-page";
     public static final String REDIRECT_SUBJECT_PAGE = "redirect:/subject/all";
     public static final String REDIRECT_GROUP_PAGE = "redirect:/group/all";
     public static final String REDIRECT_CLASSROOM_PAGE = "redirect:/classroom/all";

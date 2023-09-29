@@ -34,11 +34,11 @@
                 <td th:text="${classroom.getName()}"></td>
                 <td th:text="${classroom.getDescription()}"></td>
                 <td>
-                    <div th:if="${classroom.subject == null}">
+                    <div th:if="${classroom.subjectDto == null}">
                         <p>Vacant</p>
                     </div>
-                    <div th:if="${classroom.subject != null}">
-                        <p><span th:text="${classroom.subject.name}"/></p>
+                    <div th:if="${classroom.subjectDto != null}">
+                        <p><span th:text="${classroom.subjectDto.name}"/></p>
                     </div>
                 </td>
                 <td sec:authorize="hasAuthority('admin')">

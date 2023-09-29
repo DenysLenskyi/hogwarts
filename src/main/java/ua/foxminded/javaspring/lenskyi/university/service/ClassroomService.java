@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ClassroomService {
 
-    List<Classroom> findAll();
+    List<ClassroomDto> findAll();
 
     List<Classroom> findAllFreeClassrooms();
 

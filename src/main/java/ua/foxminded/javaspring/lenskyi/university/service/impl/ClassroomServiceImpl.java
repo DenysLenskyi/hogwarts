@@ -7,6 +7,7 @@ import ua.foxminded.javaspring.lenskyi.university.model.Classroom;
 import ua.foxminded.javaspring.lenskyi.university.repository.ClassroomRepository;
 import ua.foxminded.javaspring.lenskyi.university.service.ClassroomService;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -20,8 +21,12 @@ public class ClassroomServiceImpl implements ClassroomService {
         this.mapper = mapper;
     }
 
-    public List<Classroom> findAll() {
-        return classroomRepository.findAll();
+    public List<ClassroomDto> findAll() {
+        List<Classroom> classrooms = classroomRepository.findAll();
+        return classrooms.stream()
+                .map(mapper::classroomEntityToClassroomDto)
+                .sorted(Comparator.comparing(ClassroomDto::getId))
+                .toList();
     }
 
     public Classroom findByName(String classroomName) {

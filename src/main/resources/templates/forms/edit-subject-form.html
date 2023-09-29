@@ -17,6 +17,7 @@
 <div th:replace="~{fragments/header}"></div>
 
 <div class="container-fluid" style="padding: 40px">
+
     <div class="row vertical-center" style="max-width: 700px">
 
         <h2>Edit Subject</h2>
@@ -29,7 +30,8 @@
                 <!--                Edit name option for admin-->
                 <div class="form-group" sec:authorize="hasAuthority('admin')">
                     <label>Edit Name</label>
-                    <p>Use 2 or more letters, numbers or symbols, do not leave this field empty or filled with whitespaces</p>
+                    <p>Use 2 or more letters, numbers or symbols, do not leave this field empty or filled with
+                        whitespaces</p>
                     <p><input type="text" th:field="*{name}" required pattern="^(?!\s*$).+"/></p>
                 </div>
 
@@ -61,7 +63,8 @@
                             <option th:each="classroom : ${freeClassrooms}" th:value="${classroom.name}"
                                     th:text="${classroom.name}">
                             </option>
-                            <option th:value="*{classroomDto.name}" th:text="*{classroomDto.name + ' (current)'}" selected></option>
+                            <option th:value="*{classroomDto.name}" th:text="*{classroomDto.name + ' (current)'}"
+                                    selected></option>
                         </select>
                     </div>
                 </div>
@@ -82,7 +85,9 @@
                         <select th:field="*{userDto.username}">
                             <option th:each="user : ${freeProfessors}" th:value="${user.username}"
                                     th:text="${user.firstName + ' ' + user.lastName}"></option>
-                            <option th:value="*{userDto.username}" th:text="*{userDto.firstName + ' ' + userDto.lastName + ' (current)'}" selected></option>
+                            <option th:value="*{userDto.username}"
+                                    th:text="*{userDto.firstName + ' ' + userDto.lastName + ' (current)'}"
+                                    selected></option>
                         </select>
                     </div>
                 </div>

@@ -90,7 +90,7 @@ public class SubjectServiceImpl implements SubjectService {
             subjectToUpdate.setDescription(subjectDto.getDescription());
         }
         if (subjectDto.getClassroomDto() != null) {
-            Classroom classroom = classroomRepository.findByName(subjectDto.getClassroomDto().getName()).orElseThrow();
+            Classroom classroom = classroomRepository.findByName(subjectDto.getClassroomDto().getName()).orElse(null);
             subjectToUpdate.setClassroom(classroom);
         }
         if (subjectDto.getUserDto() != null) {

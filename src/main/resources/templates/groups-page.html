@@ -24,8 +24,8 @@
         <p class="lead text-info">Log in with admin rights to edit</p>
     </div>
 
-    <div class="row" style="margin-bottom: 20px">
-        <p>You can delete a group if it has no students</p>
+    <div sec:authorize="hasAuthority('admin')" class="row">
+        <p class="lead text-info">You can delete a group if it has no students</p>
     </div>
 
     <div class="row vertical-center">

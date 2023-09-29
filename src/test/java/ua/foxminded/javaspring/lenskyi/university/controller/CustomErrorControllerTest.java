@@ -10,6 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import ua.foxminded.javaspring.lenskyi.university.controller.dto.SubjectDto;
 import ua.foxminded.javaspring.lenskyi.university.model.Subject;
 import ua.foxminded.javaspring.lenskyi.university.service.ClassroomService;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
@@ -63,7 +64,7 @@ class CustomErrorControllerTest {
     @Test
     @WithUserDetails("remuslupin")
     void professorGoesToEditSubject_shouldReturn200() throws Exception {
-        List<Subject> subjects = subjectService.findAll();
+        List<SubjectDto> subjects = subjectService.findAll();
         mvc.perform(MockMvcRequestBuilders
                         .get("/subject/" + subjects.get(0).getId() + "/edit-page"))
                 .andExpect(status().isOk());

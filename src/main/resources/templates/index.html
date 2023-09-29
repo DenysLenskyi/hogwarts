@@ -30,8 +30,13 @@
             <p th:if="${!#authentication.principal.lastName.isEmpty()}">
                 Last name: <span th:text="${#authentication.principal.lastName}"/></p>
             <p>Role: professor</p>
-            <p>Subject: <span th:text="${#authentication.principal.getSubject().getName()}"/></p>
-            <p>Permissions: observe, subject editing</p>
+            <p th:if="${#authentication.principal.getSubject() != null}">
+                Subject: <span th:text="${#authentication.principal.getSubject().getName()}"/>
+            </p>
+            <p th:if="${#authentication.principal.getSubject() == null}">
+                You have no subject... You should ask an admin to add you one
+            </p>
+            <p>Permissions: observe, subject's classroom editing</p>
         </div>
 <!--        info for admin-->
         <div sec:authorize="!hasAuthority('professor') && hasAuthority('admin')">
@@ -47,7 +52,12 @@
             <p th:if="${!#authentication.principal.lastName.isEmpty()}">
                 Last name: <span th:text="${#authentication.principal.lastName}"/></p>
             <p>Role: professor, administrator</p>
-            <p>Subject: <span th:text="${#authentication.principal.getSubject().getName()}"/></p>
+            <p th:if="${#authentication.principal.getSubject() != null}">
+                Subject: <span th:text="${#authentication.principal.getSubject().getName()}"/>
+            </p>
+            <p th:if="${#authentication.principal.getSubject() == null}">
+                You have no subject... You should add one for yourself
+            </p>
             <p>Permissions: observe, create, edit, delete</p>
         </div>
     </div>

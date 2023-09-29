@@ -51,7 +51,7 @@ public class LessonController {
                 new GroupDto()));
         model.addAttribute("lessonTimeList", lessonTimeService.findAllDto());
         model.addAttribute("groups", groupService.findAll());
-        model.addAttribute("subjects", subjectService.findAllDto());
+        model.addAttribute("subjects", subjectService.findAll());
         return CREATE_LESSON_PAGE_TEMPLATE_NAME;
     }
 

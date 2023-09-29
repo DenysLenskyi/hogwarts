@@ -43,7 +43,7 @@ class SubjectControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void getAllSubjectPageTest() throws Exception {
-        List<Subject> allSubjects = subjectService.findAll();
+        List<SubjectDto> allSubjects = subjectService.findAll();
         mvc.perform(MockMvcRequestBuilders
                         .get("/subject/all"))
                 .andExpect(status().isOk())
@@ -55,8 +55,8 @@ class SubjectControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void showEditSubjectFormTest() throws Exception {
-        List<Subject> allSubjects = subjectService.findAll();
-        Subject subjectToEdit = allSubjects.get(0);
+        List<SubjectDto> allSubjects = subjectService.findAll();
+        SubjectDto subjectToEdit = allSubjects.get(0);
         SubjectDto expectedSubjectDto = subjectService.findById(subjectToEdit.getId());
         mvc.perform(MockMvcRequestBuilders
                         .get("/subject/" + subjectToEdit.getId() + "/edit-page"))
@@ -70,8 +70,8 @@ class SubjectControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void showEditSubjectFormWrongIdTest() throws Exception {
-        List<Subject> allSubjects = subjectService.findAll();
-        Subject subjectToEdit = allSubjects.get(0);
+        List<SubjectDto> allSubjects = subjectService.findAll();
+        SubjectDto subjectToEdit = allSubjects.get(0);
         long wrongSubjectId = subjectToEdit.getId() - 100L;
         mvc.perform(MockMvcRequestBuilders
                         .get("/subject/" + wrongSubjectId + "/edit-page"))
@@ -82,23 +82,24 @@ class SubjectControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void editSubjectTest() throws Exception {
-        List<Subject> allSubjects = subjectService.findAll();
-        Subject subjectToEdit = allSubjects.get(0);
+        List<SubjectDto> allSubjects = subjectService.findAll();
+        SubjectDto subjectToEdit = allSubjects.get(0);
         mvc.perform(MockMvcRequestBuilders
                         .put("/subject/" + subjectToEdit.getId())
                         .param("name", subjectToEdit.getName())
                         .param("description", "test")
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection());
-        assertEquals("test", subjectToEdit.getDescription());
+        SubjectDto updatedSubject = subjectService.findById(subjectToEdit.getId());
+        assertEquals("test", updatedSubject.getDescription());
     }
 
     @Test
     @WithUserDetails("minervamcgonagall")
     void editSubjectWrongNameTest() throws Exception {
-        List<Subject> allSubjects = subjectService.findAll();
-        Subject subjectToEdit = allSubjects.get(0);
-        Subject anotherExistedSubject = allSubjects.get(1);
+        List<SubjectDto> allSubjects = subjectService.findAll();
+        SubjectDto subjectToEdit = allSubjects.get(0);
+        SubjectDto anotherExistedSubject = allSubjects.get(1);
         mvc.perform(MockMvcRequestBuilders
                         .put("/subject/" + subjectToEdit.getId())
                         .param("name", anotherExistedSubject.getName())
@@ -136,7 +137,7 @@ class SubjectControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void createNewSubjectNotUniqueNameTest() throws Exception {
-        List<Subject> allSubjects = subjectService.findAll();
+        List<SubjectDto> allSubjects = subjectService.findAll();
         mvc.perform(MockMvcRequestBuilders.post("/subject")
                         .param("name", allSubjects.get(0).getName())
                         .param("description", "testDescription")
@@ -162,8 +163,8 @@ class SubjectControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void deleteSubjectWrongIdTest() throws Exception {
-        List<Subject> allSubjects = subjectService.findAll();
-        Subject subjectToEdit = allSubjects.get(0);
+        List<SubjectDto> allSubjects = subjectService.findAll();
+        SubjectDto subjectToEdit = allSubjects.get(0);
         long wrongSubjectId = subjectToEdit.getId() - 100L;
         mvc.perform(MockMvcRequestBuilders.delete("/subject/" + wrongSubjectId)
                         .with(csrf()))

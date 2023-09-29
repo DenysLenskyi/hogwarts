@@ -7,9 +7,7 @@ import java.util.List;
 
 public interface SubjectService {
 
-    List<Subject> findAll();
-
-    List<SubjectDto> findAllDto();
+    List<SubjectDto> findAll();
 
     SubjectDto findById(Long subjectId);
 

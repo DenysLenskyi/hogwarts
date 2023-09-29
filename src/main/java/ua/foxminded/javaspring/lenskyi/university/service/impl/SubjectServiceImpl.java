@@ -44,12 +44,8 @@ public class SubjectServiceImpl implements SubjectService {
         this.lessonMapper = lessonMapper;
     }
 
-    public List<Subject> findAll() {
-        return subjectRepository.findAll();
-    }
-
-    public List<SubjectDto> findAllDto() {
-        List<Subject> subjects = findAll();
+    public List<SubjectDto> findAll() {
+        List<Subject> subjects = subjectRepository.findAll();
         return subjects.stream()
                 .map(subject -> {
                     SubjectDto subjectDto = subjectMapper.subjectEntityToSubjectDto(subject);

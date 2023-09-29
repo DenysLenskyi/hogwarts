@@ -39,18 +39,18 @@
                 <td th:text="${subject.getName()}"></td>
                 <td th:text="${subject.getDescription()}"></td>
                 <td>
-                    <div th:if="${subject.classroom == null}">
+                    <div th:if="${subject.classroomDto == null}">
                         <p class="text-warning">NO CLASSROOM!</p>
                         <p>Edit this subject to add one</p>
                     </div>
-                    <div th:if="${subject.classroom != null}">
-                        <p><span th:text="${subject.getClassroom().getName()}"/></p>
+                    <div th:if="${subject.classroomDto != null}">
+                        <p><span th:text="${subject.getClassroomDto().getName()}"/></p>
                     </div>
                 </td>
                 <td>
-                    <div th:if="${subject.user == null}">No professor... Click 'EDIT' to add one</div>
-                    <div th:if="${subject.user != null}"><span
-                            th:text="${subject.getUser().getFirstName() + ' ' + subject.getUser().getLastName()}"></span>
+                    <div th:if="${subject.userDto == null}">No professor... Click 'EDIT' to add one</div>
+                    <div th:if="${subject.userDto != null}"><span
+                            th:text="${subject.getUserDto().getFirstName() + ' ' + subject.getUserDto().getLastName()}"></span>
                     </div>
                 </td>
                 <td sec:authorize="hasAuthority('admin') || hasAuthority('professor')">

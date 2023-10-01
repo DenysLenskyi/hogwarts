@@ -24,7 +24,12 @@
         <p class="lead text-info">Log in with admin rights to edit</p>
     </div>
 
-    <div class="row vertical-center">
+    <div th:if="${lessons.isEmpty()}" class="row">
+        <p class="lead text-info">It looks like somebody deleted all the schedule...</p>
+        <p class="lead text-info">Sad, but don't you worry, try to create new one!</p>
+    </div>
+
+    <div class="row vertical-center" th:if="${!lessons.isEmpty()}">
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -44,9 +49,25 @@
                 <td th:if="${lesson.lessonTimeDto != null}" th:text="${lesson.lessonTimeDto.end}"></td>
                 <td th:if="${lesson.groupDto != null}" th:text="${lesson.groupDto.name}"></td>
                 <td th:if="${lesson.subjectDto != null}" th:text="${lesson.subjectDto.name}"></td>
-                <td th:if="${lesson.subjectDto.userDto != null}" th:text="${lesson.subjectDto.userDto.firstName
-                + ' ' + lesson.subjectDto.userDto.lastName}"></td>
-                <td th:if="${lesson.subjectDto.classroomDto != null}" th:text="${lesson.subjectDto.classroomDto.name}"></td>
+                <td >
+                    <div th:if="${lesson.subjectDto.userDto != null}">
+                        <span th:text="${lesson.subjectDto.userDto.firstName
+                + ' ' + lesson.subjectDto.userDto.lastName}"/>
+                    </div>
+                    <div th:if="${lesson.subjectDto.userDto == null}">
+                        <p class="text-warning">No professor! It shouldn't be like this.</p>
+                        <p class="text-warning">Ask administrator or assign a professor to <span th:text="${lesson.subjectDto.name}"/> subject by yourself</p>
+                    </div>
+                </td>
+                <td>
+                    <div th:if="${lesson.subjectDto.classroomDto != null}">
+                        <span th:text="${lesson.subjectDto.classroomDto.name}"/>
+                    </div>
+                    <div th:if="${lesson.subjectDto.classroomDto == null}">
+                        <p class="text-warning">No classroom! It shouldn't be like this.</p>
+                        <p class="text-warning">Ask administrator or assign a classroom to <span th:text="${lesson.subjectDto.name}"/> subject by yourself</p>
+                    </div>
+                </td>
 
                 <td>
 <!--                    <div>-->

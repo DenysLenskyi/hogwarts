@@ -16,15 +16,15 @@ public class Lesson {
     @Column(name = "LESSON_DATE", nullable = false)
     private LocalDate date;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "START_END_TIME_ID", referencedColumnName = "ID")
     private LessonTime lessonTime;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "SUBJECT_ID")
     private Subject subject;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "GROUP_ID")
     private Group group;
 

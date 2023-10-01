@@ -60,8 +60,17 @@
                         </a>
                     </div>
                     <div sec:authorize="hasAuthority('admin')">
-                        <form th:action="@{/subject/{id}(id=${subject.getId()})}" th:method="delete">
-                            <input type="submit" value="DELETE" class="btn btn-danger" style="margin-bottom: 3px">
+                        <form th:action="@{/subject/{id}(id=${subject.getId()})}" th:method="delete" id="deleteSubjectForm" class="deleteSubjectForm">
+                            <button type="button" id="buttonDelete" onclick="deleteItem(this)" class="btn btn-danger" style="margin-bottom: 3px">DELETE</button>
+                            <script>
+                                function deleteItem(button) {
+                                    var form = button.closest('.deleteSubjectForm');
+                                    var isConfirmed = confirm("This will affect the schedule. This subject's lessons will be deleted.");
+                                    if (isConfirmed) {
+                                        form.submit();
+                                    }
+                                }
+                            </script>
                         </form>
                     </div>
                 </td>

@@ -52,8 +52,18 @@
                         </a>
                     </div>
                     <div>
-                        <form th:action="@{/classroom/{id}(id=${classroom.getId()})}" th:method="delete">
-                            <input type="submit" value="DELETE" class="btn btn-danger" style="margin-bottom: 3px">
+                        <form th:action="@{/classroom/{id}(id=${classroom.getId()})}" th:method="delete" id="deleteClassroomForm" class="deleteClassroomForm">
+                            <button type="button" id="buttonDelete" onclick="deleteItem(this)" class="btn btn-danger" style="margin-bottom: 3px">DELETE</button>
+                            <script>
+                                function deleteItem(button) {
+                                    var form = button.closest('.deleteClassroomForm');
+                                    var isConfirmed = confirm("If this classroom is vacant, just ignore this message." +
+                                        "If the classroom is in use, you'll affect schedule, subject, professor pages by deleting it");
+                                    if (isConfirmed) {
+                                        form.submit();
+                                    }
+                                }
+                            </script>
                         </form>
                     </div>
                 </td>

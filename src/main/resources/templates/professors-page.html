@@ -40,8 +40,24 @@
                 <td th:text="${professor.firstName}"></td>
                 <td th:text="${professor.getLastName()}"></td>
                 <td th:text="${professor.getRolesToString()}"></td>
-                <td th:if="${professor.subjectDto != null}" th:text="${professor.subjectDto.name}"></td>
-                <td th:if="${professor.subjectDto != null && professor.subjectDto.classroomDto != null}" th:text="${professor.subjectDto.classroomDto.name}"></td>
+                <td>
+                    <div th:if="${professor.subjectDto != null}">
+                        <span th:text="${professor.subjectDto.name}"/>
+                    </div>
+                    <div th:if="${professor.subjectDto == null}">
+                        <p class="text-warning">No subject!</p>
+                        <p>Go to <a href="/subject/all">subjects page</a> to add one</p>
+                    </div>
+                </td>
+                <td>
+                    <div th:if="${professor.subjectDto != null && professor.subjectDto.classroomDto != null}">
+                        <span th:text="${professor.subjectDto.classroomDto.name}"/>
+                    </div>
+                    <div th:if="${professor.subjectDto != null && professor.subjectDto.classroomDto == null}">
+                        <p class="test-warning">No classroom!</p>
+                        <p>Go to <a href="/subject/all">subjects page</a> to add one</p>
+                    </div>
+                </td>
                 <td sec:authorize="hasAuthority('admin')">
                     <div>
                         <a th:href="@{/user/professor/{id}/edit-page(id=${professor.getId()})}">
@@ -49,8 +65,17 @@
                         </a>
                     </div>
                     <div>
-                        <form th:action="@{/user/professor/{id}(id=${professor.getId()})}" th:method="delete">
-                            <input type="submit" value="DELETE" class="btn btn-danger" style="margin-bottom: 3px">
+                        <form th:action="@{/user/professor/{id}(id=${professor.getId()})}" th:method="delete" id="deleteProfessorForm", class="deleteProfessorForm">
+                            <button type="button" id="buttonDelete" onclick="deleteItem(this)" class="btn btn-danger" style="margin-bottom: 3px">DELETE</button>
+                            <script>
+                                function deleteItem(button) {
+                                    var form = button.closest('.deleteProfessorForm');
+                                    var isConfirmed = confirm("This will affect the schedule. The subject this professor is assigned to will have no professor");
+                                    if (isConfirmed) {
+                                        form.submit();
+                                    }
+                                }
+                            </script>
                         </form>
                     </div>
                 </td>

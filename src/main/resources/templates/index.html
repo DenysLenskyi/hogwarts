@@ -61,16 +61,35 @@
             <p>Permissions: observe, create, edit, delete</p>
         </div>
     </div>
-    <h2>Here's what we have in Hogwarts Database</h2>
-    <div>
-        <ul>
-            <li><a href="/role/all">Roles</a></li>
-            <li><a href="/lesson/all">Lessons</a></li>
-            <li><a href="/lesson-time/all">Lessons start and end time</a></li>
-        </ul>
+<!--    main feature-->
+    <div class="row">
+        <h2>The Main Feature</h2>
+        <p>(Must have the administrator rights)</p>
+        <p>Create Hogwarts schedule! Try it yourself by clicking the button below</p>
+        <p>
+            <a href="/lesson/all">
+                <input type="submit" value="LESSONS" class="btn btn-info btn-lg" style="margin-bottom: 3px">
+            </a>
+        </p>
+        <p>Observe the schedule, click 'create new lesson'</p>
+        <p>Choose date, lesson's time, group of students and a subject. It's simple, go on!</p>
     </div>
 
 <!--    container with buttons-->
+
+    <div class="row">
+        <h2>Other components</h2>
+        <p>With administrator rights you may create, edit, delete any components of the schedule:</p>
+        <ul>
+            <li>Student groups</li>
+            <li>Subjects</li>
+            <li>Users (student/professor)</li>
+            <li>Classrooms</li>
+        </ul>
+        <p>Create Slytherin group, move Hermione in it! Should you delete Harry or make him a professor?</p>
+        <p>Set 'Flying' subject to Hagrid. Do whatever you want, and have fun!</p>
+    </div>
+
     <div class="container">
         <div class="col-xs-6 col-sm-4" style="padding: 10px">
             <a href="/user/student">

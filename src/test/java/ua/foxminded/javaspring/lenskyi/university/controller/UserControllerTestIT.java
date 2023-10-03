@@ -47,7 +47,7 @@ class UserControllerTestIT {
     void getAllStudentsPageTest() throws Exception {
         List<UserDto> students = userService.findAllStudent();
         mvc.perform(MockMvcRequestBuilders
-                        .get("/user/student"))
+                        .get("/user/student-page"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("students-page"))
                 .andExpect(model().attribute("students", students))
@@ -121,7 +121,7 @@ class UserControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void showCreateNewStudentFormTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/user/student/create-student-page")
+        mvc.perform(MockMvcRequestBuilders.get("/user/student/creation-page")
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("forms/create-student-form"))
@@ -189,7 +189,7 @@ class UserControllerTestIT {
     void getAllProfessorsPageTest() throws Exception {
         List<UserDto> professors = userService.findAllProfessorAndAdmin();
         mvc.perform(MockMvcRequestBuilders
-                        .get("/user/professor"))
+                        .get("/user/professor-page"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("professors-page"))
                 .andExpect(model().attribute("professorsAndAdmins", professors))
@@ -265,7 +265,7 @@ class UserControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void showCreateNewProfessorFormTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/user/professor/create-professor-page")
+        mvc.perform(MockMvcRequestBuilders.get("/user/professor/creation-page")
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("forms/create-professor-form"))
@@ -286,7 +286,7 @@ class UserControllerTestIT {
         User user = userService.findByUsername("createNewProfessorTest");
         assertEquals("testName", user.getFirstName());
         assertEquals("lastName", user.getLastName());
-        assertEquals(user.getRoles().size(), 1);
+        assertEquals(1, user.getRoles().size());
         assertTrue(user.getRoles().contains(roleService.findRoleByName("professor")));
     }
 

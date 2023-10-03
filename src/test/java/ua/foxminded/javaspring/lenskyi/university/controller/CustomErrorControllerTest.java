@@ -40,24 +40,15 @@ class CustomErrorControllerTest {
     @WithUserDetails("harrypotter")
     void studentGoesToCreateNewSubject_shouldReturn403() throws Exception {
         mvc.perform(MockMvcRequestBuilders
-                        .get("/subject/create-subject-page"))
+                        .get("/subject/creation-page"))
                 .andExpect(status().isForbidden());
     }
-
-//    @Test
-//    @WithUserDetails("remuslupin")
-//    void professorGoesToCreateNewSubject_shouldReturn200ButNoBody() throws Exception {
-//        mvc.perform(MockMvcRequestBuilders
-//                        .get("/subject/create-subject-page"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().string());
-//    }
 
     @Test
     @WithUserDetails("minervamcgonagall")
     void adminGoesToCreateNewSubject_shouldReturn200() throws Exception {
         mvc.perform(MockMvcRequestBuilders
-                        .get("/subject/create-subject-page"))
+                        .get("/subject/creation-page"))
                 .andExpect(status().isOk());
     }
 

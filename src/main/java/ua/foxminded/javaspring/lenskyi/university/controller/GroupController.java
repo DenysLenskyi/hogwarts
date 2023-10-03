@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.GroupDto;
-import ua.foxminded.javaspring.lenskyi.university.model.Group;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
 
 import java.util.List;
@@ -29,9 +28,9 @@ public class GroupController {
         return GROUP_PAGE_TEMPLATE_NAME;
     }
 
-    @GetMapping("/create-group-page")
+    @GetMapping("/creation-page")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String showCreateGroupForm(Model model) {
+    public String getNewGroupPage(Model model) {
         model.addAttribute("groupDto", new GroupDto());
         return CREATE_GROUP_TEMPLATE_NAME;
     }
@@ -58,7 +57,7 @@ public class GroupController {
 
     @GetMapping("{groupId}/edit-page")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String showEditGroupForm(@PathVariable("groupId") Long id, Model model) {
+    public String getEditGroupPage(@PathVariable("groupId") Long id, Model model) {
         if (!groupService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
         }

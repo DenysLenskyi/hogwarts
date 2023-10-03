@@ -113,7 +113,7 @@ class SubjectControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void showCreateNewSubjectFormTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/subject/create-subject-page")
+        mvc.perform(MockMvcRequestBuilders.get("/subject/creation-page")
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("forms/create-subject-form"))

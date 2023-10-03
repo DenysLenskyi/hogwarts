@@ -43,9 +43,9 @@ public class LessonController {
         return LESSON_PAGE_TEMPLATE_NAME;
     }
 
-    @GetMapping("/create-lesson-page")
+    @GetMapping("/creation-page")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String getCreateLessonPage(Model model) {
+    public String getNewLessonPage(Model model) {
         model.addAttribute("lessonDto", new LessonDto(new LessonTimeDto(),
                 new SubjectDto(new UserDto(), new ClassroomDto()),
                 new GroupDto()));

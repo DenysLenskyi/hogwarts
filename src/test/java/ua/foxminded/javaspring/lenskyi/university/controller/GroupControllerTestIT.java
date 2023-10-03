@@ -105,7 +105,7 @@ class GroupControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void showCreateNewGroupFormTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/group/create-group-page")
+        mvc.perform(MockMvcRequestBuilders.get("/group/creation-page")
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("forms/create-group-form"))

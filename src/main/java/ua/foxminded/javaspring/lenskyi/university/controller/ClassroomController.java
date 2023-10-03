@@ -26,9 +26,9 @@ public class ClassroomController {
         return CLASSROOM_PAGE_TEMPLATE_NAME;
     }
 
-    @GetMapping("/create-classroom-page")
+    @GetMapping("/creation-page")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String showCreateNewClassroomForm(Model model) {
+    public String getNewClassroomPage(Model model) {
         model.addAttribute("classroomDto", new ClassroomDto());
         return CREATE_CLASSROOM_TEMPLATE_NAME;
     }
@@ -55,7 +55,7 @@ public class ClassroomController {
 
     @GetMapping("/{classroomId}/edit-page")
     @PreAuthorize("hasAnyAuthority('admin', 'professor')")
-    public String showEditClassroomForm(@PathVariable("classroomId") Long id, Model model) {
+    public String getEditClassroomPage(@PathVariable("classroomId") Long id, Model model) {
         if (!classroomService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
         }

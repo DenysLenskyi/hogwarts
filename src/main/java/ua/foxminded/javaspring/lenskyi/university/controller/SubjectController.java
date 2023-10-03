@@ -36,7 +36,7 @@ public class SubjectController {
 
     @GetMapping("/{subjectId}/edit-page")
     @PreAuthorize("hasAnyAuthority('admin', 'professor')")
-    public String showEditSubjectForm(@PathVariable("subjectId") Long id, Model model) {
+    public String getEditSubjectPage(@PathVariable("subjectId") Long id, Model model) {
         if (!subjectService.doesSubjectExistById(id)) {
             return ERROR_400_TEMPLATE_NAME;
         }
@@ -59,9 +59,9 @@ public class SubjectController {
         return REDIRECT_SUBJECT_PAGE;
     }
 
-    @GetMapping("/create-subject-page")
+    @GetMapping("/creation-page")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String showCreateNewSubjectForm(Model model) {
+    public String getNewSubjectPage(Model model) {
         model.addAttribute("subjectDto", new SubjectDto());
         model.addAttribute("freeClassrooms", classroomService.findAllFreeClassrooms());
         model.addAttribute("freeProfessors", userService.findAllProfessorWithNoSubject());

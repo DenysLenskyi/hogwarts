@@ -27,15 +27,15 @@ public class UserController {
         this.subjectService = subjectService;
     }
 
-    @GetMapping("/student")
+    @GetMapping("/student-page")
     public String getStudentPage(Model model) {
         model.addAttribute("students", userService.findAllStudent());
         return STUDENTS_PAGE_TEMPLATE_NAME;
     }
 
-    @GetMapping("/student/create-student-page")
+    @GetMapping("/student/creation-page")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String getCreateStudentPage(Model model) {
+    public String getNewStudentPage(Model model) {
         model.addAttribute("studentDto", new UserDto());
         model.addAttribute("groups", groupService.findAll());
         return CREATE_STUDENT_PAGE_TEMPLATE_NAME;
@@ -60,12 +60,11 @@ public class UserController {
 
     @GetMapping("/student/{studentId}/edit-page")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String showEditStudentForm(@PathVariable("studentId") Long id, Model model) {
+    public String getEditStudentPage(@PathVariable("studentId") Long id, Model model) {
         if (!userService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
         }
-        UserDto studentDto = userService.findById(id);
-        model.addAttribute("studentDto", studentDto);
+        model.addAttribute("studentDto", userService.findById(id));
         model.addAttribute("groups", groupService.findAll());
         return EDIT_STUDENT_PAGE_TEMPLATE_NAME;
     }
@@ -82,15 +81,15 @@ public class UserController {
         return REDIRECT_STUDENT_PAGE;
     }
 
-    @GetMapping("/professor")
+    @GetMapping("/professor-page")
     public String getProfessorPage(Model model) {
         model.addAttribute("professorsAndAdmins", userService.findAllProfessorAndAdmin());
         return PROFESSORS_PAGE_TEMPLATE_NAME;
     }
 
-    @GetMapping("/professor/create-professor-page")
+    @GetMapping("/professor/creation-page")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String getCreateProfessorPage(Model model) {
+    public String getNewProfessorPage(Model model) {
         model.addAttribute("professorForm", new ProfessorForm());
         model.addAttribute("freeSubjects", subjectService.findAllSubjectsWithNoProfessor());
         return CREATE_PROFESSOR_PAGE_TEMPLATE_NAME;
@@ -115,12 +114,11 @@ public class UserController {
 
     @GetMapping("/professor/{professorId}/edit-page")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String showEditProfessorForm(@PathVariable("professorId") Long id, Model model) {
+    public String getEditProfessorPage(@PathVariable("professorId") Long id, Model model) {
         if (!userService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
         }
-        ProfessorForm professorForm = userService.createProfessorFormDto(id);
-        model.addAttribute("professorForm", professorForm);
+        model.addAttribute("professorForm", userService.createProfessorFormDto(id));
         model.addAttribute("freeSubjects", subjectService.findAllSubjectsWithNoProfessor());
         return EDIT_PROFESSOR_PAGE_TEMPLATE_NAME;
     }

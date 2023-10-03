@@ -101,7 +101,7 @@ class ClassroomControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void showCreateNewClassroomFormTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/classroom/create-classroom-page")
+        mvc.perform(MockMvcRequestBuilders.get("/classroom/creation-page")
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("forms/create-classroom-form"))

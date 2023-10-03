@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class SecurityTest {
 
     private final static String SUBJECT_PAGE = "/subject/all";
-    private final static String CREATE_SUBJECT_PAGE = "/subject/create-subject-page";
+    private final static String CREATE_SUBJECT_PAGE = "/subject/creation-page";
     @Autowired
     private MockMvc mvc;
     @Autowired

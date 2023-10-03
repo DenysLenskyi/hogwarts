@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UserDto {
 
@@ -24,18 +25,10 @@ public class UserDto {
     }
 
     public String getRolesToString() {
-        StringBuilder output = new StringBuilder();
-        final String emptyString = "";
-        this.getRoles().forEach(r ->
-                output.append(r.getName())
-                        .append(',')
-                        .append(' ')
-        );
-        if (this.getRoles().isEmpty()) {
-            return emptyString;
-        } else {
-            return output.substring(0, output.length() - 2);
-        }
+        final String coma = ", ";
+        return getRoles().stream()
+                .map(RoleDto::getName)
+                .collect(Collectors.joining(coma));
     }
 
     public Long getId() {

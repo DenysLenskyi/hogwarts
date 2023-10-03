@@ -5,7 +5,8 @@ import org.mapstruct.Mapping;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
 
-@Mapper(componentModel = "spring", uses = {GroupEntityGroupDtoMapper.class, SubjectEntitySubjectDtoMapper.class})
+@Mapper(componentModel = "spring", uses = {GroupEntityGroupDtoMapper.class, SubjectEntitySubjectDtoMapper.class,
+        ClassroomEntityClassroomDtoMapper.class})
 public interface UserEntityUserDtoMapper {
 
     @Mapping(target = "groupDto.id", source = "group.id")
@@ -17,8 +18,10 @@ public interface UserEntityUserDtoMapper {
     @Mapping(target = "subjectDto.name", source = "subject.name")
     @Mapping(target = "subjectDto.description", source = "subject.description")
     @Mapping(target = "subjectDto.userDto", ignore = true)
-    @Mapping(target = "subjectDto.classroomDto", ignore = true)
     @Mapping(target = "subjectDto.lessonsDto", ignore = true)
+    @Mapping(target = "subjectDto.classroomDto.name", source = "subject.classroom.name")
+    @Mapping(target = "subjectDto.classroomDto.description", source = "subject.classroom.description")
+    @Mapping(target = "subjectDto.classroomDto.subjectDto", ignore = true)
     UserDto userEntityToUserDto(User user);
 
     User userDtoToUserEntity(UserDto userDto);

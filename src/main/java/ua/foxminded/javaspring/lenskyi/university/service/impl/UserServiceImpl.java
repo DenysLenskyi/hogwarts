@@ -52,18 +52,7 @@ public class UserServiceImpl implements UserService {
 
     public UserDto findById(Long id) {
         User user = userRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-        UserDto userDto = userDtoMapper.userEntityToUserDto(user);
-        if (user.getGroup() != null) {
-            Group group = groupRepository.findByName(user.getGroup().getName())
-                    .orElseThrow(IllegalArgumentException::new);
-            userDto.setGroupDto(groupDtoMapper.groupEntityToGroupDto(group));
-        }
-        if (user.getSubject() != null) {
-            Subject subject = subjectRepository.findSubjectByName(user.getSubject().getName())
-                    .orElseThrow(IllegalArgumentException::new);
-            userDto.setSubjectDto(subjectService.findById(subject.getId()));
-        }
-        return userDto;
+        return userDtoMapper.userEntityToUserDto(user);
     }
 
     public boolean existsByUsername(String username) {
@@ -91,7 +80,7 @@ public class UserServiceImpl implements UserService {
         Role studentRole = roleRepository.findRoleByName(STUDENT_ROLE_NAME).orElseThrow(IllegalArgumentException::new);
         List<User> students = userRepository.findAllByRolesContains(studentRole);
         return students.stream()
-                .map(student -> findById(student.getId()))
+                .map(userDtoMapper::userEntityToUserDto)
                 .sorted(Comparator.comparing(UserDto::getId))
                 .toList();
     }
@@ -137,7 +126,7 @@ public class UserServiceImpl implements UserService {
         List<User> professorsAndAdmins = userRepository.findAllByRolesIsIn(
                 roleRepository.findAllByNameIsIn(List.of(ADMIN_ROLE_NAME, PROFESSOR_ROLE_NAME)));
         return professorsAndAdmins.stream()
-                .map(prof -> findById(prof.getId()))
+                .map(userDtoMapper::userEntityToUserDto)
                 .sorted(Comparator.comparing(UserDto::getId))
                 .toList();
     }

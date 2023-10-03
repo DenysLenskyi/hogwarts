@@ -1,6 +1,5 @@
 package ua.foxminded.javaspring.lenskyi.university.controller;
 
-import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,10 +43,7 @@ public class UserController {
 
     @PostMapping("/student")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String createNewStudent(@Valid UserDto userDto) {
-        if (userService.existsByUsername(userDto.getUsername())) {
-            return ERROR_400_TEMPLATE_NAME;
-        }
+    public String createNewStudent(UserDto userDto) {
         userService.createStudent(userDto);
         return REDIRECT_STUDENT_PAGE;
     }
@@ -76,7 +72,7 @@ public class UserController {
 
     @PutMapping("/student/{studentId}")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String editStudent(@PathVariable("studentId") Long id, @Valid UserDto userDto) {
+    public String editStudent(@PathVariable("studentId") Long id, UserDto userDto) {
         if (userService.existsByUsername(userDto.getUsername()) && !userDto.getUsername()
                 .equals(userService.findById(id).getUsername())) {
             return ERROR_400_TEMPLATE_NAME;
@@ -102,10 +98,7 @@ public class UserController {
 
     @PostMapping("/professor")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String createNewProfessor(@Valid ProfessorForm professorForm) {
-        if (userService.existsByUsername(professorForm.getUsername())) {
-            return ERROR_400_TEMPLATE_NAME;
-        }
+    public String createNewProfessor(ProfessorForm professorForm) {
         userService.createProfessor(professorForm);
         return REDIRECT_PROFESSOR_PAGE;
     }
@@ -134,7 +127,7 @@ public class UserController {
 
     @PutMapping("/professor/{professorId}")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String editProfessor(@PathVariable("professorId") Long id, @Valid ProfessorForm professorForm) {
+    public String editProfessor(@PathVariable("professorId") Long id, ProfessorForm professorForm) {
         if (userService.existsByUsername(professorForm.getUsername()) && !professorForm.getUsername()
                 .equals(userService.findById(id).getUsername())) {
             return ERROR_400_TEMPLATE_NAME;

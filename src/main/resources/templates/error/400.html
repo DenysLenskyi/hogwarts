@@ -18,7 +18,7 @@
         <p>Please, try again</p>
     </div>
     <div th:if="${message != null}" class="row">
-        <p th:text="${message}"></p>
+        <p class="lead text-danger" th:text="${message}"></p>
     </div>
     <div th:if="${errorMessages != null && !errorMessages.isEmpty()}" class="row">
         <ul th:each="errorMessage : ${errorMessages}">

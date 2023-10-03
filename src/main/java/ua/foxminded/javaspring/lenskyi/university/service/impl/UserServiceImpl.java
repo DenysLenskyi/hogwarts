@@ -1,12 +1,14 @@
 package ua.foxminded.javaspring.lenskyi.university.service.impl;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.form.ProfessorForm;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.mapper.GroupEntityGroupDtoMapper;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.mapper.UserEntityUserDtoMapper;
+import ua.foxminded.javaspring.lenskyi.university.exception.NotUniqueUsernameException;
 import ua.foxminded.javaspring.lenskyi.university.model.*;
 import ua.foxminded.javaspring.lenskyi.university.repository.GroupRepository;
 import ua.foxminded.javaspring.lenskyi.university.repository.RoleRepository;
@@ -86,7 +88,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void createStudent(UserDto userDto) {
+    public void createStudent(@Valid UserDto userDto) {
+        if (userRepository.existsByUsername(userDto.getUsername())) {
+            try {
+                throw new NotUniqueUsernameException(userDto.getUsername());
+            } catch (NotUniqueUsernameException e) {
+                throw new RuntimeException(e);
+            }
+        }
         User newStudent = new User();
         newStudent.setFirstName(userDto.getFirstName());
         newStudent.setLastName(userDto.getLastName());
@@ -109,7 +118,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void updateStudent(UserDto userDto) {
+    public void updateStudent(@Valid UserDto userDto) {
         User userToUpdate = userRepository.findById(userDto.getId()).orElseThrow(IllegalArgumentException::new);
         userToUpdate.setFirstName(userDto.getFirstName());
         userToUpdate.setLastName(userDto.getLastName());
@@ -132,7 +141,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void createProfessor(ProfessorForm professorForm) {
+    public void createProfessor(@Valid ProfessorForm professorForm) {
+        if (userRepository.existsByUsername(professorForm.getUsername())) {
+            try {
+                throw new NotUniqueUsernameException(professorForm.getUsername());
+            } catch (NotUniqueUsernameException e) {
+                throw new RuntimeException(e);
+            }
+        }
         User newProfessor = new User();
         newProfessor.setFirstName(professorForm.getFirstName());
         newProfessor.setLastName(professorForm.getLastName());
@@ -173,7 +189,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void updateProfessor(ProfessorForm professorForm) {
+    public void updateProfessor(@Valid ProfessorForm professorForm) {
         User userToUpdate = userRepository.findById(professorForm.getId()).orElseThrow(IllegalArgumentException::new);
         userToUpdate.setFirstName(professorForm.getFirstName());
         userToUpdate.setLastName(professorForm.getLastName());

@@ -48,6 +48,7 @@ public class LessonServiceImpl implements LessonService {
         this.subjectDtoMapper = subjectDtoMapper;
     }
 
+    @Override
     public boolean isBusyByGroup(LocalDate localDate, LessonTimeDto lessonTimeDto, GroupDto groupDto) {
         return lessonRepository.existsByDateAndLessonTimeAndGroup(localDate,
                 lessonTimeRepository.findById(lessonTimeDto.getId())
@@ -55,6 +56,7 @@ public class LessonServiceImpl implements LessonService {
                 groupService.findGroupById(groupDto.getId()));
     }
 
+    @Override
     public boolean isBusyBySubject(LocalDate localDate, LessonTimeDto lessonTimeDto, SubjectDto subjectDto) {
         return lessonRepository.existsByDateAndLessonTimeAndSubject(localDate,
                 lessonTimeRepository.findById(lessonTimeDto.getId())
@@ -62,6 +64,7 @@ public class LessonServiceImpl implements LessonService {
                 subjectService.findSubjectById(subjectDto.getId()));
     }
 
+    @Override
     public List<LessonDto> findAll() {
         List<Lesson> lessons = lessonRepository.findAll();
         return lessons.stream()
@@ -78,6 +81,7 @@ public class LessonServiceImpl implements LessonService {
                 .toList();
     }
 
+    @Override
     public LessonDto findById(Long id) {
         Lesson lesson = lessonRepository.findById(id).orElseThrow(IllegalArgumentException::new);
         LessonDto lessonDto = lessonDtoMapper.lessonEntityToLessonDto(lesson);
@@ -86,6 +90,7 @@ public class LessonServiceImpl implements LessonService {
         return lessonDto;
     }
 
+    @Override
     @Transactional
     public void createLesson(LessonDto lessonDto) {
         LessonTime lessonTime = lessonTimeRepository.findById(
@@ -100,10 +105,12 @@ public class LessonServiceImpl implements LessonService {
         lessonRepository.saveAndFlush(lesson);
     }
 
+    @Override
     public boolean existsById(Long id) {
         return lessonRepository.existsById(id);
     }
 
+    @Override
     public void deleteById(Long id) {
         lessonRepository.deleteById(id);
     }

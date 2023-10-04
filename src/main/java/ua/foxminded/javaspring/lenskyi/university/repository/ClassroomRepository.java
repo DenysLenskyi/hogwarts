@@ -14,7 +14,5 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Long> {
 
     List<Classroom> findAllBySubjectIsNull();
 
-    boolean existsById(Long id);
-
     boolean existsByName(String classroomName);
 }

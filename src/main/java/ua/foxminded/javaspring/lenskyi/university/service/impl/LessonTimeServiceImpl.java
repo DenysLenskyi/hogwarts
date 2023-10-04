@@ -21,12 +21,14 @@ public class LessonTimeServiceImpl implements LessonTimeService {
         this.mapper = mapper;
     }
 
+    @Override
     public LessonTimeDto findById(Long id) {
         return mapper.lessonTimeEntityToLessonTimeDto(
                 repository.findById(id).orElseThrow()
         );
     }
 
+    @Override
     public List<LessonTimeDto> findAllDto() {
         List<LessonTime> lessonTimes = repository.findAll();
         return lessonTimes.stream()

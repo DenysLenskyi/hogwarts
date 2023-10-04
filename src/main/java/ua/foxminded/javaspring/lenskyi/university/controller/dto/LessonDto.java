@@ -1,13 +1,19 @@
 package ua.foxminded.javaspring.lenskyi.university.controller.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 
 public class LessonDto {
 
     private Long id;
+    @NotNull
     private LocalDate date;
+    @NotNull
     private LessonTimeDto lessonTimeDto;
+    @NotNull
     private SubjectDto subjectDto;
+    @NotNull
     private GroupDto groupDto;
 
     public LessonDto() {

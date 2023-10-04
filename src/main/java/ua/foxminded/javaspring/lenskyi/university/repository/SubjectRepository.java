@@ -12,8 +12,6 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     Optional<Subject> findSubjectByName(String subjectName);
 
-    boolean existsById(Long subjectId);
-
     boolean existsByName(String subjectName);
 
     List<Subject> findAllByUserIsNull();

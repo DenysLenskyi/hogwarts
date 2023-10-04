@@ -21,6 +21,7 @@ public class ClassroomServiceImpl implements ClassroomService {
         this.mapper = mapper;
     }
 
+    @Override
     public List<ClassroomDto> findAll() {
         List<Classroom> classrooms = classroomRepository.findAll();
         return classrooms.stream()
@@ -29,10 +30,7 @@ public class ClassroomServiceImpl implements ClassroomService {
                 .toList();
     }
 
-    public Classroom findByName(String classroomName) {
-        return classroomRepository.findByName(classroomName).orElseThrow();
-    }
-
+    @Override
     public List<Classroom> findAllFreeClassrooms() {
         return classroomRepository.findAllBySubjectIsNull();
     }
@@ -61,11 +59,13 @@ public class ClassroomServiceImpl implements ClassroomService {
         classroomRepository.saveAndFlush(mapper.classroomDtoToClassroomEntity(classroomDto));
     }
 
+    @Override
     public ClassroomDto findById(Long id) {
         return mapper.classroomEntityToClassroomDto(
                 classroomRepository.findById(id).orElseThrow(IllegalArgumentException::new));
     }
 
+    @Override
     public void updateClassroom(ClassroomDto classroomDto) {
         Classroom classroomToUpdate = classroomRepository.findById(classroomDto.getId()).orElseThrow();
         classroomToUpdate.setName(classroomDto.getName());

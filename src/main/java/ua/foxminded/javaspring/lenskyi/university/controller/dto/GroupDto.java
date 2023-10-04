@@ -1,10 +1,15 @@
 package ua.foxminded.javaspring.lenskyi.university.controller.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Set;
 
 public class GroupDto {
 
     private Long id;
+    @NotBlank
+    @NotNull
     private String name;
     private long numStudentsInGroup;
     private Set<UserDto> users;

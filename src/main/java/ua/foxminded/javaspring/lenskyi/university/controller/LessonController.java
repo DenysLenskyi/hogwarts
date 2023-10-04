@@ -85,5 +85,3 @@ public class LessonController {
         return REDIRECT_LESSON_PAGE;
     }
 }
-
-// minervamcgonagall

@@ -29,6 +29,7 @@ public class GroupServiceImpl implements GroupService {
         this.groupEntityGroupDtoMapper = groupEntityGroupDtoMapper;
     }
 
+    @Override
     public List<GroupDto> findAll() {
         List<Group> groups = groupRepository.findAll();
         return groups.stream()
@@ -37,38 +38,44 @@ public class GroupServiceImpl implements GroupService {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
+    @Override
     public boolean existsByName(String groupName) {
         return groupRepository.existsByName(groupName);
     }
 
+    @Override
     @Transactional
     public void createNewGroup(GroupDto groupDto) {
-        if (!groupDto.getName().isEmpty() && !groupDto.getName().isBlank()) {
-            groupRepository.saveAndFlush(groupEntityGroupDtoMapper.groupDtoToGroupEntity(groupDto));
-        }
+        groupRepository.saveAndFlush(groupEntityGroupDtoMapper.groupDtoToGroupEntity(groupDto));
     }
 
+    @Override
     public boolean existsById(Long groupId) {
         return groupRepository.existsById(groupId);
     }
 
+    @Override
     @Transactional
     public void deleteById(Long groupId) {
         groupRepository.deleteById(groupId);
     }
 
+    @Override
     public GroupDto findById(Long id) {
         return groupEntityGroupDtoMapper.groupEntityToGroupDto(findGroupById(id));
     }
 
+    @Override
     public Group findGroupById(Long id) {
         return groupRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
+    @Override
     public Group findByName(String groupName) {
         return groupRepository.findByName(groupName).orElseThrow(IllegalArgumentException::new);
     }
 
+    @Override
     @Transactional
     public void moveStudentsFromGroupToAnotherGroup(Group groupFrom, Group groupTo) {
         List<User> usersGroupFrom = userRepository.findAllByGroupName(groupFrom.getName());

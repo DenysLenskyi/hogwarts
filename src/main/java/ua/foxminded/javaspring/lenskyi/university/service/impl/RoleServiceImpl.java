@@ -20,14 +20,17 @@ public class RoleServiceImpl implements RoleService {
         this.mapper = mapper;
     }
 
+    @Override
     public List<Role> findAllRoles() {
         return roleRepository.findAll();
     }
 
+    @Override
     public Role findRoleByName(String roleName) {
         return roleRepository.findRoleByName(roleName).orElseThrow();
     }
 
+    @Override
     public RoleDto findByName(String roleName) {
         return mapper.roleEntityToRoleDto(findRoleByName(roleName));
     }

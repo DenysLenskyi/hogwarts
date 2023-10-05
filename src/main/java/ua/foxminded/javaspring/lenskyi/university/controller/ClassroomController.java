@@ -14,6 +14,9 @@ import static ua.foxminded.javaspring.lenskyi.university.util.Constants.*;
 @RequestMapping("/classroom")
 public class ClassroomController {
 
+    private static final String CLASSROOM_CREATED_MESSAGE = "The classroom has been created successfully!";
+    private static final String CLASSROOM_UPDATED_MESSAGE = "The classroom has been updated successfully!";
+    private static final String CLASSROOM_DELETED_MESSAGE = "The classroom has been deleted successfully!";
     private ClassroomService classroomService;
 
     public ClassroomController(ClassroomService classroomService) {
@@ -35,12 +38,14 @@ public class ClassroomController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String createNewClassroom(@Valid ClassroomDto classroomDto) {
+    public String createNewClassroom(@Valid ClassroomDto classroomDto, Model model) {
         if (classroomService.existsByName(classroomDto.getName())) {
             return ERROR_400_TEMPLATE_NAME;
         }
         classroomService.createClassroom(classroomDto);
-        return REDIRECT_CLASSROOM_PAGE;
+        model.addAttribute("classrooms", classroomService.findAll());
+        model.addAttribute("message", CLASSROOM_CREATED_MESSAGE);
+        return CLASSROOM_PAGE_TEMPLATE_NAME;
     }
 
     @DeleteMapping("/{classroomId}")

@@ -27,6 +27,10 @@
         <p class="lead text-info">Log in with admin rights to edit</p>
     </div>
 
+    <div th:if="${message != null}" class="row">
+        <p class="text-success" th:text="${message}"></p>
+    </div>
+
     <div class="row vertical-center">
         <table class="table table-bordered">
             <thead>

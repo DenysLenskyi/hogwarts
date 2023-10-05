@@ -46,7 +46,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('admin')")
     public String createNewStudent(@Valid UserDto userDto) {
         userService.createStudent(userDto);
-        return REDIRECT_TO + USER_ROOT + STUDENTS_PAGE;
+        return REDIRECT_TO_STUDENTS_PAGE;
     }
 
     @DeleteMapping("/student/{studentId}")
@@ -56,7 +56,7 @@ public class UserController {
             return ERROR_400_TEMPLATE_NAME;
         }
         userService.deleteById(id);
-        return REDIRECT_TO + USER_ROOT + STUDENTS_PAGE;
+        return REDIRECT_TO_STUDENTS_PAGE;
     }
 
     @GetMapping("/student/{studentId}/edit-page")
@@ -79,7 +79,7 @@ public class UserController {
         }
         userDto.setId(id);
         userService.updateStudent(userDto);
-        return REDIRECT_TO + USER_ROOT + STUDENTS_PAGE;
+        return REDIRECT_TO_STUDENTS_PAGE;
     }
 
     @GetMapping(PROFESSORS_PAGE)
@@ -100,7 +100,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('admin')")
     public String createNewProfessor(@Valid ProfessorForm professorForm) {
         userService.createProfessor(professorForm);
-        return REDIRECT_TO + USER_ROOT + PROFESSORS_PAGE;
+        return REDIRECT_TO_PROFESSORS_PAGE;
     }
 
     @DeleteMapping("/professor/{professorId}")
@@ -110,7 +110,7 @@ public class UserController {
             return ERROR_400_TEMPLATE_NAME;
         }
         userService.deleteById(id);
-        return REDIRECT_TO + USER_ROOT + PROFESSORS_PAGE;
+        return REDIRECT_TO_PROFESSORS_PAGE;
     }
 
     @GetMapping("/professor/{professorId}/edit-page")
@@ -133,6 +133,6 @@ public class UserController {
         }
         professorForm.setId(id);
         userService.updateProfessor(professorForm);
-        return REDIRECT_TO + USER_ROOT + PROFESSORS_PAGE;
+        return REDIRECT_TO_PROFESSORS_PAGE;
     }
 }

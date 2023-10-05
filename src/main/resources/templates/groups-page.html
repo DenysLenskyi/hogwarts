@@ -34,15 +34,30 @@
             <tr>
                 <th>Group Name</th>
                 <th>Number of students</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="group : ${groups}">
                 <td th:text="${group.name}"></td>
                 <td>
+                    <div th:if="${group.numStudentsInGroup} == 0">
+                        <p class="lead">0</p>
+                    </div>
+                    <div th:if="${group.numStudentsInGroup} != 0">
+                        <p class="lead"><span th:text="${group.numStudentsInGroup}"/></p>
+                    </div>
+                </td>
+                <td>
+                    <div sec:authorize="!hasAuthority('admin')">
+                        <p class="lead">N/A</p>
+                    </div>
                     <div sec:authorize="hasAuthority('admin')" th:if="${group.numStudentsInGroup} == 0">
-                        <form th:action="@{/group/{id}(id=${group.getId()})}" th:method="delete" id="deleteGroupForm" class="deleteGroupForm">
-                            <button type="button" id="buttonDelete" onclick="deleteItem(this)" class="btn btn-danger" style="margin-bottom: 3px">DELETE</button>
+                        <form th:action="@{/group/{id}(id=${group.getId()})}" th:method="delete" id="deleteGroupForm"
+                              class="deleteGroupForm">
+                            <button type="button" id="buttonDelete" onclick="deleteItem(this)" class="btn btn-danger"
+                                    style="margin-bottom: 3px">DELETE
+                            </button>
                             <script>
                                 function deleteItem(button) {
                                     var form = button.closest('.deleteGroupForm');
@@ -54,16 +69,12 @@
                             </script>
                         </form>
                     </div>
-                    <div th:if="${group.numStudentsInGroup} != 0">
-                        <p><span th:text="${group.numStudentsInGroup}"/></p>
-                        <p>
-                        <div sec:authorize="hasAuthority('admin')">
-                            <a th:href="@{/group/{id}/edit-page(id=${group.getId()})}">
-                                <input type="submit" value="Move Students" class="btn btn-warning"
-                                       style="margin-bottom: 3px">
-                            </a>
-                        </div>
-                        </p>
+                    <div sec:authorize="hasAuthority('admin')" th:if="${group.numStudentsInGroup} != 0">
+                        <a th:href="@{/group/{id}/edit-page(id=${group.getId()})}">
+                            <button type="submit" class="btn btn-warning"
+                                    style="margin-bottom: 3px">Move Students
+                            </button>
+                        </a>
                     </div>
                 </td>
             </tr>

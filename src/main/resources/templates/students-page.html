@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link th:href="@{/styles/styles.css}" rel="stylesheet" type="text/css"/>
     <title>Hogwarts Schedule Manager | Students</title>
 </head>
 <body style="padding: 40px">
@@ -31,6 +32,7 @@
                 <th>First name</th>
                 <th>Last name</th>
                 <th>Group</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -38,16 +40,30 @@
                 <td th:text="${student.firstName}"></td>
                 <td th:text="${student.getLastName()}"></td>
                 <td th:text="${student.groupDto.name}"></td>
-                <td sec:authorize="hasAuthority('admin')">
-                    <div>
-                        <a th:href="@{/user/student/{id}/edit-page(id=${student.getId()})}">
-                            <input type="submit" value="EDIT" class="btn btn-warning" style="margin-bottom: 3px">
-                        </a>
+                <td>
+                    <div sec:authorize="!hasAuthority('admin')">
+                        <p class="lead">N/A</p>
                     </div>
-                    <div>
-                        <form th:action="@{/user/student/{id}(id=${student.getId()})}" th:method="delete">
-                            <input type="submit" value="DELETE" class="btn btn-danger" style="margin-bottom: 3px">
-                        </form>
+                    <div sec:authorize="hasAuthority('admin')" class="action-buttons">
+                        <div class="btn-edit">
+                            <a th:href="@{/user/student/{id}/edit-page(id=${student.getId()})}">
+                                <button type="submit" class="btn btn-warning btn-sm">EDIT</button>
+                            </a>
+                        </div>
+                        <div class="btn-delete">
+                            <form th:action="@{/user/student/{id}(id=${student.getId()})}" th:method="delete" id="deleteStudentForm" class="deleteStudentForm">
+                                <button type="button" onclick="deleteItem(this)" class="btn btn-danger btn-sm">DELETE</button>
+                                <script>
+                                    function deleteItem(button) {
+                                        var form = button.closest('.deleteStudentForm');
+                                        var isConfirmed = confirm("Are you sure you want to delete this student?");
+                                        if (isConfirmed) {
+                                            form.submit();
+                                        }
+                                    }
+                                </script>
+                            </form>
+                        </div>
                     </div>
                 </td>
             </tr>

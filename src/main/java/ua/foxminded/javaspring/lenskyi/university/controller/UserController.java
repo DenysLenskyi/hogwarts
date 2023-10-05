@@ -14,7 +14,7 @@ import ua.foxminded.javaspring.lenskyi.university.service.UserService;
 import static ua.foxminded.javaspring.lenskyi.university.util.Constants.*;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping(USER_ROOT)
 public class UserController {
 
     private UserService userService;
@@ -28,10 +28,10 @@ public class UserController {
         this.subjectService = subjectService;
     }
 
-    @GetMapping("/student-page")
+    @GetMapping(STUDENTS_PAGE)
     public String getStudentPage(Model model) {
         model.addAttribute("students", userService.findAllStudent());
-        return STUDENTS_PAGE_TEMPLATE_NAME;
+        return STUDENTS_PAGE;
     }
 
     @GetMapping("/student/creation-page")
@@ -46,7 +46,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('admin')")
     public String createNewStudent(@Valid UserDto userDto) {
         userService.createStudent(userDto);
-        return REDIRECT_STUDENT_PAGE;
+        return REDIRECT_TO_STUDENTS_PAGE;
     }
 
     @DeleteMapping("/student/{studentId}")
@@ -56,7 +56,7 @@ public class UserController {
             return ERROR_400_TEMPLATE_NAME;
         }
         userService.deleteById(id);
-        return REDIRECT_STUDENT_PAGE;
+        return REDIRECT_TO_STUDENTS_PAGE;
     }
 
     @GetMapping("/student/{studentId}/edit-page")
@@ -79,13 +79,13 @@ public class UserController {
         }
         userDto.setId(id);
         userService.updateStudent(userDto);
-        return REDIRECT_STUDENT_PAGE;
+        return REDIRECT_TO_STUDENTS_PAGE;
     }
 
-    @GetMapping("/professor-page")
+    @GetMapping(PROFESSORS_PAGE)
     public String getProfessorPage(Model model) {
         model.addAttribute("professorsAndAdmins", userService.findAllProfessorAndAdmin());
-        return PROFESSORS_PAGE_TEMPLATE_NAME;
+        return PROFESSORS_PAGE;
     }
 
     @GetMapping("/professor/creation-page")
@@ -100,7 +100,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('admin')")
     public String createNewProfessor(@Valid ProfessorForm professorForm) {
         userService.createProfessor(professorForm);
-        return REDIRECT_PROFESSOR_PAGE;
+        return REDIRECT_TO_PROFESSORS_PAGE;
     }
 
     @DeleteMapping("/professor/{professorId}")
@@ -110,7 +110,7 @@ public class UserController {
             return ERROR_400_TEMPLATE_NAME;
         }
         userService.deleteById(id);
-        return REDIRECT_PROFESSOR_PAGE;
+        return REDIRECT_TO_PROFESSORS_PAGE;
     }
 
     @GetMapping("/professor/{professorId}/edit-page")
@@ -133,6 +133,6 @@ public class UserController {
         }
         professorForm.setId(id);
         userService.updateProfessor(professorForm);
-        return REDIRECT_PROFESSOR_PAGE;
+        return REDIRECT_TO_PROFESSORS_PAGE;
     }
 }

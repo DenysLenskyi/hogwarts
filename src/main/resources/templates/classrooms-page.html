@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <title>Hogwarts Schedule Manager | Classrooms</title>
+
+    <link th:href="@{/styles/styles.css}" rel="stylesheet" type="text/css"/>
+
 </head>
 <body style="padding: 40px">
 <div th:replace="~{fragments/header}"></div>
@@ -31,6 +34,7 @@
                 <th>Classroom Name</th>
                 <th>Description</th>
                 <th>Current Subject</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -45,26 +49,37 @@
                         <p><span th:text="${classroom.subjectDto.name}"/></p>
                     </div>
                 </td>
-                <td sec:authorize="hasAuthority('admin')">
+                <td>
                     <div>
-                        <a th:href="@{/classroom/{id}/edit-page(id=${classroom.getId()})}">
-                            <input type="submit" value="EDIT" class="btn btn-warning" style="margin-bottom: 3px">
-                        </a>
-                    </div>
-                    <div>
-                        <form th:action="@{/classroom/{id}(id=${classroom.getId()})}" th:method="delete" id="deleteClassroomForm" class="deleteClassroomForm">
-                            <button type="button" id="buttonDelete" onclick="deleteItem(this)" class="btn btn-danger" style="margin-bottom: 3px">DELETE</button>
-                            <script>
-                                function deleteItem(button) {
-                                    var form = button.closest('.deleteClassroomForm');
-                                    var isConfirmed = confirm("If this classroom is vacant, just ignore this message." +
-                                        "If the classroom is in use, you'll affect schedule, subject, professor pages by deleting it");
-                                    if (isConfirmed) {
-                                        form.submit();
-                                    }
-                                }
-                            </script>
-                        </form>
+                        <div sec:authorize="!hasAuthority('admin')">
+                            <p class="lead">N/A</p>
+                        </div>
+                        <div sec:authorize="hasAuthority('admin')" class="action-buttons">
+                            <div class="btn-edit">
+                                <a th:href="@{/classroom/{id}/edit-page(id=${classroom.getId()})}">
+                                    <button type="submit" class="btn btn-warning btn-sm" style="margin: 3px">EDIT
+                                    </button>
+                                </a>
+                            </div>
+                            <div class="btn-delete">
+                                <form th:action="@{/classroom/{id}(id=${classroom.getId()})}" th:method="delete"
+                                      id="deleteClassroomForm" class="deleteClassroomForm">
+                                    <button type="button" id="buttonDelete" onclick="deleteItem(this)"
+                                            class="btn btn-danger btn-sm" style="margin: 3px">DELETE
+                                    </button>
+                                    <script>
+                                        function deleteItem(button) {
+                                            var form = button.closest('.deleteClassroomForm');
+                                            var isConfirmed = confirm("If this classroom is vacant, just ignore this message." +
+                                                "If the classroom is in use, you'll affect schedule, subject, professor pages by deleting it");
+                                            if (isConfirmed) {
+                                                form.submit();
+                                            }
+                                        }
+                                    </script>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </td>
             </tr>

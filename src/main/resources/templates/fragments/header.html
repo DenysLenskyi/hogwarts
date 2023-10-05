@@ -11,6 +11,12 @@
         <li><div sec:authorize="isAuthenticated()" class="container-fluid"><p>HELLO, <span th:text="${#authentication.principal.firstName.toUpperCase()}"/></p></div></li>
         <li><div class="container-fluid"><a href="/logout">LOG OUT</a></div></li>
         <li><div class="container-fluid"><a href="/home">HOME</a></div></li>
+        <li><div class="container-fluid"><a href="/lesson/all">SCHEDULE</a></div></li>
+        <li><div class="container-fluid"><a href="/user/students-page">STUDENTS</a></div></li>
+        <li><div class="container-fluid"><a href="/user/professors-page">PROFESSORS/ADMINS</a></div></li>
+        <li><div class="container-fluid"><a href="/group/all">GROUPS</a></div></li>
+        <li><div class="container-fluid"><a href="/subject/all">SUBJECTS</a></div></li>
+        <li><div class="container-fluid"><a href="/classroom/all">CLASSROOMS</a></div></li>
     </ul>
 </header>
 </html>

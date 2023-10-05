@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link th:href="@{/styles/styles.css}" rel="stylesheet" type="text/css"/>
     <title>Hogwarts Schedule Manager | Subjects</title>
 </head>
 <body style="padding: 40px">
@@ -32,6 +33,7 @@
                 <th>Description</th>
                 <th>Classroom</th>
                 <th>Professor</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -53,25 +55,30 @@
                             th:text="${subject.getUserDto().getFirstName() + ' ' + subject.getUserDto().getLastName()}"></span>
                     </div>
                 </td>
-                <td sec:authorize="hasAuthority('admin') || hasAuthority('professor')">
-                    <div sec:authorize="hasAuthority('admin') || hasAuthority('professor')">
-                        <a th:href="@{/subject/{id}/edit-page(id=${subject.getId()})}">
-                            <input type="submit" value="EDIT" class="btn btn-warning" style="margin-bottom: 3px">
-                        </a>
-                    </div>
-                    <div sec:authorize="hasAuthority('admin')">
-                        <form th:action="@{/subject/{id}(id=${subject.getId()})}" th:method="delete" id="deleteSubjectForm" class="deleteSubjectForm">
-                            <button type="button" id="buttonDelete" onclick="deleteItem(this)" class="btn btn-danger" style="margin-bottom: 3px">DELETE</button>
-                            <script>
-                                function deleteItem(button) {
-                                    var form = button.closest('.deleteSubjectForm');
-                                    var isConfirmed = confirm("This will affect the schedule. This subject's lessons will be deleted.");
-                                    if (isConfirmed) {
-                                        form.submit();
+                <td>
+                    <div class="action-buttons">
+                        <div sec:authorize="hasAuthority('student')">
+                            <p class="lead">N/A</p>
+                        </div>
+                        <div sec:authorize="hasAuthority('admin') || hasAuthority('professor')" class="btn-edit">
+                            <a th:href="@{/subject/{id}/edit-page(id=${subject.getId()})}">
+                                <button type="submit" class="btn btn-warning btn-sm">EDIT</button>
+                            </a>
+                        </div>
+                        <div sec:authorize="hasAuthority('admin')" class="btn-delete">
+                            <form th:action="@{/subject/{id}(id=${subject.getId()})}" th:method="delete" id="deleteSubjectForm" class="deleteSubjectForm">
+                                <button type="button" id="buttonDelete" onclick="deleteItem(this)" class="btn btn-danger btn-sm">DELETE</button>
+                                <script>
+                                    function deleteItem(button) {
+                                        var form = button.closest('.deleteSubjectForm');
+                                        var isConfirmed = confirm("This will affect the schedule. This subject's lessons will be deleted.");
+                                        if (isConfirmed) {
+                                            form.submit();
+                                        }
                                     }
-                                }
-                            </script>
-                        </form>
+                                </script>
+                            </form>
+                        </div>
                     </div>
                 </td>
             </tr>

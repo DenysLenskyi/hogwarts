@@ -1,11 +1,14 @@
 package ua.foxminded.javaspring.lenskyi.university.controller;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.*;
+import ua.foxminded.javaspring.lenskyi.university.model.Lesson;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
 import ua.foxminded.javaspring.lenskyi.university.service.LessonService;
 import ua.foxminded.javaspring.lenskyi.university.service.LessonTimeService;
@@ -13,6 +16,9 @@ import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static ua.foxminded.javaspring.lenskyi.university.util.Constants.*;
 
@@ -38,8 +44,21 @@ public class LessonController {
     }
 
     @GetMapping("/all")
-    public String getLessonPage(Model model) {
-        model.addAttribute("lessons", lessonService.findAll());
+    public String getLessonPage(Model model, @RequestParam("page") Optional<Integer> page,
+                                @RequestParam("size") Optional<Integer> size) {
+        int defaultInitialStartPage = 1;
+        int defaultInitialPageSize = 10;
+        int currentPage = page.orElse(defaultInitialStartPage);
+        int pageSize = size.orElse(defaultInitialPageSize);
+        Page<LessonDto> lessonDtoPage = lessonService.findAllPaginated(PageRequest.of(currentPage - 1, pageSize));
+        model.addAttribute("lessonsPage", lessonDtoPage);
+        int totalPages = lessonDtoPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
         return LESSON_PAGE_TEMPLATE_NAME;
     }
 

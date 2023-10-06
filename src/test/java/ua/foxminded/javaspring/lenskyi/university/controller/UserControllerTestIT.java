@@ -46,9 +46,9 @@ class UserControllerTestIT {
     void getAllStudentsPageTest() throws Exception {
         List<UserDto> students = userService.findAllStudent();
         mvc.perform(MockMvcRequestBuilders
-                        .get("/user/student-page"))
+                        .get("/user/students-page"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("students-page"))
+                .andExpect(view().name("/students-page"))
                 .andExpect(model().attribute("students", students))
                 .andExpect(model().attribute("students", Matchers.hasSize(students.size())));
     }
@@ -188,9 +188,9 @@ class UserControllerTestIT {
     void getAllProfessorsPageTest() throws Exception {
         List<UserDto> professors = userService.findAllProfessorAndAdmin();
         mvc.perform(MockMvcRequestBuilders
-                        .get("/user/professor-page"))
+                        .get("/user/professors-page"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("professors-page"))
+                .andExpect(view().name("/professors-page"))
                 .andExpect(model().attribute("professorsAndAdmins", professors))
                 .andExpect(model().attribute("professorsAndAdmins", Matchers.hasSize(professors.size())));
     }

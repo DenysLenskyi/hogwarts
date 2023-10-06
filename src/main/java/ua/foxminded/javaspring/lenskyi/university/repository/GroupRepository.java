@@ -7,7 +7,7 @@ import ua.foxminded.javaspring.lenskyi.university.model.Group;
 import java.util.Optional;
 
 @Repository
-public interface GroupRepository extends JpaRepository<Group, Long>, BaseRepository<Group> {
+public interface GroupRepository extends BaseRepository<Group, Long> {
 
     Optional<Group> findByName(String groupName);
 }

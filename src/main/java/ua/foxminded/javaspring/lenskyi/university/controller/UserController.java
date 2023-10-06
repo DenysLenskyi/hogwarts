@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.form.ProfessorForm;
+import ua.foxminded.javaspring.lenskyi.university.exception.NotUniqueUsernameException;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 import ua.foxminded.javaspring.lenskyi.university.service.UserService;
@@ -44,7 +45,7 @@ public class UserController {
 
     @PostMapping("/student")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String createNewStudent(@Valid UserDto userDto) {
+    public String createNewStudent(@Valid UserDto userDto) throws NotUniqueUsernameException {
         userService.createStudent(userDto);
         return REDIRECT_TO_STUDENTS_PAGE;
     }
@@ -98,7 +99,7 @@ public class UserController {
 
     @PostMapping("/professor")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String createNewProfessor(@Valid ProfessorForm professorForm) {
+    public String createNewProfessor(@Valid ProfessorForm professorForm) throws NotUniqueUsernameException {
         userService.createProfessor(professorForm);
         return REDIRECT_TO_PROFESSORS_PAGE;
     }

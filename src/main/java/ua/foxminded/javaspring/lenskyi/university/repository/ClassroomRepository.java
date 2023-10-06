@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ClassroomRepository extends JpaRepository<Classroom, Long>, BaseRepository<Classroom> {
+public interface ClassroomRepository extends BaseRepository<Classroom, Long> {
 
     Optional<Classroom> findByName(String classroomName);
 

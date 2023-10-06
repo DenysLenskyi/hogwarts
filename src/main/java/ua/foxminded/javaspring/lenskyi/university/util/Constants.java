@@ -13,6 +13,7 @@ public abstract class Constants {
     public static final String PROFESSORS_PAGE = "/professors-page";
     public static final String REDIRECT_TO_STUDENTS_PAGE = REDIRECT_TO + USER_ROOT + STUDENTS_PAGE;
     public static final String REDIRECT_TO_PROFESSORS_PAGE = REDIRECT_TO + USER_ROOT + PROFESSORS_PAGE;
+    public static final String STUDENT_CREATION_PAGE = "forms/student-creation-page"; //example of naming
     public static final String CREATE_STUDENT_PAGE_TEMPLATE_NAME = "forms/create-student-form"; // forms/student-creation-page
     public static final String EDIT_STUDENT_PAGE_TEMPLATE_NAME = "forms/edit-student-form"; // forms/student-edit-page
     public static final String CREATE_PROFESSOR_PAGE_TEMPLATE_NAME = "forms/create-professor-form"; // forms/professor-creation-page

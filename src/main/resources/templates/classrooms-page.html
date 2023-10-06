@@ -27,8 +27,7 @@
         <p class="lead text-info">Log in with admin rights to edit</p>
     </div>
 
-    <div th:if="${message != null}" class="row">
-        <p class="text-success" th:text="${message}"></p>
+    <div th:if="${message != null}" th:text="${message}" class="row alert alert-success" role="alert">
     </div>
 
     <div class="row vertical-center">

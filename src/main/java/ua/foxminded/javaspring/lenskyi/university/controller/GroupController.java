@@ -10,6 +10,7 @@ import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
 
 import java.util.List;
 
+import static ua.foxminded.javaspring.lenskyi.university.controller.DefaultMessage.*;
 import static ua.foxminded.javaspring.lenskyi.university.util.Constants.*;
 
 @Controller
@@ -37,22 +38,26 @@ public class GroupController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String createNewGroup(@Valid GroupDto groupDto) {
+    public String createNewGroup(@Valid GroupDto groupDto, Model model) {
         if (groupService.existsByName(groupDto.getName())) {
             return ERROR_400_TEMPLATE_NAME;
         }
         groupService.createNewGroup(groupDto);
-        return REDIRECT_GROUP_PAGE;
+        model.addAttribute("message", CREATED_MESSAGE);
+        model.addAttribute("groups", groupService.findAll());
+        return GROUP_PAGE_TEMPLATE_NAME;
     }
 
     @DeleteMapping("/{groupId}")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String deleteGroup(@PathVariable("groupId") Long id) {
+    public String deleteGroup(@PathVariable("groupId") Long id, Model model) {
         if (!groupService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
         }
         groupService.deleteById(id);
-        return REDIRECT_GROUP_PAGE;
+        model.addAttribute("message", DELETED_MESSAGE);
+        model.addAttribute("groups", groupService.findAll());
+        return GROUP_PAGE_TEMPLATE_NAME;
     }
 
     @GetMapping("{groupId}/edit-page")
@@ -72,10 +77,12 @@ public class GroupController {
 
     @PutMapping("{groupId}")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String editGroup(@PathVariable("groupId") Long id, @Valid GroupDto groupDto) {
+    public String editGroup(@PathVariable("groupId") Long id, @Valid GroupDto groupDto, Model model) {
         groupService.moveStudentsFromGroupToAnotherGroup(
                 groupService.findGroupById(id), groupService.findByName(groupDto.getName())
         );
-        return REDIRECT_GROUP_PAGE;
+        model.addAttribute("message", UPDATED_MESSAGE);
+        model.addAttribute("groups", groupService.findAll());
+        return GROUP_PAGE_TEMPLATE_NAME;
     }
 }

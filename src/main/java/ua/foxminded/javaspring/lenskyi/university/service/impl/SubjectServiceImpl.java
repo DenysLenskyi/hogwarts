@@ -48,15 +48,7 @@ public class SubjectServiceImpl implements SubjectService {
     public List<SubjectDto> findAll() {
         List<Subject> subjects = subjectRepository.findAll();
         return subjects.stream()
-                .map(subject -> {
-                    SubjectDto subjectDto = subjectMapper.subjectEntityToSubjectDto(subject);
-                    subjectDto.setClassroomDto(classroomMapper.classroomEntityToClassroomDto(subject.getClassroom()));
-                    subjectDto.setLessonsDto(subject.getLessons().stream()
-                            .map(lessonMapper::lessonEntityToLessonDto)
-                            .collect(Collectors.toSet()));
-                    subjectDto.setUserDto(userMapper.userEntityToUserDto(subject.getUser()));
-                    return subjectDto;
-                })
+                .map(subjectMapper::subjectEntityToSubjectDto)
                 .sorted(Comparator.comparing(SubjectDto::getId))
                 .toList();
     }
@@ -88,16 +80,11 @@ public class SubjectServiceImpl implements SubjectService {
     @Transactional
     public void updateSubject(SubjectDto subjectDto) {
         Subject subjectToUpdate = subjectRepository.findById(subjectDto.getId()).orElseThrow();
-        if (!subjectDto.getName().isEmpty()) {
-            subjectToUpdate.setName(subjectDto.getName());
-        }
-        if (!subjectDto.getDescription().isEmpty()) {
-            subjectToUpdate.setDescription(subjectDto.getDescription());
-        }
-        if (subjectDto.getClassroomDto() != null) {
-            Classroom classroom = classroomRepository.findByName(subjectDto.getClassroomDto().getName()).orElse(null);
-            subjectToUpdate.setClassroom(classroom);
-        }
+        subjectToUpdate.setName(subjectDto.getName());
+        subjectToUpdate.setDescription(subjectDto.getDescription());
+        Classroom classroom = classroomRepository.findByName(subjectDto.getClassroomDto().getName()).orElse(null);
+        subjectToUpdate.setClassroom(classroom);
+        subjectToUpdate.setUser(null);
         if (subjectDto.getUserDto() != null) {
             User user = userRepository.findUserByUsername(subjectDto.getUserDto().getUsername());
             subjectToUpdate.setUser(user);
@@ -116,10 +103,9 @@ public class SubjectServiceImpl implements SubjectService {
         Subject newSubject = new Subject();
         newSubject.setName(subjectDto.getName());
         newSubject.setDescription(subjectDto.getDescription());
-        if (subjectDto.getClassroomDto() != null) {
-            Classroom classroom = classroomRepository.findByName(subjectDto.getClassroomDto().getName()).orElseThrow();
-            newSubject.setClassroom(classroom);
-        }
+        Classroom classroom = classroomRepository.findByName(subjectDto.getClassroomDto().getName()).orElse(null);
+        newSubject.setClassroom(classroom);
+        newSubject.setUser(null);
         if (subjectDto.getUserDto() != null) {
             User user = userRepository.findUserByUsername(subjectDto.getUserDto().getUsername());
             newSubject.setUser(user);

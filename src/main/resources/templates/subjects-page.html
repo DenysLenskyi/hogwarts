@@ -21,6 +21,9 @@
         </a>
     </div>
 
+    <div th:if="${message != null}" th:text="${message}" class="row alert alert-success" role="alert">
+    </div>
+
     <div sec:authorize="!hasAuthority('admin')" class="row">
         <p class="lead text-info">Log in with admin rights to create/delete a subject</p>
     </div>

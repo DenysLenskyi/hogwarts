@@ -4,14 +4,9 @@ public abstract class Constants {
 
     public static final String LOGIN_PAGE_TEMPLATE_NAME = "login";
     public static final String README_PAGE_TEMPLATE_NAME = "readme-page";
-    public static final String REDIRECT_TO = "redirect:";
     public static final String USER_ROOT = "/user";
     public static final String STUDENTS_PAGE = "/students-page";
     public static final String PROFESSORS_PAGE = "/professors-page";
-    public static final String REDIRECT_SUBJECT_PAGE = "redirect:/subject/all";
-    public static final String REDIRECT_GROUP_PAGE = "redirect:/group/all";
-    public static final String REDIRECT_CLASSROOM_PAGE = "redirect:/classroom/all";
-    public static final String REDIRECT_LESSON_PAGE = "redirect:/lesson/all";
     public static final String SUBJECT_PAGE_TEMPLATE_NAME = "subjects-page";
     public static final String GROUP_PAGE_TEMPLATE_NAME = "groups-page";
     public static final String ERROR_400_TEMPLATE_NAME = "error/400";
@@ -25,8 +20,6 @@ public abstract class Constants {
     public static final String CREATE_CLASSROOM_TEMPLATE_NAME = "forms/create-classroom-form";
     public static final String EDIT_GROUP_TEMPLATE_NAME = "forms/edit-group-form";
     public static final String EDIT_CLASSROOM_TEMPLATE_NAME = "forms/edit-classroom-form";
-    public static final String REDIRECT_TO_STUDENTS_PAGE = REDIRECT_TO + USER_ROOT + STUDENTS_PAGE;
-    public static final String REDIRECT_TO_PROFESSORS_PAGE = REDIRECT_TO + USER_ROOT + PROFESSORS_PAGE;
     public static final String CREATE_STUDENT_PAGE_TEMPLATE_NAME = "forms/create-student-form";
     public static final String EDIT_STUDENT_PAGE_TEMPLATE_NAME = "forms/edit-student-form";
     public static final String EDIT_PROFESSOR_PAGE_TEMPLATE_NAME = "forms/edit-professor-form";

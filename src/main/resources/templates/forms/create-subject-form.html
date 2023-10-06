@@ -63,6 +63,7 @@
                         <select th:field="*{userDto.username}">
                             <option th:each="user : ${freeProfessors}" th:value="${user.username}"
                                     th:text="${user.firstName + ' ' + user.lastName}"></option>
+                            <option th:value="null" th:text="'(no professor)'"></option>
                         </select>
                     </div>
                 </div>

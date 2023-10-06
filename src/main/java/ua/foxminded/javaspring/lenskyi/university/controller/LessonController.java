@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.*;
-import ua.foxminded.javaspring.lenskyi.university.model.Lesson;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
 import ua.foxminded.javaspring.lenskyi.university.service.LessonService;
 import ua.foxminded.javaspring.lenskyi.university.service.LessonTimeService;
@@ -21,6 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static ua.foxminded.javaspring.lenskyi.university.util.Constants.*;
+import static ua.foxminded.javaspring.lenskyi.university.controller.DefaultMessage.*;
 
 @Controller
 @RequestMapping("/lesson")
@@ -30,6 +30,8 @@ public class LessonController {
             "The group you've chosen has another lesson at the same date and time";
     private static final String BUSY_SUBJECT_ERROR_MESSAGE =
             "The subject you've chosen has another lesson at the same date and time";
+    private static int defaultInitialStartPage = 1;
+    private static int defaultInitialPageSize = 10;
     private final LessonService lessonService;
     private final LessonTimeService lessonTimeService;
     private final GroupService groupService;
@@ -46,8 +48,6 @@ public class LessonController {
     @GetMapping("/all")
     public String getLessonPage(Model model, @RequestParam("page") Optional<Integer> page,
                                 @RequestParam("size") Optional<Integer> size) {
-        int defaultInitialStartPage = 1;
-        int defaultInitialPageSize = 10;
         int currentPage = page.orElse(defaultInitialStartPage);
         int pageSize = size.orElse(defaultInitialPageSize);
         Page<LessonDto> lessonDtoPage = lessonService.findAllPaginated(PageRequest.of(currentPage - 1, pageSize));
@@ -91,16 +91,18 @@ public class LessonController {
             return ERROR_400_TEMPLATE_NAME;
         }
         lessonService.createLesson(lessonDto);
-        return REDIRECT_LESSON_PAGE;
+        model.addAttribute("message", CREATED_MESSAGE);
+        return getLessonPage(model, Optional.of(defaultInitialStartPage), Optional.of(defaultInitialPageSize));
     }
 
     @DeleteMapping("/{lessonId}")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String deleteLesson(@PathVariable("lessonId") Long id) {
+    public String deleteLesson(@PathVariable("lessonId") Long id, Model model) {
         if (!lessonService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
         }
         lessonService.deleteById(id);
-        return REDIRECT_LESSON_PAGE;
+        model.addAttribute("message", DELETED_MESSAGE);
+        return getLessonPage(model, Optional.of(defaultInitialStartPage), Optional.of(defaultInitialPageSize));
     }
 }

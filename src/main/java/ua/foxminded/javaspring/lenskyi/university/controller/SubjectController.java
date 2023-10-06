@@ -11,6 +11,7 @@ import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 import ua.foxminded.javaspring.lenskyi.university.service.UserService;
 
 import static ua.foxminded.javaspring.lenskyi.university.util.Constants.*;
+import static ua.foxminded.javaspring.lenskyi.university.controller.DefaultMessage.*;
 
 @Controller
 @RequestMapping("/subject")
@@ -49,14 +50,16 @@ public class SubjectController {
 
     @PutMapping("/{subjectId}")
     @PreAuthorize("hasAnyAuthority('admin', 'professor')")
-    public String editSubject(@PathVariable("subjectId") Long id, @Valid SubjectDto subjectDto) {
+    public String editSubject(@PathVariable("subjectId") Long id, @Valid SubjectDto subjectDto, Model model) {
         if (subjectService.existsByName(subjectDto.getName()) && !subjectDto.getName()
                 .equals(subjectService.findById(id).getName())) {
             return ERROR_400_TEMPLATE_NAME;
         }
         subjectDto.setId(id);
         subjectService.updateSubject(subjectDto);
-        return REDIRECT_SUBJECT_PAGE;
+        model.addAttribute("message", UPDATED_MESSAGE);
+        model.addAttribute("subjects", subjectService.findAll());
+        return SUBJECT_PAGE_TEMPLATE_NAME;
     }
 
     @GetMapping("/creation-page")
@@ -77,16 +80,20 @@ public class SubjectController {
             return ERROR_400_TEMPLATE_NAME;
         }
         subjectService.createNewSubject(subjectDto);
-        return REDIRECT_SUBJECT_PAGE;
+        model.addAttribute("message", CREATED_MESSAGE);
+        model.addAttribute("subjects", subjectService.findAll());
+        return SUBJECT_PAGE_TEMPLATE_NAME;
     }
 
     @DeleteMapping("/{subjectId}")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String deleteSubject(@PathVariable("subjectId") Long id) {
+    public String deleteSubject(@PathVariable("subjectId") Long id, Model model) {
         if (!subjectService.doesSubjectExistById(id)) {
             return ERROR_400_TEMPLATE_NAME;
         }
         subjectService.deleteSubjectById(id);
-        return REDIRECT_SUBJECT_PAGE;
+        model.addAttribute("message", DELETED_MESSAGE);
+        model.addAttribute("subjects", subjectService.findAll());
+        return SUBJECT_PAGE_TEMPLATE_NAME;
     }
 }

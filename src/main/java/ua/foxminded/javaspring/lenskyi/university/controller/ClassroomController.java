@@ -8,15 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.ClassroomDto;
 import ua.foxminded.javaspring.lenskyi.university.service.ClassroomService;
 
+import static ua.foxminded.javaspring.lenskyi.university.controller.DefaultMessage.*;
 import static ua.foxminded.javaspring.lenskyi.university.util.Constants.*;
 
 @Controller
 @RequestMapping("/classroom")
 public class ClassroomController {
 
-    private static final String CLASSROOM_CREATED_MESSAGE = "The classroom has been created successfully!";
-    private static final String CLASSROOM_UPDATED_MESSAGE = "The classroom has been updated successfully!";
-    private static final String CLASSROOM_DELETED_MESSAGE = "The classroom has been deleted successfully!";
     private ClassroomService classroomService;
 
     public ClassroomController(ClassroomService classroomService) {
@@ -44,18 +42,20 @@ public class ClassroomController {
         }
         classroomService.createClassroom(classroomDto);
         model.addAttribute("classrooms", classroomService.findAll());
-        model.addAttribute("message", CLASSROOM_CREATED_MESSAGE);
+        model.addAttribute("message", CREATED_MESSAGE);
         return CLASSROOM_PAGE_TEMPLATE_NAME;
     }
 
     @DeleteMapping("/{classroomId}")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String deleteClassroom(@PathVariable("classroomId") Long id) {
+    public String deleteClassroom(@PathVariable("classroomId") Long id, Model model) {
         if (!classroomService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
         }
         classroomService.deleteClassroomById(id);
-        return REDIRECT_CLASSROOM_PAGE;
+        model.addAttribute("classrooms", classroomService.findAll());
+        model.addAttribute("message", DELETED_MESSAGE);
+        return CLASSROOM_PAGE_TEMPLATE_NAME;
     }
 
     @GetMapping("/{classroomId}/edit-page")
@@ -71,13 +71,16 @@ public class ClassroomController {
 
     @PutMapping("/{classroomId}")
     @PreAuthorize("hasAnyAuthority('admin', 'professor')")
-    public String editClassroom(@PathVariable("classroomId") Long id, @Valid ClassroomDto classroomDto) {
+    public String editClassroom(@PathVariable("classroomId") Long id, @Valid ClassroomDto classroomDto,
+                                Model model) {
         if (classroomService.existsByName(classroomDto.getName()) && !classroomDto.getName()
                 .equals(classroomService.findById(id).getName())) {
             return ERROR_400_TEMPLATE_NAME;
         }
         classroomDto.setId(id);
         classroomService.updateClassroom(classroomDto);
-        return REDIRECT_CLASSROOM_PAGE;
+        model.addAttribute("classrooms", classroomService.findAll());
+        model.addAttribute("message", UPDATED_MESSAGE);
+        return CLASSROOM_PAGE_TEMPLATE_NAME;
     }
 }

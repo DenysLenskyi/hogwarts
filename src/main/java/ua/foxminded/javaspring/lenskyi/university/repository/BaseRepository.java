@@ -1,6 +1,8 @@
 package ua.foxminded.javaspring.lenskyi.university.repository;
 
-public interface BaseRepository<T> {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BaseRepository<T, ID> extends JpaRepository<T, ID> {
 
     boolean existsByName(String name);
 }

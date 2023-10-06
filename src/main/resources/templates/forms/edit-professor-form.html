@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 
+    <link th:href="@{/styles/styles.css}" rel="stylesheet" type="text/css"/>
     <title>Edit Professor</title>
 </head>
 
@@ -36,8 +37,24 @@
 
                 <div class="form-group">
                     <label>Edit first name</label>
-                    <p>Use 2 or more letters, numbers or symbols, do not leave this field empty or filled with whitespaces</p>
-                    <p><input type="text" th:field="*{firstName}" required pattern="^(?!\s*$).+"/></p>
+                    <p><input type="text" th:field="*{firstName}" required pattern="^(?!\s*$).+"
+                              onmouseover="showPopup()" onmouseout="hidePopup()"/></p>
+                    <!--                    popup-->
+                    <div id="editProfessorNamePopup" class="popup">
+                        Use 2 or more letters, numbers or symbols, do not leave this field empty or filled with
+                        whitespaces
+                    </div>
+                    <script>
+                        function showPopup() {
+                            var popup = document.getElementById("editProfessorNamePopup");
+                            popup.style.display = "block";
+                        }
+
+                        function hidePopup() {
+                            var popup = document.getElementById("editProfessorNamePopup");
+                            popup.style.display = "none";
+                        }
+                    </script>
                 </div>
 
 
@@ -48,17 +65,48 @@
 
                 <div class="form-group">
                     <label>Edit username</label>
-                    <p>Use 2 or more letters, numbers or symbols, do not leave this field empty or filled with whitespaces</p>
-                    <p>Username must be unique! You'll get "bad request" error if choose not unique username. Don't
-                        worry, just try again</p>
-                    <p><input type="text" th:field="*{username}" required pattern="^(?!\s*$).+"/></p>
+                    <p><input type="text" th:field="*{username}" required pattern="^(?!\s*$).+"
+                    onmouseover="showUsernamePopup()" onmouseout="hideUsernamePopup()"/></p>
+                    <!--                    popup-->
+                    <div id="editProfessorUsernamePopup" class="popup">
+                        <p>Use 2 or more letters, numbers or symbols, do not leave this field empty or filled with
+                            whitespaces</p>
+                        <p>Username must be unique! You'll get "bad request" error if choose not unique username. Don't
+                            worry, just try again</p>
+                    </div>
+                    <script>
+                        function showUsernamePopup() {
+                            var popup = document.getElementById("editProfessorUsernamePopup");
+                            popup.style.display = "block";
+                        }
+
+                        function hideUsernamePopup() {
+                            var popup = document.getElementById("editProfessorUsernamePopup");
+                            popup.style.display = "none";
+                        }
+                    </script>
                 </div>
 
                 <div class="form-group">
                     <label>Edit password</label>
-                    <p>Use 2 or more letters, numbers or symbols (do not fill with whitespaces only)</p>
-                    <p>Leave this field empty to keep current password for this user</p>
-                    <p><input type="text" id="password" name="password" pattern="^(?!\s*$).+" th:value="''"/></p>
+                    <p><input type="text" id="password" name="password" pattern="^(?!\s*$).+" th:value="''"
+                    onmouseover="showPassPopup()" onmouseout="hidePassPopup()"/></p>
+                    <!--                    popup-->
+                    <div id="editProfessorPassPopup" class="popup">
+                        <p>Use 2 or more letters, numbers or symbols (do not fill with whitespaces only)</p>
+                        <p>Leave this field empty to keep current password for this user</p>
+                    </div>
+                    <script>
+                        function showPassPopup() {
+                            var popup = document.getElementById("editProfessorPassPopup");
+                            popup.style.display = "block";
+                        }
+
+                        function hidePassPopup() {
+                            var popup = document.getElementById("editProfessorPassPopup");
+                            popup.style.display = "none";
+                        }
+                    </script>
                 </div>
 
                 <div class="form-group">

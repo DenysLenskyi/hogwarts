@@ -13,7 +13,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.form.ProfessorForm;
-import ua.foxminded.javaspring.lenskyi.university.model.Role;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
 import ua.foxminded.javaspring.lenskyi.university.service.RoleService;

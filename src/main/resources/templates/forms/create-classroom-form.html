@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 
+    <link th:href="@{/styles/styles.css}" rel="stylesheet" type="text/css"/>
     <title>Create New Classroom</title>
 
 </head>
@@ -26,14 +27,30 @@
 
             <div class="form-group">
                 <div class="form-group">
-                    <label>Choose a name for the classroom</label>
+                    <label>Name</label>
                     <p><input type="text" placeholder="Type a name here..." th:field="*{name}"
-                              required pattern="^(?!\s*$).+"></p>
+                              required pattern="^(?!\s*$).+" onmouseover="showPopup()" onmouseout="hidePopup()">
+                    </p>
+                    <!--                    popup-->
+                    <div id="createClassroomNamePopup" class="popup">Any muggle classroom name
+                    </div>
+                    <script>
+                        function showPopup() {
+                            var popup = document.getElementById("createClassroomNamePopup");
+                            popup.style.display = "block";
+                        }
+
+                        function hidePopup() {
+                            var popup = document.getElementById("createClassroomNamePopup");
+                            popup.style.display = "none";
+                        }
+                    </script>
                 </div>
 
                 <div class="form-group">
-                    <label for="comment">Write a description</label>
-                    <textarea class="form-control" rows="5" id="comment" placeholder="A few words about the classroom..."
+                    <label for="comment">Description</label>
+                    <textarea class="form-control" rows="5" id="comment"
+                              placeholder="A few words about the classroom..."
                               th:field="*{description}"></textarea>
                 </div>
 

@@ -8,11 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ClassroomRepository extends JpaRepository<Classroom, Long> {
+public interface ClassroomRepository extends JpaRepository<Classroom, Long>, BaseRepository<Classroom> {
 
     Optional<Classroom> findByName(String classroomName);
 
     List<Classroom> findAllBySubjectIsNull();
-
-    boolean existsByName(String classroomName);
 }

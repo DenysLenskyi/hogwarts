@@ -8,11 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SubjectRepository extends JpaRepository<Subject, Long> {
+public interface SubjectRepository extends JpaRepository<Subject, Long>, BaseRepository<Subject> {
 
     Optional<Subject> findSubjectByName(String subjectName);
-
-    boolean existsByName(String subjectName);
 
     List<Subject> findAllByUserIsNull();
 }

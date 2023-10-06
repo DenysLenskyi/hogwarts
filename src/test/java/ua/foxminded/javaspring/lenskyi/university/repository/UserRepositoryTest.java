@@ -89,4 +89,10 @@ class UserRepositoryTest {
         List<User> professorsAndAdmins = userRepository.findAllByRolesIsIn(roles);
         assertEquals(12, professorsAndAdmins.size());
     }
+
+    @Test
+    void deleteByWrongIdTest() {
+        List<User> users = userRepository.findAll();
+        userRepository.deleteById(users.get(0).getId() + 666000L);
+    }
 }

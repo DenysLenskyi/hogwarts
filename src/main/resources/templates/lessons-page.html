@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link th:href="@{/styles/styles.css}" rel="stylesheet" type="text/css"/>
     <title>Hogwarts Schedule Manager | Students</title>
 </head>
 <body style="padding: 40px">
@@ -40,6 +41,7 @@
                 <th>Subject</th>
                 <th>Professor</th>
                 <th>Classroom</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -49,14 +51,15 @@
                 <td th:if="${lesson.lessonTimeDto != null}" th:text="${lesson.lessonTimeDto.end}"></td>
                 <td th:if="${lesson.groupDto != null}" th:text="${lesson.groupDto.name}"></td>
                 <td th:if="${lesson.subjectDto != null}" th:text="${lesson.subjectDto.name}"></td>
-                <td >
+                <td>
                     <div th:if="${lesson.subjectDto.userDto != null}">
                         <span th:text="${lesson.subjectDto.userDto.firstName
                 + ' ' + lesson.subjectDto.userDto.lastName}"/>
                     </div>
                     <div th:if="${lesson.subjectDto.userDto == null}">
                         <p class="text-warning">No professor! It shouldn't be like this.</p>
-                        <p class="text-warning">Ask administrator or assign a professor to <span th:text="${lesson.subjectDto.name}"/> subject by yourself</p>
+                        <p class="text-warning">Ask administrator or assign a professor to <span
+                                th:text="${lesson.subjectDto.name}"/> subject by yourself</p>
                     </div>
                 </td>
                 <td>
@@ -65,20 +68,33 @@
                     </div>
                     <div th:if="${lesson.subjectDto.classroomDto == null}">
                         <p class="text-warning">No classroom! It shouldn't be like this.</p>
-                        <p class="text-warning">Ask administrator or assign a classroom to <span th:text="${lesson.subjectDto.name}"/> subject by yourself</p>
+                        <p class="text-warning">Ask administrator or assign a classroom to <span
+                                th:text="${lesson.subjectDto.name}"/> subject by yourself</p>
                     </div>
                 </td>
 
                 <td>
-<!--                    <div>-->
-<!--                        <a th:href="@{/user/professor/{id}/edit-page(id=${professor.getId()})}">-->
-<!--                            <input type="submit" value="EDIT" class="btn btn-warning" style="margin-bottom: 3px">-->
-<!--                        </a>-->
-<!--                    </div>-->
-                    <div sec:authorize="hasAuthority('admin')">
-                        <form th:action="@{/lesson/{id}(id=${lesson.getId()})}" th:method="delete">
-                            <input type="submit" value="DELETE" class="btn btn-danger" style="margin-bottom: 3px">
-                        </form>
+                    <div sec:authorize="!hasAuthority('admin')">
+                        <p class="lead">N/A</p>
+                    </div>
+                    <div class="action-buttons">
+                        <div sec:authorize="hasAuthority('admin')" class="btn-delete">
+                            <form th:action="@{/lesson/{id}(id=${lesson.getId()})}" th:method="delete"
+                                  id="deleteLessonForm" class="deleteLessonForm">
+                                <button type="button" id="buttonDelete" onclick="deleteItem(this)"
+                                        class="btn btn-danger btn-sm">DELETE
+                                </button>
+                                <script>
+                                    function deleteItem(button) {
+                                        var form = button.closest('.deleteLessonForm');
+                                        var isConfirmed = confirm("Are you sure you want to delete this lesson?");
+                                        if (isConfirmed) {
+                                            form.submit();
+                                        }
+                                    }
+                                </script>
+                            </form>
+                        </div>
                     </div>
                 </td>
             </tr>

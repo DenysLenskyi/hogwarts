@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface RoleService {
 
-    List<Role> findAllRoles();
+    List<RoleDto> findAll();
 
     Role findRoleByName(String roleName);
 

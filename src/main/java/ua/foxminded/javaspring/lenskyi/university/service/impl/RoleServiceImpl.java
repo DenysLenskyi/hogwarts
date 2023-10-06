@@ -8,6 +8,7 @@ import ua.foxminded.javaspring.lenskyi.university.repository.RoleRepository;
 import ua.foxminded.javaspring.lenskyi.university.service.RoleService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -21,8 +22,11 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Role> findAllRoles() {
-        return roleRepository.findAll();
+    public List<RoleDto> findAll() {
+        List<Role> roles = roleRepository.findAll();
+        return roles.stream()
+                .map(mapper::roleEntityToRoleDto)
+                .toList();
     }
 
     @Override

@@ -1,13 +1,13 @@
 package ua.foxminded.javaspring.lenskyi.university.controller;
 
+import jakarta.transaction.Transactional;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,6 +17,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import ua.foxminded.javaspring.lenskyi.university.model.Role;
 import ua.foxminded.javaspring.lenskyi.university.repository.RoleRepository;
+import ua.foxminded.javaspring.lenskyi.university.service.RoleService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,36 +27,26 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 @Testcontainers
 @ActiveProfiles("test")
-class RoleControllerTest {
+@Transactional
+class RoleControllerTestIT {
 
-    @MockBean
-    private RoleRepository roleRepository;
     @Autowired
-    private WebApplicationContext context;
     private MockMvc mvc;
 
-    @BeforeEach
-    public void setup() {
-        mvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .apply(springSecurity())
-                .build();
-    }
+    @Autowired
+    private RoleService roleService;
 
     @Test
     @WithUserDetails("minervamcgonagall")
-    void givenRoles_whenFindAllRoles_thenReturnJsonArray() throws Exception {
-        Role testRole = new Role();
-        testRole.setName("test");
-        List<Role> allRoles = Arrays.asList(testRole);
-        given(roleRepository.findAll()).willReturn(allRoles);
+    void getRolePageTest() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                         .get("/role/all"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("roles-db-overview"))
-                .andExpect(model().attribute("roles", allRoles))
-                .andExpect(model().attribute("roles", Matchers.hasSize(1)));
+                .andExpect(view().name("roles-page"))
+                .andExpect(model().attribute("roles", roleService.findAll()))
+                .andExpect(model().attribute("roles", Matchers.hasSize(3)));
     }
 }

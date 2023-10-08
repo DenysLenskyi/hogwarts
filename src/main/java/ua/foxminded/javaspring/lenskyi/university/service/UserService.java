@@ -20,13 +20,13 @@ public interface UserService {
     List<UserDto> findAllProfessorWithNoSubject();
 
     List<UserDto> findAllStudent();
-    void createStudent(UserDto userDto) throws NotUniqueUsernameException;
+    void createStudent(UserDto userDto);
     void deleteById(Long id);
     void updateStudent(UserDto userDto);
 
     List<UserDto> findAllProfessorAndAdmin();
 
-    void createProfessor(ProfessorForm professorForm) throws NotUniqueUsernameException;
+    void createProfessor(ProfessorForm professorForm);
 
     ProfessorForm createProfessorFormDto(Long id);
 

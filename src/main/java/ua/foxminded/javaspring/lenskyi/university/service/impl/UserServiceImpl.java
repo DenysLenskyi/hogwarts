@@ -22,6 +22,8 @@ import java.util.Set;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final String NOT_UNIQUE_USERNAME_ERROR_MESSAGE = "- this username is in use. Try another one";
+
     private static final String STUDENT_ROLE_NAME = "student";
     private static final String PROFESSOR_ROLE_NAME = "professor";
     private static final String ADMIN_ROLE_NAME = "admin";
@@ -87,9 +89,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void createStudent(UserDto userDto) throws NotUniqueUsernameException {
+    public void createStudent(UserDto userDto) {
         if (userRepository.existsByUsername(userDto.getUsername())) {
-            throw new NotUniqueUsernameException(userDto.getUsername());
+            throw new NotUniqueUsernameException(userDto.getUsername() + NOT_UNIQUE_USERNAME_ERROR_MESSAGE);
         }
         User newStudent = new User();
         newStudent.setFirstName(userDto.getFirstName());
@@ -140,9 +142,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void createProfessor(ProfessorForm professorForm) throws NotUniqueUsernameException {
+    public void createProfessor(ProfessorForm professorForm) {
         if (userRepository.existsByUsername(professorForm.getUsername())) {
-            throw new NotUniqueUsernameException(professorForm.getUsername());
+            throw new NotUniqueUsernameException(professorForm.getUsername() + NOT_UNIQUE_USERNAME_ERROR_MESSAGE);
         }
         User newProfessor = new User();
         newProfessor.setFirstName(professorForm.getFirstName());

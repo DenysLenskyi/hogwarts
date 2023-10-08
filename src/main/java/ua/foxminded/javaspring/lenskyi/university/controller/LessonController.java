@@ -30,7 +30,7 @@ public class LessonController {
             "The group you've chosen has another lesson at the same date and time";
     private static final String BUSY_SUBJECT_ERROR_MESSAGE =
             "The subject you've chosen has another lesson at the same date and time";
-    private static int defaultInitialStartPage = 1;
+    private static final int defaultInitialStartPage = 1;
     private static int defaultInitialPageSize = 10;
     private final LessonService lessonService;
     private final LessonTimeService lessonTimeService;

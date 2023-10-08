@@ -7,11 +7,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.form.ProfessorForm;
+import ua.foxminded.javaspring.lenskyi.university.exception.NotUniqueUsernameException;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 import ua.foxminded.javaspring.lenskyi.university.service.UserService;
 
 import static ua.foxminded.javaspring.lenskyi.university.util.Constants.*;
+import static ua.foxminded.javaspring.lenskyi.university.controller.DefaultMessage.*;
 
 @Controller
 @RequestMapping(USER_ROOT)
@@ -44,19 +46,23 @@ public class UserController {
 
     @PostMapping("/student")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String createNewStudent(@Valid UserDto userDto) {
+    public String createNewStudent(@Valid UserDto userDto, Model model) throws NotUniqueUsernameException {
         userService.createStudent(userDto);
-        return REDIRECT_TO_STUDENTS_PAGE;
+        model.addAttribute("message", CREATED_MESSAGE);
+        model.addAttribute("students", userService.findAllStudent());
+        return STUDENTS_PAGE;
     }
 
     @DeleteMapping("/student/{studentId}")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String deleteStudent(@PathVariable("studentId") Long id) {
+    public String deleteStudent(@PathVariable("studentId") Long id, Model model) {
         if (!userService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
         }
         userService.deleteById(id);
-        return REDIRECT_TO_STUDENTS_PAGE;
+        model.addAttribute("message", DELETED_MESSAGE);
+        model.addAttribute("students", userService.findAllStudent());
+        return STUDENTS_PAGE;
     }
 
     @GetMapping("/student/{studentId}/edit-page")
@@ -72,14 +78,16 @@ public class UserController {
 
     @PutMapping("/student/{studentId}")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String editStudent(@PathVariable("studentId") Long id, @Valid UserDto userDto) {
+    public String editStudent(@PathVariable("studentId") Long id, @Valid UserDto userDto, Model model) {
         if (userService.existsByUsername(userDto.getUsername()) && !userDto.getUsername()
                 .equals(userService.findById(id).getUsername())) {
             return ERROR_400_TEMPLATE_NAME;
         }
         userDto.setId(id);
         userService.updateStudent(userDto);
-        return REDIRECT_TO_STUDENTS_PAGE;
+        model.addAttribute("message", UPDATED_MESSAGE);
+        model.addAttribute("students", userService.findAllStudent());
+        return STUDENTS_PAGE;
     }
 
     @GetMapping(PROFESSORS_PAGE)
@@ -98,19 +106,24 @@ public class UserController {
 
     @PostMapping("/professor")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String createNewProfessor(@Valid ProfessorForm professorForm) {
+    public String createNewProfessor(@Valid ProfessorForm professorForm,
+                                     Model model) throws NotUniqueUsernameException {
         userService.createProfessor(professorForm);
-        return REDIRECT_TO_PROFESSORS_PAGE;
+        model.addAttribute("message", CREATED_MESSAGE);
+        model.addAttribute("professorsAndAdmins", userService.findAllProfessorAndAdmin());
+        return PROFESSORS_PAGE;
     }
 
     @DeleteMapping("/professor/{professorId}")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String deleteProfessor(@PathVariable("professorId") Long id) {
+    public String deleteProfessor(@PathVariable("professorId") Long id, Model model) {
         if (!userService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
         }
         userService.deleteById(id);
-        return REDIRECT_TO_PROFESSORS_PAGE;
+        model.addAttribute("message", CREATED_MESSAGE);
+        model.addAttribute("professorsAndAdmins", userService.findAllProfessorAndAdmin());
+        return PROFESSORS_PAGE;
     }
 
     @GetMapping("/professor/{professorId}/edit-page")
@@ -126,13 +139,16 @@ public class UserController {
 
     @PutMapping("/professor/{professorId}")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String editProfessor(@PathVariable("professorId") Long id, @Valid ProfessorForm professorForm) {
+    public String editProfessor(@PathVariable("professorId") Long id, @Valid ProfessorForm professorForm,
+                                Model model) {
         if (userService.existsByUsername(professorForm.getUsername()) && !professorForm.getUsername()
                 .equals(userService.findById(id).getUsername())) {
             return ERROR_400_TEMPLATE_NAME;
         }
         professorForm.setId(id);
         userService.updateProfessor(professorForm);
-        return REDIRECT_TO_PROFESSORS_PAGE;
+        model.addAttribute("message", UPDATED_MESSAGE);
+        model.addAttribute("professorsAndAdmins", userService.findAllProfessorAndAdmin());
+        return PROFESSORS_PAGE;
     }
 }

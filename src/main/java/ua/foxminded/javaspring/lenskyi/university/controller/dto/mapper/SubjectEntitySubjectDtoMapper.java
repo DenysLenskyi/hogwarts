@@ -11,6 +11,7 @@ public interface SubjectEntitySubjectDtoMapper {
     @Mapping(target = "userDto.firstName", source = "user.firstName")
     @Mapping(target = "userDto.lastName", source = "user.lastName")
     @Mapping(target = "classroomDto.name", source = "classroom.name")
+    @Mapping(target = "lessonsDto", ignore = true)
     SubjectDto subjectEntityToSubjectDto(Subject subject);
 
     Subject subjectDtoToSubjectEntity(SubjectDto subjectDto);

@@ -1,5 +1,7 @@
 package ua.foxminded.javaspring.lenskyi.university.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.GroupDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.LessonDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.LessonTimeDto;
@@ -15,6 +17,8 @@ public interface LessonService {
     boolean isBusyBySubject(LocalDate localDate, LessonTimeDto lessonTime, SubjectDto subject);
 
     List<LessonDto> findAll();
+
+    Page<LessonDto> findAllPaginated(Pageable pageable);
 
     LessonDto findById(Long id);
 

@@ -87,13 +87,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void createStudent(UserDto userDto) {
+    public void createStudent(UserDto userDto) throws NotUniqueUsernameException {
         if (userRepository.existsByUsername(userDto.getUsername())) {
-            try {
-                throw new NotUniqueUsernameException(userDto.getUsername());
-            } catch (NotUniqueUsernameException e) {
-                System.out.println(e.getMessage());
-            }
+            throw new NotUniqueUsernameException(userDto.getUsername());
         }
         User newStudent = new User();
         newStudent.setFirstName(userDto.getFirstName());
@@ -144,13 +140,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void createProfessor(ProfessorForm professorForm) {
+    public void createProfessor(ProfessorForm professorForm) throws NotUniqueUsernameException {
         if (userRepository.existsByUsername(professorForm.getUsername())) {
-            try {
-                throw new NotUniqueUsernameException(professorForm.getUsername());
-            } catch (NotUniqueUsernameException e) {
-                System.out.println(e.getMessage());
-            }
+            throw new NotUniqueUsernameException(professorForm.getUsername());
         }
         User newProfessor = new User();
         newProfessor.setFirstName(professorForm.getFirstName());

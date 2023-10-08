@@ -81,6 +81,7 @@
                             </option>
                             <option th:value="*{classroomDto.name}" th:text="*{classroomDto.name + ' (current)'}"
                                     selected></option>
+                            <option th:value="null" th:text="'(no classroom)'"></option>
                         </select>
                     </div>
                 </div>
@@ -104,6 +105,7 @@
                             <option th:value="*{userDto.username}"
                                     th:text="*{userDto.firstName + ' ' + userDto.lastName + ' (current)'}"
                                     selected></option>
+                            <option th:value="null" th:text="'(no professor)'"></option>
                         </select>
                     </div>
                 </div>

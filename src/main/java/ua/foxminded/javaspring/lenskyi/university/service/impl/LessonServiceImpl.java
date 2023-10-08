@@ -1,6 +1,10 @@
 package ua.foxminded.javaspring.lenskyi.university.service.impl;
 
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.GroupDto;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.LessonDto;
@@ -20,6 +24,7 @@ import ua.foxminded.javaspring.lenskyi.university.service.LessonService;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -79,6 +84,29 @@ public class LessonServiceImpl implements LessonService {
                         .thenComparing(lesson -> lesson.getGroupDto().getName())
                         .thenComparing(lesson -> lesson.getSubjectDto().getName()))
                 .toList();
+    }
+
+    @Override
+    public Page<LessonDto> findAllPaginated(Pageable pageable) {
+
+        List<LessonDto> lessonDtos = findAll();
+
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<LessonDto> list;
+
+        if (lessonDtos.size() < startItem) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, lessonDtos.size());
+            list = lessonDtos.subList(startItem, toIndex);
+        }
+
+        Page<LessonDto> lessonDtoPage
+                = new PageImpl<LessonDto>(list, PageRequest.of(currentPage, pageSize), lessonDtos.size());
+
+        return lessonDtoPage;
     }
 
     @Override

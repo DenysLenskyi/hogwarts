@@ -21,16 +21,19 @@
         </a>
     </div>
 
+    <div th:if="${message != null}" th:text="${message}" class="row alert alert-success" role="alert">
+    </div>
+
     <div sec:authorize="!hasAuthority('admin')" class="row">
         <p class="lead text-info">Log in with admin rights to edit</p>
     </div>
 
-    <div th:if="${lessons.isEmpty()}" class="row">
+    <div th:if="${lessonsPage.isEmpty()}" class="row">
         <p class="lead text-info">It looks like somebody deleted all the schedule...</p>
         <p class="lead text-info">Sad, but don't you worry, try to create new one!</p>
     </div>
 
-    <div class="row vertical-center" th:if="${!lessons.isEmpty()}">
+    <div class="row vertical-center" th:if="${!lessonsPage.isEmpty()}">
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -45,7 +48,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="lesson : ${lessons}">
+            <tr th:each="lesson : ${lessonsPage.content}">
                 <td th:text="${lesson.date}"></td>
                 <td th:if="${lesson.lessonTimeDto != null}" th:text="${lesson.lessonTimeDto.start}"></td>
                 <td th:if="${lesson.lessonTimeDto != null}" th:text="${lesson.lessonTimeDto.end}"></td>
@@ -100,6 +103,14 @@
             </tr>
             </tbody>
         </table>
+
+        <div th:if="${lessonsPage.totalPages > 0}" class="pagination"
+             th:each="pageNumber : ${pageNumbers}">
+            <a th:href="@{/lesson/all(size=${lessonsPage.size}, page=${pageNumber})}"
+               th:text="${pageNumber}"
+               th:class="${pageNumber==lessonsPage.number + 1} ? active"></a>
+        </div>
+
     </div>
 </div>
 

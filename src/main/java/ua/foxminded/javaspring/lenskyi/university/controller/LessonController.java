@@ -1,6 +1,8 @@
 package ua.foxminded.javaspring.lenskyi.university.controller;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,8 +15,12 @@ import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static ua.foxminded.javaspring.lenskyi.university.util.Constants.*;
+import static ua.foxminded.javaspring.lenskyi.university.controller.DefaultMessage.*;
 
 @Controller
 @RequestMapping("/lesson")
@@ -24,6 +30,8 @@ public class LessonController {
             "The group you've chosen has another lesson at the same date and time";
     private static final String BUSY_SUBJECT_ERROR_MESSAGE =
             "The subject you've chosen has another lesson at the same date and time";
+    private static int defaultInitialStartPage = 1;
+    private static int defaultInitialPageSize = 10;
     private final LessonService lessonService;
     private final LessonTimeService lessonTimeService;
     private final GroupService groupService;
@@ -38,8 +46,19 @@ public class LessonController {
     }
 
     @GetMapping("/all")
-    public String getLessonPage(Model model) {
-        model.addAttribute("lessons", lessonService.findAll());
+    public String getLessonPage(Model model, @RequestParam("page") Optional<Integer> page,
+                                @RequestParam("size") Optional<Integer> size) {
+        int currentPage = page.orElse(defaultInitialStartPage);
+        int pageSize = size.orElse(defaultInitialPageSize);
+        Page<LessonDto> lessonDtoPage = lessonService.findAllPaginated(PageRequest.of(currentPage - 1, pageSize));
+        model.addAttribute("lessonsPage", lessonDtoPage);
+        int totalPages = lessonDtoPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
         return LESSON_PAGE_TEMPLATE_NAME;
     }
 
@@ -72,16 +91,18 @@ public class LessonController {
             return ERROR_400_TEMPLATE_NAME;
         }
         lessonService.createLesson(lessonDto);
-        return REDIRECT_LESSON_PAGE;
+        model.addAttribute("message", CREATED_MESSAGE);
+        return getLessonPage(model, Optional.of(defaultInitialStartPage), Optional.of(defaultInitialPageSize));
     }
 
     @DeleteMapping("/{lessonId}")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String deleteLesson(@PathVariable("lessonId") Long id) {
+    public String deleteLesson(@PathVariable("lessonId") Long id, Model model) {
         if (!lessonService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
         }
         lessonService.deleteById(id);
-        return REDIRECT_LESSON_PAGE;
+        model.addAttribute("message", DELETED_MESSAGE);
+        return getLessonPage(model, Optional.of(defaultInitialStartPage), Optional.of(defaultInitialPageSize));
     }
 }

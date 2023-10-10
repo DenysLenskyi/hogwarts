@@ -17,8 +17,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static ua.foxminded.javaspring.lenskyi.university.util.Constants.*;
 import static ua.foxminded.javaspring.lenskyi.university.controller.DefaultMessage.*;
@@ -31,8 +29,7 @@ public class LessonController {
             "The group you've chosen has another lesson at the same date and time";
     private static final String BUSY_SUBJECT_ERROR_MESSAGE =
             "The subject you've chosen has another lesson at the same date and time";
-    private static int defaultInitialStartPage = 1;
-    private static int defaultInitialPageSize = 10;
+    private static final int DEFAULT_INITIAL_PAGE_SIZE = 10;
     private final LessonService lessonService;
     private final LessonTimeService lessonTimeService;
     private final GroupService groupService;
@@ -48,19 +45,10 @@ public class LessonController {
 
     @GetMapping("/all")
     public String getLessonPage(Model model,
-                                @RequestParam("page") Optional<Integer> page,
-                                @RequestParam("size") Optional<Integer> size) {
-        int currentPage = page.orElse(defaultInitialStartPage);
-        int pageSize = size.orElse(defaultInitialPageSize);
-        Page<LessonDto> lessonDtoPage = lessonService.findAllPaginated(PageRequest.of(currentPage - 1, pageSize));
+                                @RequestParam(defaultValue = "0") int page) {
+        Page<LessonDto> lessonDtoPage = lessonService.findAllPaginated(PageRequest.of(page, DEFAULT_INITIAL_PAGE_SIZE));
         model.addAttribute("lessonsPage", lessonDtoPage);
-        int totalPages = lessonDtoPage.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
+        model.addAttribute("currentPage", page);
         return LESSON_PAGE_TEMPLATE_NAME;
     }
 
@@ -110,7 +98,7 @@ public class LessonController {
         }
         lessonService.createLesson(lessonDto);
         model.addAttribute("message", CREATED_MESSAGE);
-        return getLessonPage(model, Optional.of(defaultInitialStartPage), Optional.of(defaultInitialPageSize));
+        return getLessonPage(model, 0);
     }
 
     @DeleteMapping("/{lessonId}")
@@ -121,6 +109,6 @@ public class LessonController {
         }
         lessonService.deleteById(id);
         model.addAttribute("message", DELETED_MESSAGE);
-        return getLessonPage(model, Optional.of(defaultInitialStartPage), Optional.of(defaultInitialPageSize));
+        return getLessonPage(model, 0);
     }
 }

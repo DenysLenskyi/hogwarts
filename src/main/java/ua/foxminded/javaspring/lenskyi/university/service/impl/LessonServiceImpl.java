@@ -100,24 +100,17 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public Page<LessonDto> findAllPaginated(Pageable pageable) {
 
-        List<LessonDto> lessonDtos = findAll();
+        Page<Lesson> pageLesson = lessonRepository.findAll(pageable);
+        List<LessonDto> lessonDtoList = pageLesson.getContent().stream()
+                .map(lessonDtoMapper::lessonEntityToLessonDto)
+                .sorted(Comparator.comparing(LessonDto::getDate)
+                        .thenComparing(lesson -> lesson.getLessonTimeDto().getStart())
+                        .thenComparing(lesson -> lesson.getGroupDto().getName())
+                        .thenComparing(lesson -> lesson.getSubjectDto().getName()))
+                .toList();
+        return new PageImpl<>(lessonDtoList, PageRequest.of(
+                pageLesson.getNumber(), pageLesson.getSize()), pageLesson.getTotalElements());
 
-        int pageSize = pageable.getPageSize();
-        int currentPage = pageable.getPageNumber();
-        int startItem = currentPage * pageSize;
-        List<LessonDto> list;
-
-        if (lessonDtos.size() < startItem) {
-            list = Collections.emptyList();
-        } else {
-            int toIndex = Math.min(startItem + pageSize, lessonDtos.size());
-            list = lessonDtos.subList(startItem, toIndex);
-        }
-
-        Page<LessonDto> lessonDtoPage
-                = new PageImpl<LessonDto>(list, PageRequest.of(currentPage, pageSize), lessonDtos.size());
-
-        return lessonDtoPage;
     }
 
     @Override

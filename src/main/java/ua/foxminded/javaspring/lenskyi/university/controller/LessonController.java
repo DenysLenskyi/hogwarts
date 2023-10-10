@@ -13,6 +13,7 @@ import ua.foxminded.javaspring.lenskyi.university.service.LessonService;
 import ua.foxminded.javaspring.lenskyi.university.service.LessonTimeService;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +47,8 @@ public class LessonController {
     }
 
     @GetMapping("/all")
-    public String getLessonPage(Model model, @RequestParam("page") Optional<Integer> page,
+    public String getLessonPage(Model model,
+                                @RequestParam("page") Optional<Integer> page,
                                 @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(defaultInitialStartPage);
         int pageSize = size.orElse(defaultInitialPageSize);
@@ -60,6 +62,22 @@ public class LessonController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
         return LESSON_PAGE_TEMPLATE_NAME;
+    }
+
+    @GetMapping("all/by-date")
+    public String getLessonPageByDate(Model model,
+                                      @RequestParam(value = "day", required = false) LocalDate day,
+                                      @RequestParam(value = "dateStart", required = false) LocalDate dateStart,
+                                      @RequestParam(value = "dateEnd", required = false) LocalDate dateEnd) {
+        List<LessonDto> lessons = new ArrayList<>();
+        if (day != null) {
+            lessons = lessonService.findAllByDate(day);
+        }
+        if ((dateStart != null) && (dateEnd != null)) {
+            lessons = lessonService.findAllByDateBetween(dateStart, dateEnd);
+        }
+        model.addAttribute("lessons", lessons);
+        return LESSON_PAGE_BY_DATE_TEMPLATE_NAME;
     }
 
     @GetMapping("/creation-page")

@@ -72,6 +72,10 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public List<LessonDto> findAll() {
         List<Lesson> lessons = lessonRepository.findAll();
+        return mapLessonsToLessonsDtoSorted(lessons);
+    }
+
+    private List<LessonDto> mapLessonsToLessonsDtoSorted(List<Lesson> lessons) {
         return lessons.stream()
                 .map(lessonDtoMapper::lessonEntityToLessonDto)
                 .sorted(Comparator.comparing(LessonDto::getDate)
@@ -79,6 +83,18 @@ public class LessonServiceImpl implements LessonService {
                         .thenComparing(lesson -> lesson.getGroupDto().getName())
                         .thenComparing(lesson -> lesson.getSubjectDto().getName()))
                 .toList();
+    }
+
+    @Override
+    public List<LessonDto> findAllByDate(LocalDate date) {
+        List<Lesson> lessons = lessonRepository.findLessonsByDate(date);
+        return mapLessonsToLessonsDtoSorted(lessons);
+    }
+
+    @Override
+    public List<LessonDto> findAllByDateBetween(LocalDate start, LocalDate end) {
+        List<Lesson> lessons = lessonRepository.findLessonsByDateBetween(start, end);
+        return mapLessonsToLessonsDtoSorted(lessons);
     }
 
     @Override

@@ -18,6 +18,10 @@ public interface LessonService {
 
     List<LessonDto> findAll();
 
+    List<LessonDto> findAllByDate(LocalDate date);
+
+    List<LessonDto> findAllByDateBetween(LocalDate start, LocalDate end);
+
     Page<LessonDto> findAllPaginated(Pageable pageable);
 
     void createLesson(LessonDto lessonDto);

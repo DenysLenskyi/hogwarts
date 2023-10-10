@@ -26,5 +26,6 @@ public abstract class Constants {
     public static final String CREATE_PROFESSOR_PAGE_TEMPLATE_NAME = "forms/create-professor-form";
     public static final String CLASSROOM_PAGE_TEMPLATE_NAME = "classrooms-page";
     public static final String LESSON_PAGE_TEMPLATE_NAME = "lessons-page";
+    public static final String LESSON_PAGE_BY_DATE_TEMPLATE_NAME = "lessons-page-by-date";
     public static final String CREATE_LESSON_PAGE_TEMPLATE_NAME = "forms/create-lesson-form";
 }

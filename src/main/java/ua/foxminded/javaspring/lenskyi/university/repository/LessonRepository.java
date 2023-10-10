@@ -17,6 +17,8 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
 
     List<Lesson> findLessonsByDate(LocalDate date);
 
+    List<Lesson> findLessonsByDateBetween(LocalDate start, LocalDate end);
+
     boolean existsByDateAndLessonTimeAndGroup(LocalDate date, LessonTime lessonTime,
                                               Group group);
 

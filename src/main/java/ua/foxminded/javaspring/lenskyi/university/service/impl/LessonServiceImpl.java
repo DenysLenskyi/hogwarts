@@ -73,12 +73,7 @@ public class LessonServiceImpl implements LessonService {
     public List<LessonDto> findAll() {
         List<Lesson> lessons = lessonRepository.findAll();
         return lessons.stream()
-                .map(lesson -> {
-                    LessonDto lessonDto = lessonDtoMapper.lessonEntityToLessonDto(lesson);
-                    lessonDto.setGroupDto(groupDtoMapper.groupEntityToGroupDto(lesson.getGroup()));
-                    lessonDto.setSubjectDto(subjectDtoMapper.subjectEntityToSubjectDto(lesson.getSubject()));
-                    return lessonDto;
-                })
+                .map(lessonDtoMapper::lessonEntityToLessonDto)
                 .sorted(Comparator.comparing(LessonDto::getDate)
                         .thenComparing(lesson -> lesson.getLessonTimeDto().getStart())
                         .thenComparing(lesson -> lesson.getGroupDto().getName())
@@ -107,15 +102,6 @@ public class LessonServiceImpl implements LessonService {
                 = new PageImpl<LessonDto>(list, PageRequest.of(currentPage, pageSize), lessonDtos.size());
 
         return lessonDtoPage;
-    }
-
-    @Override
-    public LessonDto findById(Long id) {
-        Lesson lesson = lessonRepository.findById(id).orElseThrow(IllegalArgumentException::new);
-        LessonDto lessonDto = lessonDtoMapper.lessonEntityToLessonDto(lesson);
-        lessonDto.setGroupDto(groupDtoMapper.groupEntityToGroupDto(lesson.getGroup()));
-        lessonDto.setSubjectDto(subjectService.findById(lesson.getSubject().getId()));
-        return lessonDto;
     }
 
     @Override

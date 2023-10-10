@@ -20,8 +20,6 @@ public interface LessonService {
 
     Page<LessonDto> findAllPaginated(Pageable pageable);
 
-    LessonDto findById(Long id);
-
     void createLesson(LessonDto lessonDto);
 
     boolean existsById(Long id);

@@ -109,6 +109,16 @@
                         </select>
                     </div>
                 </div>
+
+
+<!--                Edit professor for the subject option for professor-->
+                <div th:if="${!freeProfessors.isEmpty()}" class="form-group" sec:authorize="hasAuthority('professor') && !hasAuthority('admin')">
+                    <label>Professor</label>
+                    <div>
+                        <input type="hidden" th:field="*{userDto.username}" th:value="*{userDto.username}">
+                    </div>
+                </div>
+
                 <div>
                     <p><input type="submit" value="Submit" class="btn btn-success"/></p>
                 </div>

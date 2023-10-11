@@ -62,7 +62,7 @@
                 <th>Subject</th>
                 <th>Professor</th>
                 <th>Classroom</th>
-                <th>Actions</th>
+                <th sec:authorize="hasAuthority('admin')">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -94,12 +94,9 @@
                     </div>
                 </td>
 
-                <td>
-                    <div sec:authorize="!hasAuthority('admin')">
-                        <p class="lead">N/A</p>
-                    </div>
+                <td sec:authorize="hasAuthority('admin')">
                     <div class="action-buttons">
-                        <div sec:authorize="hasAuthority('admin')" class="btn-delete">
+                        <div class="btn-delete">
                             <form th:action="@{/lesson/{id}(id=${lesson.getId()})}" th:method="delete"
                                   id="deleteLessonForm" class="deleteLessonForm">
                                 <button type="button" id="buttonDelete" onclick="deleteItem(this)"

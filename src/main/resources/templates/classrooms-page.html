@@ -37,7 +37,7 @@
                 <th>Classroom Name</th>
                 <th>Description</th>
                 <th>Current Subject</th>
-                <th>Actions</th>
+                <th sec:authorize="hasAuthority('admin')">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -52,12 +52,9 @@
                         <p><span th:text="${classroom.subjectDto.name}"/></p>
                     </div>
                 </td>
-                <td>
+                <td sec:authorize="hasAuthority('admin')">
                     <div>
-                        <div sec:authorize="!hasAuthority('admin')">
-                            <p class="lead">N/A</p>
-                        </div>
-                        <div sec:authorize="hasAuthority('admin')" class="action-buttons">
+                        <div class="action-buttons">
                             <div class="btn-edit">
                                 <a th:href="@{/classroom/{id}/edit-page(id=${classroom.getId()})}">
                                     <button type="submit" class="btn btn-warning btn-sm" style="margin: 3px">EDIT

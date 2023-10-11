@@ -35,7 +35,7 @@
                 <th>First name</th>
                 <th>Last name</th>
                 <th>Group</th>
-                <th>Actions</th>
+                <th sec:authorize="hasAuthority('admin')">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -43,11 +43,8 @@
                 <td th:text="${student.firstName}"></td>
                 <td th:text="${student.getLastName()}"></td>
                 <td th:text="${student.groupDto.name}"></td>
-                <td>
-                    <div sec:authorize="!hasAuthority('admin')">
-                        <p class="lead">N/A</p>
-                    </div>
-                    <div sec:authorize="hasAuthority('admin')" class="action-buttons">
+                <td sec:authorize="hasAuthority('admin')">
+                    <div class="action-buttons">
                         <div class="btn-edit">
                             <a th:href="@{/user/student/{id}/edit-page(id=${student.getId()})}">
                                 <button type="submit" class="btn btn-warning btn-sm">EDIT</button>

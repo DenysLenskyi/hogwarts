@@ -37,7 +37,7 @@
                 <th>Roles</th>
                 <th>Subject</th>
                 <th>Classroom</th>
-                <th>Actions</th>
+                <th sec:authorize="hasAuthority('admin')">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -63,11 +63,8 @@
                         <p>Go to <a href="/subject/all">subjects page</a> to add one</p>
                     </div>
                 </td>
-                <td>
-                    <div sec:authorize="!hasAuthority('admin')">
-                        <p class="lead">N/A</p>
-                    </div>
-                    <div sec:authorize="hasAuthority('admin')" class="action-buttons">
+                <td sec:authorize="hasAuthority('admin')">
+                    <div class="action-buttons">
                         <div class="btn-edit">
                             <a th:href="@{/user/professor/{id}/edit-page(id=${professor.getId()})}">
                                 <button type="submit" class="btn btn-warning btn-sm">EDIT</button>

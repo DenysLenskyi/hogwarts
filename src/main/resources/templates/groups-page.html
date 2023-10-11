@@ -37,7 +37,7 @@
             <tr>
                 <th>Group Name</th>
                 <th>Number of students</th>
-                <th>Actions</th>
+                <th sec:authorize="hasAuthority('admin')">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -51,11 +51,8 @@
                         <p class="lead"><span th:text="${group.numStudentsInGroup}"/></p>
                     </div>
                 </td>
-                <td>
-                    <div sec:authorize="!hasAuthority('admin')">
-                        <p class="lead">N/A</p>
-                    </div>
-                    <div sec:authorize="hasAuthority('admin')" th:if="${group.numStudentsInGroup} == 0">
+                <td sec:authorize="hasAuthority('admin')">
+                    <div th:if="${group.numStudentsInGroup} == 0">
                         <form th:action="@{/group/{id}(id=${group.getId()})}" th:method="delete" id="deleteGroupForm"
                               class="deleteGroupForm">
                             <button type="button" id="buttonDelete" onclick="deleteItem(this)" class="btn btn-danger"
@@ -72,7 +69,7 @@
                             </script>
                         </form>
                     </div>
-                    <div sec:authorize="hasAuthority('admin')" th:if="${group.numStudentsInGroup} != 0">
+                    <div th:if="${group.numStudentsInGroup} != 0">
                         <a th:href="@{/group/{id}/edit-page(id=${group.getId()})}">
                             <button type="submit" class="btn btn-warning"
                                     style="margin-bottom: 3px">Move Students

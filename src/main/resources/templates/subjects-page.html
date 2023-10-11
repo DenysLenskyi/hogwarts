@@ -36,7 +36,7 @@
                 <th>Description</th>
                 <th>Classroom</th>
                 <th>Professor</th>
-                <th>Actions</th>
+                <th sec:authorize="hasAuthority('admin') || hasAuthority('professor')">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -58,12 +58,9 @@
                             th:text="${subject.getUserDto().getFirstName() + ' ' + subject.getUserDto().getLastName()}"></span>
                     </div>
                 </td>
-                <td>
+                <td sec:authorize="hasAuthority('admin') || hasAuthority('professor')">
                     <div class="action-buttons">
-                        <div sec:authorize="hasAuthority('student')">
-                            <p class="lead">N/A</p>
-                        </div>
-                        <div sec:authorize="hasAuthority('admin') || hasAuthority('professor')" class="btn-edit">
+                        <div class="btn-edit">
                             <a th:href="@{/subject/{id}/edit-page(id=${subject.getId()})}">
                                 <button type="submit" class="btn btn-warning btn-sm">EDIT</button>
                             </a>

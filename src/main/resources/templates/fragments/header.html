@@ -6,17 +6,54 @@
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 </head>
 <header style="margin-bottom: 10px">
-    <ul class="nav nav-tabs">
-        <li><div sec:authorize="isAnonymous()" class="container-fluid"><a href="/login">LOG IN</a></div></li>
-        <li><div sec:authorize="isAuthenticated()" class="container-fluid"><p>HELLO, <span th:text="${#authentication.principal.firstName.toUpperCase()}"/></p></div></li>
-        <li><div class="container-fluid"><a href="/logout">LOG OUT</a></div></li>
-        <li><div class="container-fluid"><a href="/home">HOME</a></div></li>
-        <li><div class="container-fluid"><a href="/lesson/all">SCHEDULE</a></div></li>
-        <li><div class="container-fluid"><a href="/user/students-page">STUDENTS</a></div></li>
-        <li><div class="container-fluid"><a href="/user/professors-page">PROFESSORS/ADMINS</a></div></li>
-        <li><div class="container-fluid"><a href="/group/all">GROUPS</a></div></li>
-        <li><div class="container-fluid"><a href="/subject/all">SUBJECTS</a></div></li>
-        <li><div class="container-fluid"><a href="/classroom/all">CLASSROOMS</a></div></li>
-    </ul>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-md-8">
+                <ul class="nav nav-tabs">
+                    <li>
+                        <div sec:authorize="isAnonymous()" class="container-fluid"><a href="/login">LOG IN</a></div>
+                    </li>
+                    <li>
+                        <div class="container-fluid"><a href="/home">HOME</a></div>
+                    </li>
+                    <li>
+                        <div class="container-fluid"><a href="/about">ABOUT</a></div>
+                    </li>
+                    <li>
+                        <div class="container-fluid"><a href="/contacts">CONTACTS</a></div>
+                    </li>
+                    <li>
+                        <div class="container-fluid"><a href="/lesson/all">SCHEDULE</a></div>
+                    </li>
+                    <li>
+                        <div class="container-fluid"><a href="/user/students-page">STUDENTS</a></div>
+                    </li>
+                    <li>
+                        <div class="container-fluid"><a href="/user/professors-page">PROFESSORS/ADMINS</a></div>
+                    </li>
+                    <li>
+                        <div class="container-fluid"><a href="/group/all">GROUPS</a></div>
+                    </li>
+                    <li>
+                        <div class="container-fluid"><a href="/subject/all">SUBJECTS</a></div>
+                    </li>
+                    <li>
+                        <div class="container-fluid"><a href="/classroom/all">CLASSROOMS</a></div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-6 col-md-4">
+                <ul class="nav nav-tabs">
+                    <li>
+                        <div sec:authorize="isAuthenticated()" class="container-fluid">HELLO, <span
+                                th:text="${#authentication.principal.firstName.toUpperCase()}"/></div>
+                    </li>
+                    <li>
+                        <div class="container-fluid"><a href="/logout">LOG OUT</a></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </header>
 </html>

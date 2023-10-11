@@ -46,7 +46,7 @@ public class UserController {
 
     @PostMapping("/student")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String createNewStudent(@Valid UserDto userDto, Model model) throws NotUniqueUsernameException {
+    public String createNewStudent(@Valid UserDto userDto, Model model) {
         userService.createStudent(userDto);
         model.addAttribute("message", CREATED_MESSAGE);
         model.addAttribute("students", userService.findAllStudent());
@@ -107,7 +107,7 @@ public class UserController {
     @PostMapping("/professor")
     @PreAuthorize("hasAnyAuthority('admin')")
     public String createNewProfessor(@Valid ProfessorForm professorForm,
-                                     Model model) throws NotUniqueUsernameException {
+                                     Model model) {
         userService.createProfessor(professorForm);
         model.addAttribute("message", CREATED_MESSAGE);
         model.addAttribute("professorsAndAdmins", userService.findAllProfessorAndAdmin());

@@ -1,6 +1,8 @@
 package ua.foxminded.javaspring.lenskyi.university.controller;
 
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +18,6 @@ import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static ua.foxminded.javaspring.lenskyi.university.util.Constants.*;
 import static ua.foxminded.javaspring.lenskyi.university.controller.DefaultMessage.*;
@@ -35,6 +36,8 @@ public class LessonController {
     private final GroupService groupService;
     private final SubjectService subjectService;
 
+    private Logger log = LoggerFactory.getLogger(this.getClass());
+
     public LessonController(LessonService lessonService, LessonTimeService lessonTimeService,
                             GroupService groupService, SubjectService subjectService) {
         this.lessonService = lessonService;
@@ -47,23 +50,25 @@ public class LessonController {
     public String getLessonPage(Model model,
                                 @RequestParam(defaultValue = "0") int page) {
         Page<LessonDto> lessonDtoPage = lessonService.findAllPaginated(PageRequest.of(page, DEFAULT_INITIAL_PAGE_SIZE));
+        log.info("getLessonPage called");
         model.addAttribute("lessonsPage", lessonDtoPage);
         model.addAttribute("currentPage", page);
         return LESSON_PAGE_TEMPLATE_NAME;
     }
 
-    @GetMapping("all/by-date")
+    @GetMapping("/all/by-date")
     public String getLessonPageByDate(Model model,
-                                      @RequestParam(value = "day", required = false) LocalDate day,
+                                      @RequestParam(value = "date", required = false) LocalDate date,
                                       @RequestParam(value = "dateStart", required = false) LocalDate dateStart,
                                       @RequestParam(value = "dateEnd", required = false) LocalDate dateEnd) {
         List<LessonDto> lessons = new ArrayList<>();
-        if (day != null) {
-            lessons = lessonService.findAllByDate(day);
+        if (date != null) {
+            lessons = lessonService.findAllByDate(date);
         }
         if ((dateStart != null) && (dateEnd != null)) {
             lessons = lessonService.findAllByDateBetween(dateStart, dateEnd);
         }
+        log.info("getLessonPageByDate called");
         model.addAttribute("lessons", lessons);
         return LESSON_PAGE_BY_DATE_TEMPLATE_NAME;
     }
@@ -74,6 +79,7 @@ public class LessonController {
         model.addAttribute("lessonDto", new LessonDto(new LessonTimeDto(),
                 new SubjectDto(new UserDto(), new ClassroomDto()),
                 new GroupDto()));
+        log.info("getNewLessonPage called");
         model.addAttribute("lessonTimeList", lessonTimeService.findAllDto());
         model.addAttribute("groups", groupService.findAll());
         model.addAttribute("subjects", subjectService.findAll());
@@ -97,6 +103,7 @@ public class LessonController {
             return ERROR_400_TEMPLATE_NAME;
         }
         lessonService.createLesson(lessonDto);
+        log.info("Lesson created");
         model.addAttribute("message", CREATED_MESSAGE);
         return getLessonPage(model, 0);
     }
@@ -108,6 +115,7 @@ public class LessonController {
             return ERROR_400_TEMPLATE_NAME;
         }
         lessonService.deleteById(id);
+        log.info("Lesson deleted");
         model.addAttribute("message", DELETED_MESSAGE);
         return getLessonPage(model, 0);
     }

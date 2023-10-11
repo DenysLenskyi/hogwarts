@@ -1,6 +1,8 @@
 package ua.foxminded.javaspring.lenskyi.university.controller;
 
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,7 @@ import static ua.foxminded.javaspring.lenskyi.university.util.Constants.*;
 @RequestMapping("/group")
 public class GroupController {
 
+    private Logger log = LoggerFactory.getLogger(this.getClass());
     private GroupService groupService;
 
     public GroupController(GroupService groupService) {
@@ -26,6 +29,7 @@ public class GroupController {
     @GetMapping("/all")
     public String getGroupPage(Model model) {
         model.addAttribute("groups", groupService.findAll());
+        log.info("getGroupPage called");
         return GROUP_PAGE_TEMPLATE_NAME;
     }
 
@@ -33,6 +37,7 @@ public class GroupController {
     @PreAuthorize("hasAnyAuthority('admin')")
     public String getNewGroupPage(Model model) {
         model.addAttribute("groupDto", new GroupDto());
+        log.info("getNewGroupPage called");
         return CREATE_GROUP_TEMPLATE_NAME;
     }
 
@@ -43,6 +48,7 @@ public class GroupController {
             return ERROR_400_TEMPLATE_NAME;
         }
         groupService.createNewGroup(groupDto);
+        log.info("Group created");
         model.addAttribute("message", CREATED_MESSAGE);
         model.addAttribute("groups", groupService.findAll());
         return GROUP_PAGE_TEMPLATE_NAME;
@@ -55,6 +61,7 @@ public class GroupController {
             return ERROR_400_TEMPLATE_NAME;
         }
         groupService.deleteById(id);
+        log.info("Group deleted");
         model.addAttribute("message", DELETED_MESSAGE);
         model.addAttribute("groups", groupService.findAll());
         return GROUP_PAGE_TEMPLATE_NAME;
@@ -69,6 +76,7 @@ public class GroupController {
         GroupDto currentGroup = groupService.findById(id);
         List<GroupDto> groups = groupService.findAll();
         groups.remove(currentGroup);
+        log.info("getEditGroupPage called");
         model.addAttribute("groupsExcludeCurrent", groups);
         model.addAttribute("currentGroup", currentGroup);
         model.addAttribute("groupDto", new GroupDto());
@@ -81,6 +89,7 @@ public class GroupController {
         groupService.moveStudentsFromGroupToAnotherGroup(
                 groupService.findGroupById(id), groupService.findByName(groupDto.getName())
         );
+        log.info("Group edited");
         model.addAttribute("message", UPDATED_MESSAGE);
         model.addAttribute("groups", groupService.findAll());
         return GROUP_PAGE_TEMPLATE_NAME;

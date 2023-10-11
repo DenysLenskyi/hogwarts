@@ -1,6 +1,8 @@
 package ua.foxminded.javaspring.lenskyi.university.controller;
 
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,7 @@ public class SubjectController {
     private SubjectService subjectService;
     private ClassroomService classroomService;
     private UserService userService;
+    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     public SubjectController(SubjectService subjectService, ClassroomService classroomService, UserService userService) {
         this.subjectService = subjectService;
@@ -32,6 +35,7 @@ public class SubjectController {
     @GetMapping("/all")
     public String getSubjectPage(Model model) {
         model.addAttribute("subjects", subjectService.findAll());
+        log.info("getSubjectPage called");
         return SUBJECT_PAGE_TEMPLATE_NAME;
     }
 
@@ -42,6 +46,7 @@ public class SubjectController {
             return ERROR_400_TEMPLATE_NAME;
         }
         SubjectDto subjectDto = subjectService.findById(id);
+        log.info("getEditSubjectPage called");
         model.addAttribute("subjectDto", subjectDto);
         model.addAttribute("freeClassrooms", classroomService.findAllFreeClassrooms());
         model.addAttribute("freeProfessors", userService.findAllProfessorWithNoSubject());
@@ -57,6 +62,7 @@ public class SubjectController {
         }
         subjectDto.setId(id);
         subjectService.updateSubject(subjectDto);
+        log.info("Subject edited");
         model.addAttribute("message", UPDATED_MESSAGE);
         model.addAttribute("subjects", subjectService.findAll());
         return SUBJECT_PAGE_TEMPLATE_NAME;
@@ -68,6 +74,7 @@ public class SubjectController {
         model.addAttribute("subjectDto", new SubjectDto());
         model.addAttribute("freeClassrooms", classroomService.findAllFreeClassrooms());
         model.addAttribute("freeProfessors", userService.findAllProfessorWithNoSubject());
+        log.info("getNewSubjectPage called");
         return CREATE_SUBJECT_TEMPLATE_NAME;
     }
 
@@ -80,6 +87,7 @@ public class SubjectController {
             return ERROR_400_TEMPLATE_NAME;
         }
         subjectService.createNewSubject(subjectDto);
+        log.info("Subject created");
         model.addAttribute("message", CREATED_MESSAGE);
         model.addAttribute("subjects", subjectService.findAll());
         return SUBJECT_PAGE_TEMPLATE_NAME;
@@ -92,6 +100,7 @@ public class SubjectController {
             return ERROR_400_TEMPLATE_NAME;
         }
         subjectService.deleteSubjectById(id);
+        log.info("Subject deleted");
         model.addAttribute("message", DELETED_MESSAGE);
         model.addAttribute("subjects", subjectService.findAll());
         return SUBJECT_PAGE_TEMPLATE_NAME;

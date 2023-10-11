@@ -48,4 +48,10 @@ class LessonRepositoryTest {
         Lesson lesson = lessonRepository.findById(testLessons.get(0).getId()).orElseThrow();
         assertTrue(!lesson.getSubject().getName().isEmpty());
     }
+
+    @Test
+    void getAllByDateTest() {
+        List<Lesson> lessons = lessonRepository.findLessonsByDate(LocalDate.of(2023, 9, 18));
+        assertEquals(4, lessons.size());
+    }
 }

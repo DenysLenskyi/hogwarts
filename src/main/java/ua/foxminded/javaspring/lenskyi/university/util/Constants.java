@@ -4,9 +4,8 @@ public abstract class Constants {
 
     public static final String LOGIN_PAGE_TEMPLATE_NAME = "login";
     public static final String README_PAGE_TEMPLATE_NAME = "readme-page";
-    public static final String USER_ROOT = "/user";
-    public static final String STUDENTS_PAGE = "/students-page";
-    public static final String PROFESSORS_PAGE = "/professors-page";
+    public static final String STUDENTS_PAGE_TEMPLATE_NAME = "students-page";
+    public static final String PROFESSORS_PAGE_TEMPLATE_NAME = "professors-page";
     public static final String SUBJECT_PAGE_TEMPLATE_NAME = "subjects-page";
     public static final String GROUP_PAGE_TEMPLATE_NAME = "groups-page";
     public static final String ERROR_400_TEMPLATE_NAME = "error/400";

@@ -17,7 +17,7 @@ import static ua.foxminded.javaspring.lenskyi.university.util.Constants.*;
 import static ua.foxminded.javaspring.lenskyi.university.controller.DefaultMessage.*;
 
 @Controller
-@RequestMapping(USER_ROOT)
+@RequestMapping("/user")
 public class UserController {
 
     private UserService userService;
@@ -32,11 +32,11 @@ public class UserController {
         this.subjectService = subjectService;
     }
 
-    @GetMapping(STUDENTS_PAGE)
+    @GetMapping("/students-page")
     public String getStudentPage(Model model) {
         model.addAttribute("students", userService.findAllStudent());
         log.info("getStudentPage called");
-        return STUDENTS_PAGE;
+        return STUDENTS_PAGE_TEMPLATE_NAME;
     }
 
     @GetMapping("/student/creation-page")
@@ -55,7 +55,7 @@ public class UserController {
         log.info("Student created");
         model.addAttribute("message", CREATED_MESSAGE);
         model.addAttribute("students", userService.findAllStudent());
-        return STUDENTS_PAGE;
+        return STUDENTS_PAGE_TEMPLATE_NAME;
     }
 
     @DeleteMapping("/student/{studentId}")
@@ -68,7 +68,7 @@ public class UserController {
         log.info("Student deleted");
         model.addAttribute("message", DELETED_MESSAGE);
         model.addAttribute("students", userService.findAllStudent());
-        return STUDENTS_PAGE;
+        return STUDENTS_PAGE_TEMPLATE_NAME;
     }
 
     @GetMapping("/student/{studentId}/edit-page")
@@ -95,14 +95,14 @@ public class UserController {
         log.info("Student updated");
         model.addAttribute("message", UPDATED_MESSAGE);
         model.addAttribute("students", userService.findAllStudent());
-        return STUDENTS_PAGE;
+        return STUDENTS_PAGE_TEMPLATE_NAME;
     }
 
-    @GetMapping(PROFESSORS_PAGE)
+    @GetMapping("/professors-page")
     public String getProfessorPage(Model model) {
         model.addAttribute("professorsAndAdmins", userService.findAllProfessorAndAdmin());
         log.info("getProfessorPage called");
-        return PROFESSORS_PAGE;
+        return PROFESSORS_PAGE_TEMPLATE_NAME;
     }
 
     @GetMapping("/professor/creation-page")
@@ -122,7 +122,7 @@ public class UserController {
         log.info("Professor created");
         model.addAttribute("message", CREATED_MESSAGE);
         model.addAttribute("professorsAndAdmins", userService.findAllProfessorAndAdmin());
-        return PROFESSORS_PAGE;
+        return PROFESSORS_PAGE_TEMPLATE_NAME;
     }
 
     @DeleteMapping("/professor/{professorId}")
@@ -135,7 +135,7 @@ public class UserController {
         log.info("Professor deleted");
         model.addAttribute("message", CREATED_MESSAGE);
         model.addAttribute("professorsAndAdmins", userService.findAllProfessorAndAdmin());
-        return PROFESSORS_PAGE;
+        return PROFESSORS_PAGE_TEMPLATE_NAME;
     }
 
     @GetMapping("/professor/{professorId}/edit-page")
@@ -163,6 +163,6 @@ public class UserController {
         log.info("Professor updated");
         model.addAttribute("message", UPDATED_MESSAGE);
         model.addAttribute("professorsAndAdmins", userService.findAllProfessorAndAdmin());
-        return PROFESSORS_PAGE;
+        return PROFESSORS_PAGE_TEMPLATE_NAME;
     }
 }

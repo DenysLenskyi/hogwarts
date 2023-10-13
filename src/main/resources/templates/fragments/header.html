@@ -45,8 +45,9 @@
             <div class="col-xs-6 col-md-4">
                 <ul class="nav nav-tabs">
                     <li>
-                        <div sec:authorize="isAuthenticated()" class="container-fluid">HELLO, <span
-                                th:text="${#authentication.principal.firstName.toUpperCase()}"/></div>
+                        <div sec:authorize="isAuthenticated()" class="container-fluid">
+                            <a href="/logged-user-info">HELLO, <span th:text="${#authentication.principal.firstName.toUpperCase()}"/></a>
+                        </div>
                     </li>
                     <li>
                         <div class="container-fluid"><a href="/logout">LOG OUT</a></div>

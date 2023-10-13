@@ -51,8 +51,8 @@
 
                 <!--            if no free professor available-->
                 <div th:if="${freeProfessors.isEmpty()}" class="form-group">
-                    <p>Can't find any free professor to assign to this subject</p>
-                    <p>Add new user with role 'professor' if you'd assign a professor for this subject</p>
+                    <p class="text-danger">Can't find any free professor to assign to this subject</p>
+                    <p class="text-danger">Add new user with role 'professor' if you'd assign a professor for this subject</p>
                 </div>
 
                 <!--            if a free professor available-->

@@ -18,7 +18,7 @@ Thank you for your attention to my web application. Next, I will tell you what i
 
 HOGWARTS SCHEDULE MANAGER is my educational project, so it shouldn't be treated as an enterprise application. It's more like an alpha version that may have some issues. My goal was to use and implement certain backend technologies, while all other development aspects either remain at a very basic level or are completely absent.
 
-The development process itself was interesting for me; I got acquainted with technologies like Spring MVC, Security, Thymeleaf, CI/CD, and AWS. I would say I'm proud of the result.
+The development process itself was interesting for me; I got acquainted with technologies: Spring Boot, Spring MVC, Spring Security, Spring Thymeleaf, Spring Data JPA, Hibernate, Testcontainers, Flyway, Junit, Mockito, Docker, Docker compose, Logback, Gitlab CI/CD, AWS EC2. I would say I'm proud of the result.
 
 ### About the APP
 

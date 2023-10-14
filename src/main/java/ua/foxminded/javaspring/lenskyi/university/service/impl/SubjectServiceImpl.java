@@ -15,6 +15,7 @@ import ua.foxminded.javaspring.lenskyi.university.repository.SubjectRepository;
 import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -43,10 +44,16 @@ public class SubjectServiceImpl implements SubjectService {
         this.lessonMapper = lessonMapper;
     }
 
-    public List<Subject> findAll() {
-        return subjectRepository.findAll();
+    @Override
+    public List<SubjectDto> findAll() {
+        List<Subject> subjects = subjectRepository.findAll();
+        return subjects.stream()
+                .map(subjectMapper::subjectEntityToSubjectDto)
+                .sorted(Comparator.comparing(SubjectDto::getId))
+                .toList();
     }
 
+    @Override
     public SubjectDto findById(Long subjectId) {
         Subject subject = subjectRepository.findById(subjectId).orElseThrow(NoSuchElementException::new);
         SubjectDto subjectDto = subjectMapper.subjectEntityToSubjectDto(subject);
@@ -58,24 +65,26 @@ public class SubjectServiceImpl implements SubjectService {
         return subjectDto;
     }
 
+    @Override
+    public Subject findSubjectById(Long id) {
+        return subjectRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+    }
+
+    @Override
     public SubjectDto findByName(String subjectName) {
         return subjectMapper.subjectEntityToSubjectDto(subjectRepository.findSubjectByName(subjectName)
                 .orElseThrow(NoSuchElementException::new));
     }
 
+    @Override
     @Transactional
-    public void updateSubjectFromSubjectDto(SubjectDto subjectDto) {
+    public void updateSubject(SubjectDto subjectDto) {
         Subject subjectToUpdate = subjectRepository.findById(subjectDto.getId()).orElseThrow();
-        if (!subjectDto.getName().isEmpty()) {
-            subjectToUpdate.setName(subjectDto.getName());
-        }
-        if (!subjectDto.getDescription().isEmpty()) {
-            subjectToUpdate.setDescription(subjectDto.getDescription());
-        }
-        if (subjectDto.getClassroomDto() != null) {
-            Classroom classroom = classroomRepository.findByName(subjectDto.getClassroomDto().getName()).orElseThrow();
-            subjectToUpdate.setClassroom(classroom);
-        }
+        subjectToUpdate.setName(subjectDto.getName());
+        subjectToUpdate.setDescription(subjectDto.getDescription());
+        Classroom classroom = classroomRepository.findByName(subjectDto.getClassroomDto().getName()).orElse(null);
+        subjectToUpdate.setClassroom(classroom);
+        subjectToUpdate.setUser(null);
         if (subjectDto.getUserDto() != null) {
             User user = userRepository.findUserByUsername(subjectDto.getUserDto().getUsername());
             subjectToUpdate.setUser(user);
@@ -83,23 +92,20 @@ public class SubjectServiceImpl implements SubjectService {
         subjectRepository.saveAndFlush(subjectToUpdate);
     }
 
+    @Override
     public boolean doesSubjectExistById(Long subjectId) {
         return subjectRepository.existsById(subjectId);
     }
 
+    @Override
     @Transactional
-    public void createNewSubjectFromSubjectDto(SubjectDto subjectDto) {
+    public void createNewSubject(SubjectDto subjectDto) {
         Subject newSubject = new Subject();
-        if (!subjectDto.getName().isEmpty()) {
-            newSubject.setName(subjectDto.getName());
-        }
-        if (!subjectDto.getDescription().isEmpty()) {
-            newSubject.setDescription(subjectDto.getDescription());
-        }
-        if (subjectDto.getClassroomDto() != null) {
-            Classroom classroom = classroomRepository.findByName(subjectDto.getClassroomDto().getName()).orElseThrow();
-            newSubject.setClassroom(classroom);
-        }
+        newSubject.setName(subjectDto.getName());
+        newSubject.setDescription(subjectDto.getDescription());
+        Classroom classroom = classroomRepository.findByName(subjectDto.getClassroomDto().getName()).orElse(null);
+        newSubject.setClassroom(classroom);
+        newSubject.setUser(null);
         if (subjectDto.getUserDto() != null) {
             User user = userRepository.findUserByUsername(subjectDto.getUserDto().getUsername());
             newSubject.setUser(user);
@@ -107,12 +113,19 @@ public class SubjectServiceImpl implements SubjectService {
         subjectRepository.saveAndFlush(newSubject);
     }
 
+    @Override
     @Transactional
     public void deleteSubjectById(Long id) {
         subjectRepository.deleteById(id);
     }
 
+    @Override
     public boolean existsByName(String subjectName) {
-        return subjectRepository.existsByNameIgnoreCase(subjectName);
+        return subjectRepository.existsByName(subjectName);
+    }
+
+    @Override
+    public List<Subject> findAllSubjectsWithNoProfessor() {
+        return subjectRepository.findAllByUserIsNull();
     }
 }

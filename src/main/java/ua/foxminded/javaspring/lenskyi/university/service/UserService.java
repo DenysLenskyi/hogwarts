@@ -1,23 +1,34 @@
 package ua.foxminded.javaspring.lenskyi.university.service;
 
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.UserDto;
+import ua.foxminded.javaspring.lenskyi.university.controller.dto.form.ProfessorForm;
+import ua.foxminded.javaspring.lenskyi.university.exception.NotUniqueUsernameException;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    List<User> findAllUsers();
+    UserDto findById(Long id);
 
-    User findById(Long id);
+    boolean existsByUsername(String username);
 
-    User findUserByUsername(String username);
+    User findByUsername(String username);
 
-    void updateRolesFromArray(User user, List<String> newRolesArray) throws Exception;
+    boolean existsById(Long userId);
 
-    boolean doesUserExistById(Long userId);
+    List<UserDto> findAllProfessorWithNoSubject();
 
-    UserDto getUserDtoByUserId(Long id);
+    List<UserDto> findAllStudent();
+    void createStudent(UserDto userDto);
+    void deleteById(Long id);
+    void updateStudent(UserDto userDto);
 
-    List<User> findAllProfessorsWithNoSubject();
+    List<UserDto> findAllProfessorAndAdmin();
+
+    void createProfessor(ProfessorForm professorForm);
+
+    ProfessorForm createProfessorFormDto(Long id);
+
+    void updateProfessor(ProfessorForm professorForm);
 }

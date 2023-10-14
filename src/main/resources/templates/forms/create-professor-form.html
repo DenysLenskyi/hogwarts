@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <link th:href="@{/styles/styles.css}" rel="stylesheet" type="text/css" />
+
+    <title>Create New Professor</title>
+
+</head>
+
+<body style="padding: 40px">
+
+<div th:replace="~{fragments/header}"></div>
+
+<div class="container-fluid" style="padding: 40px">
+
+    <div class="row vertical-center" style="max-width: 700px">
+        <h2>Create New Professor</h2>
+        <form th:action="@{/user/professor}" th:object="${professorForm}" method="post">
+
+            <input type="hidden" th:field="*{id}"/>
+
+            <div class="form-group">
+                <div class="form-group">
+                    <label>First name</label>
+                    <p><input type="text" placeholder="Type a name here..." th:field="*{firstName}"
+                              required pattern="^(?!\s*$).+" onmouseover="showPopup()" onmouseout="hidePopup()"></p>
+                    <!--                    popup-->
+                    <div id="createProfessorNamePopup" class="popup">Use more than 2 letters, no numbers or other
+                        symbols
+                    </div>
+                    <script>
+                        function showPopup() {
+                            var popup = document.getElementById("createProfessorNamePopup");
+                            popup.style.display = "block";
+                        }
+
+                        function hidePopup() {
+                            var popup = document.getElementById("createProfessorNamePopup");
+                            popup.style.display = "none";
+                        }
+                    </script>
+                </div>
+
+                <div class="form-group">
+                    <label>Last name</label>
+                    <p><input type="text" placeholder="Type a name here..." th:field="*{lastName}"/></p>
+                </div>
+
+                <div class="form-group">
+                    <label>Username</label>
+                    <p><input type="text" placeholder="Type a name here..." th:field="*{username}"
+                              required pattern="^(?!\s*$).+" onmouseover="showUsernamePopup()" onmouseout="hideUsernamePopup()"></p>
+                    <!--                    popup-->
+                    <div id="createProfessorUsernamePopup" class="popup">
+                        <p>Use 2 or more lower case letters, numbers or symbols (like ._%\-)</p>
+                        <p>Username must be unique! You'll get "bad request" error if choose not unique username. Don't
+                            worry, just try again</p>
+                    </div>
+                    <script>
+                        function showUsernamePopup() {
+                            var popup = document.getElementById("createProfessorUsernamePopup");
+                            popup.style.display = "block";
+                        }
+
+                        function hideUsernamePopup() {
+                            var popup = document.getElementById("createProfessorUsernamePopup");
+                            popup.style.display = "none";
+                        }
+                    </script>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <p><input type="text" placeholder="Type a name here..." th:field="*{password}" required
+                    onmouseover="showPassPopup()" onmouseout="hidePassPopup()"></p>
+                    <!--                    popup-->
+                    <div id="createProfessorPassPopup" class="popup">
+                        Use 2 or more lower case letters, numbers or symbols (like ._%\-)
+                    </div>
+                    <script>
+                        function showPassPopup() {
+                            var popup = document.getElementById("createProfessorPassPopup");
+                            popup.style.display = "block";
+                        }
+
+                        function hidePassPopup() {
+                            var popup = document.getElementById("createProfessorPassPopup");
+                            popup.style.display = "none";
+                        }
+                    </script>
+                </div>
+
+                <div class="form-group" th:if="${!freeSubjects.isEmpty()}">
+                    <label>Subject</label>
+                    <p>Choose from the list below</p>
+                    <div class="form-group">
+                        <select th:field="*{subjectName}">
+                            <option th:each="subject : ${freeSubjects}" th:value="${subject.name}"
+                                    th:text="${subject.name}"></option>
+                            <option th:value="null" th:text="'(no subject)'"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" th:if="${freeSubjects.isEmpty()}">
+                    <h3>No subjects available</h3>
+                    <p>This professor will not be assigned to any subject for now</p>
+                    <p>We'll add them to "free professors list" so you could choose a subject for them later</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Roles</label>
+                    <p>Default role: "professor"</p>
+                    <p>If you wish to add the role "admin" simply select it in the checkbox below</p>
+                    <ul>
+                        <li>
+                            <input type="checkbox" th:field="*{admin}"/>
+                            <label th:text="admin"></label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <input type="submit" value="Submit" class="btn btn-success"/>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

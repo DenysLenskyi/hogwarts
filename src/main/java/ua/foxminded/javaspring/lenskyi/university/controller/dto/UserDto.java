@@ -1,20 +1,35 @@
 package ua.foxminded.javaspring.lenskyi.university.controller.dto;
 
-import ua.foxminded.javaspring.lenskyi.university.model.Group;
-import ua.foxminded.javaspring.lenskyi.university.model.Subject;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UserDto {
 
     private Long id;
+    @NotNull
+    @NotBlank
     private String firstName;
     private String lastName;
+    @NotNull
+    @NotBlank
     private String username;
     private String password;
     private Set<RoleDto> roles;
-    private Group group;
-    private Subject subject;
+    private GroupDto groupDto;
+    private SubjectDto subjectDto;
+
+    public UserDto() {
+    }
+
+    public String getRolesToString() {
+        final String coma = ", ";
+        return getRoles().stream()
+                .map(RoleDto::getName)
+                .collect(Collectors.joining(coma));
+    }
 
     public Long getId() {
         return id;
@@ -40,37 +55,6 @@ public class UserDto {
         this.lastName = lastName;
     }
 
-    public Set<RoleDto> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<RoleDto> roles) {
-        this.roles = roles;
-    }
-
-    public String getRolesToString() {
-        StringBuilder output = new StringBuilder();
-        final String emptyString = "";
-        this.getRoles().forEach(r ->
-                output.append(r.getName())
-                        .append(',')
-                        .append(' ')
-        );
-        if (this.getRoles().isEmpty()) {
-            return emptyString;
-        } else {
-            return output.substring(0, output.length() - 2);
-        }
-    }
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -87,12 +71,28 @@ public class UserDto {
         this.password = password;
     }
 
-    public Subject getSubject() {
-        return subject;
+    public Set<RoleDto> getRoles() {
+        return roles;
     }
 
-    public void setSubject(Subject subject) {
-        this.subject = subject;
+    public void setRoles(Set<RoleDto> roles) {
+        this.roles = roles;
+    }
+
+    public GroupDto getGroupDto() {
+        return groupDto;
+    }
+
+    public void setGroupDto(GroupDto groupDto) {
+        this.groupDto = groupDto;
+    }
+
+    public SubjectDto getSubjectDto() {
+        return subjectDto;
+    }
+
+    public void setSubjectDto(SubjectDto subjectDto) {
+        this.subjectDto = subjectDto;
     }
 
     @Override

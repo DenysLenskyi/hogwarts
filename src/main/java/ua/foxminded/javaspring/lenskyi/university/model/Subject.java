@@ -21,15 +21,15 @@ public class Subject {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "PROFESSOR_ID", referencedColumnName = "ID")
     private User user;
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "CLASSROOM_ID", referencedColumnName = "ID")
     private Classroom classroom;
 
-    @OneToMany(mappedBy = "subjectOfTheLesson")
+    @OneToMany(mappedBy = "subject")
     private Set<Lesson> lessons;
 
     public Long getId() {

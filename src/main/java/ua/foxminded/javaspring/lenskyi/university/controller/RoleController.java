@@ -18,7 +18,7 @@ public class RoleController {
 
     @GetMapping("/all")
     public String getRolePage(Model model) {
-        model.addAttribute("roles", roleService.findAllRoles());
-        return "roles-db-overview";
+        model.addAttribute("roles", roleService.findAll());
+        return "roles-page";
     }
 }

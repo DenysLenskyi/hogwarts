@@ -33,7 +33,7 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID")})
     private Set<Role> roles;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "GROUP_ID")
     private Group group;
 
@@ -66,21 +66,6 @@ public class User {
 
     public Set<Role> getRoles() {
         return roles;
-    }
-
-    public String getRolesToString() {
-        StringBuilder output = new StringBuilder();
-        final String emptyString = "";
-        this.getRoles().forEach(r ->
-                output.append(r.getName())
-                        .append(',')
-                        .append(' ')
-        );
-        if (this.getRoles().isEmpty()) {
-            return emptyString;
-        } else {
-            return output.substring(0, output.length() - 2);
-        }
     }
 
     public void setRoles(Set<Role> roles) {

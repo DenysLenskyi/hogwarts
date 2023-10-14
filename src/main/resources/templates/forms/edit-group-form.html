@@ -16,7 +16,21 @@
 
 <div th:replace="~{fragments/header}"></div>
 
-<div class="container-fluid" style="padding: 40px">
+<div class="container-fluid" style="padding: 40px" th:if="${groupsExcludeCurrent.isEmpty()}">
+    <div class="row">
+        <h2>No groups found</h2>
+        <p>It looks like there's no other groups (except <span th:text="${currentGroup.name}" />)</p>
+        <p>First, you have to create a new group</p>
+    </div>
+    <div class="row" style="margin-bottom: 20px">
+        <a th:href="@{/group/creation-page}">
+            <button type="submit" class="btn btn-info">CREATE NEW Group</button>
+        </a>
+    </div>
+
+</div>
+
+<div class="container-fluid" style="padding: 40px" th:if="${!groupsExcludeCurrent.isEmpty()}">
     <div class="row vertical-center" style="max-width: 700px">
 
         <h2>Edit Group</h2>

@@ -22,7 +22,7 @@ class UserEntityUserDtoMapperTest {
 
     @Test
     void mapperTest() {
-        UserDto severusDto = mapper.userEntityToUserDto(userServiceImpl.findUserByUsername("severussnape"));
+        UserDto severusDto = mapper.userEntityToUserDto(userServiceImpl.findByUsername("severussnape"));
         assertEquals("Severus", severusDto.getFirstName());
     }
 }

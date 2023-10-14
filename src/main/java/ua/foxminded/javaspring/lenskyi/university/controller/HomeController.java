@@ -1,16 +1,29 @@
 package ua.foxminded.javaspring.lenskyi.university.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = {"/", "/home"})
 public class HomeController {
 
-    @GetMapping
-    public String home(Model model) {
+    @GetMapping(value = {"/", "/home"})
+    public String home() {
         return "index";
     }
+
+    @GetMapping("/logged-user-info")
+    public String loggedUserPage() {
+        return "logged-user-info";
+    }
+
+    @GetMapping("/contacts")
+    public String contacts() {
+        return "contacts";
+    }
+
+    @GetMapping("/about")
+    public String about() {
+        return "about";
+    }
+
 }

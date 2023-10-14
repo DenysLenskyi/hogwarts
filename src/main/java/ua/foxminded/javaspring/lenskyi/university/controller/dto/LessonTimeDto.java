@@ -2,11 +2,14 @@ package ua.foxminded.javaspring.lenskyi.university.controller.dto;
 
 import java.time.LocalTime;
 
-public class LessonStartEndTimeDto {
+public class LessonTimeDto {
 
     private Long id;
     private LocalTime start;
     private LocalTime end;
+
+    public LessonTimeDto() {
+    }
 
     public Long getId() {
         return id;
@@ -35,7 +38,7 @@ public class LessonStartEndTimeDto {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof LessonStartEndTimeDto that)) return false;
+        if (!(o instanceof LessonTimeDto that)) return false;
 
         if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
         if (getStart() != null ? !getStart().equals(that.getStart()) : that.getStart() != null) return false;

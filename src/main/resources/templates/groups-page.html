@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <title>Hogwarts Schedule Manager | Groups</title>
+</head>
+<body style="padding: 40px">
+<div th:replace="~{fragments/header}"></div>
+
+<div class="container-fluid">
+
+    <div sec:authorize="hasAuthority('admin')" class="row" style="margin-bottom: 20px">
+        <a th:href="@{/group/creation-page}">
+            <button type="submit" class="btn btn-info">CREATE NEW Group</button>
+        </a>
+    </div>
+
+    <div th:if="${message != null}" th:text="${message}" class="row alert alert-success" role="alert">
+    </div>
+
+    <div sec:authorize="!hasAuthority('admin')" class="row">
+        <p class="lead text-info">Log in with admin rights to edit</p>
+    </div>
+
+    <div sec:authorize="hasAuthority('admin')" class="row">
+        <p class="lead text-info">You can delete a group if it has no students</p>
+    </div>
+
+    <div class="row vertical-center">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Group Name</th>
+                <th>Number of students</th>
+                <th sec:authorize="hasAuthority('admin')">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="group : ${groups}">
+                <td th:text="${group.name}"></td>
+                <td>
+                    <div th:if="${group.numStudentsInGroup} == 0">
+                        <p class="lead">0</p>
+                    </div>
+                    <div th:if="${group.numStudentsInGroup} != 0">
+                        <p class="lead"><span th:text="${group.numStudentsInGroup}"/></p>
+                    </div>
+                </td>
+                <td sec:authorize="hasAuthority('admin')">
+                    <div th:if="${group.numStudentsInGroup} == 0">
+                        <form th:action="@{/group/{id}(id=${group.getId()})}" th:method="delete" id="deleteGroupForm"
+                              class="deleteGroupForm">
+                            <button type="button" id="buttonDelete" onclick="deleteItem(this)" class="btn btn-danger"
+                                    style="margin-bottom: 3px">DELETE
+                            </button>
+                            <script>
+                                function deleteItem(button) {
+                                    var form = button.closest('.deleteGroupForm');
+                                    var isConfirmed = confirm("This will affect the schedule. This group's lessons will be deleted.");
+                                    if (isConfirmed) {
+                                        form.submit();
+                                    }
+                                }
+                            </script>
+                        </form>
+                    </div>
+                    <div th:if="${group.numStudentsInGroup} != 0">
+                        <a th:href="@{/group/{id}/edit-page(id=${group.getId()})}">
+                            <button type="submit" class="btn btn-warning"
+                                    style="margin-bottom: 3px">Move Students
+                            </button>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>

@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
@@ -13,6 +12,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import ua.foxminded.javaspring.lenskyi.university.controller.dto.GroupDto;
 import ua.foxminded.javaspring.lenskyi.university.model.Group;
 import ua.foxminded.javaspring.lenskyi.university.repository.GroupRepository;
 import ua.foxminded.javaspring.lenskyi.university.repository.UserRepository;
@@ -52,19 +52,19 @@ class GroupControllerTestIT {
 
     @Test
     @WithUserDetails("minervamcgonagall")
-    void givenGroups_whenFindAllGroups_thenReturnJsonArray() throws Exception {
+    void showGroupsPageTest() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                         .get("/group/all"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("groups-db-overview"))
+                .andExpect(view().name("groups-page"))
                 .andExpect(model().attribute("groups", groupService.findAll()));
     }
 
     @Test
     @WithUserDetails("minervamcgonagall")
     void showEditGroupFormTest() throws Exception {
-        List<Group> allGroups = groupService.findAll();
-        Group groupToEdit = allGroups.get(0);
+        List<GroupDto> allGroups = groupService.findAll();
+        GroupDto groupToEdit = allGroups.get(0);
         allGroups.remove(groupToEdit);
         mvc.perform(MockMvcRequestBuilders
                         .get("/group/" + groupToEdit.getId() + "/edit-page"))
@@ -77,8 +77,8 @@ class GroupControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void showEditGroupFormWrongIdTest() throws Exception {
-        List<Group> allGroups = groupService.findAll();
-        Group groupToEdit = allGroups.get(0);
+        List<GroupDto> allGroups = groupService.findAll();
+        GroupDto groupToEdit = allGroups.get(0);
         long wrongGroupId = groupToEdit.getId() - 100L;
         mvc.perform(MockMvcRequestBuilders
                         .get("/group/" + wrongGroupId + "/edit-page"))
@@ -92,7 +92,6 @@ class GroupControllerTestIT {
         Group slytherin = new Group();
         slytherin.setName("Slytherin");
         groupRepository.saveAndFlush(slytherin);
-        List<Group> allGroups = groupService.findAll();
         Group gryffindor = groupService.findByName("Gryffindor-7");
         mvc.perform(MockMvcRequestBuilders
                         .put("/group/" + gryffindor.getId())
@@ -106,7 +105,7 @@ class GroupControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void showCreateNewGroupFormTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/group/create-group-page")
+        mvc.perform(MockMvcRequestBuilders.get("/group/creation-page")
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("forms/create-group-form"))
@@ -120,14 +119,13 @@ class GroupControllerTestIT {
                         .param("name", "testName")
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection());
-        Group group = groupService.findByName("testName");
         assertEquals(2, groupService.findAll().size());
     }
 
     @Test
     @WithUserDetails("minervamcgonagall")
     void createNewGroupNotUniqueNameTest() throws Exception {
-        List<Group> allGroups = groupService.findAll();
+        List<GroupDto> allGroups = groupService.findAll();
         mvc.perform(MockMvcRequestBuilders.post("/group")
                         .param("name", allGroups.get(0).getName())
                         .with(csrf()))
@@ -141,7 +139,7 @@ class GroupControllerTestIT {
         Group slytherin = new Group();
         slytherin.setName("Slytherin");
         groupRepository.saveAndFlush(slytherin);
-        List<Group> allGroupsBeforeDelete = groupService.findAll();
+        List<GroupDto> allGroupsBeforeDelete = groupService.findAll();
         mvc.perform(MockMvcRequestBuilders.delete("/group/" + slytherin.getId())
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection());
@@ -152,8 +150,8 @@ class GroupControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void deleteSubjectWrongIdTest() throws Exception {
-        List<Group> allGroups = groupService.findAll();
-        Group groupToEdit = allGroups.get(0);
+        List<GroupDto> allGroups = groupService.findAll();
+        GroupDto groupToEdit = allGroups.get(0);
         long wrongGroupId = groupToEdit.getId() - 100L;
         mvc.perform(MockMvcRequestBuilders.delete("/group/" + wrongGroupId)
                         .with(csrf()))

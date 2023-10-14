@@ -10,6 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import ua.foxminded.javaspring.lenskyi.university.controller.dto.SubjectDto;
 import ua.foxminded.javaspring.lenskyi.university.model.Subject;
 import ua.foxminded.javaspring.lenskyi.university.service.ClassroomService;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
@@ -39,31 +40,22 @@ class CustomErrorControllerTest {
     @WithUserDetails("harrypotter")
     void studentGoesToCreateNewSubject_shouldReturn403() throws Exception {
         mvc.perform(MockMvcRequestBuilders
-                        .get("/subject/create-subject-page"))
+                        .get("/subject/creation-page"))
                 .andExpect(status().isForbidden());
     }
-
-//    @Test
-//    @WithUserDetails("remuslupin")
-//    void professorGoesToCreateNewSubject_shouldReturn200ButNoBody() throws Exception {
-//        mvc.perform(MockMvcRequestBuilders
-//                        .get("/subject/create-subject-page"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().string());
-//    }
 
     @Test
     @WithUserDetails("minervamcgonagall")
     void adminGoesToCreateNewSubject_shouldReturn200() throws Exception {
         mvc.perform(MockMvcRequestBuilders
-                        .get("/subject/create-subject-page"))
+                        .get("/subject/creation-page"))
                 .andExpect(status().isOk());
     }
 
     @Test
     @WithUserDetails("remuslupin")
     void professorGoesToEditSubject_shouldReturn200() throws Exception {
-        List<Subject> subjects = subjectService.findAll();
+        List<SubjectDto> subjects = subjectService.findAll();
         mvc.perform(MockMvcRequestBuilders
                         .get("/subject/" + subjects.get(0).getId() + "/edit-page"))
                 .andExpect(status().isOk());

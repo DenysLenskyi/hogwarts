@@ -7,19 +7,23 @@ import java.util.List;
 
 public interface SubjectService {
 
-    List<Subject> findAll();
+    List<SubjectDto> findAll();
 
     SubjectDto findById(Long subjectId);
 
+    Subject findSubjectById(Long id);
+
     SubjectDto findByName(String subjectName);
 
-    void updateSubjectFromSubjectDto(SubjectDto subjectDto);
+    void updateSubject(SubjectDto subjectDto);
 
     boolean doesSubjectExistById(Long subjectId);
 
-    void createNewSubjectFromSubjectDto(SubjectDto subjectDto);
+    void createNewSubject(SubjectDto subjectDto);
 
     void deleteSubjectById(Long id);
 
     boolean existsByName(String subjectName);
+
+    List<Subject> findAllSubjectsWithNoProfessor();
 }

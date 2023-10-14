@@ -14,32 +14,26 @@
 
     <link rel="stylesheet" href="./CSS/styles.css" />
 
-    <title>Hogwarts Schedule Manager | Schedule</title>
+    <title>Hogwarts Schedule Manager | Lessons timing</title>
 </head>
 <body>
 <div th:replace="~{fragments/header}"></div>
-<h1>Here's the Hogwarts schedule</h1>
+<h1>Here's the list of Hogwarts classrooms</h1>
 
-<div th:switch="${lessons}">
-    <h2 th:case="null">No schedule yet!</h2>
+<div th:switch="${lessontimes}">
+    <h2 th:case="null">No lessontimes yet!</h2>
     <div th:case="*">
         <table>
             <thead>
             <tr>
-                <th>Date</th>
                 <th>Start time</th>
                 <th>End time</th>
-                <th>Group</th>
-                <th>Subject</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="lesson : ${lessons}">
-                <td th:text="${lesson.getDate()}"></td>
-                <td th:text="${lesson.getLessonStartEndTime().getStart()}"></td>
-                <td th:text="${lesson.getLessonStartEndTime().getEnd()}"></td>
-                <td th:text="${lesson.getGroup().getName()}"></td>
-                <td th:text="${lesson.getSubjectOfTheLesson().getName()}"></td>
+            <tr th:each="lessontime : ${lessontimes}">
+                <td th:text="${lessontime.getStart()}"></td>
+                <td th:text="${lessontime.getEnd()}"></td>
             </tr>
             </tbody>
         </table>

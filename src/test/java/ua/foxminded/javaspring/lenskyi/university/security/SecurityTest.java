@@ -1,5 +1,6 @@
 package ua.foxminded.javaspring.lenskyi.university.security;
 
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -8,6 +9,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import ua.foxminded.javaspring.lenskyi.university.controller.dto.SubjectDto;
 import ua.foxminded.javaspring.lenskyi.university.model.Subject;
 import ua.foxminded.javaspring.lenskyi.university.service.SubjectService;
 
@@ -18,10 +20,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 class SecurityTest {
 
     private final static String SUBJECT_PAGE = "/subject/all";
-    private final static String CREATE_SUBJECT_PAGE = "/subject/create-subject-page";
+    private final static String CREATE_SUBJECT_PAGE = "/subject/creation-page";
     @Autowired
     private MockMvc mvc;
     @Autowired
@@ -36,7 +39,7 @@ class SecurityTest {
     @Test
     @WithUserDetails("minervamcgonagall")
     void whenAdminOpensAnyPage_thenReturn200() throws Exception {
-        List<Subject> allSubjects = subjectService.findAll();
+        List<SubjectDto> allSubjects = subjectService.findAll();
         final String editSubjectUrl = "/subject/" + allSubjects.get(0).getId() + "/edit-page";
         mvc.perform(MockMvcRequestBuilders.get(SUBJECT_PAGE))
                 .andExpect(status().isOk());
@@ -49,7 +52,7 @@ class SecurityTest {
     @Test
     @WithUserDetails("remuslupin")
     void whenProfessorOpensEditSubjectPage_thenReturn200() throws Exception {
-        List<Subject> allSubjects = subjectService.findAll();
+        List<SubjectDto> allSubjects = subjectService.findAll();
         final String editSubjectUrl = "/subject/" + allSubjects.get(0).getId() + "/edit-page";
         mvc.perform(MockMvcRequestBuilders.get(editSubjectUrl))
                 .andExpect(status().isOk());

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link th:href="@{/styles/styles.css}" rel="stylesheet" type="text/css"/>
+    <title>Hogwarts Schedule Manager | Subjects</title>
+</head>
+<body style="padding: 40px">
+<div th:replace="~{fragments/header}"></div>
+
+<div class="container-fluid">
+
+    <div class="row" style="margin-bottom: 20px" sec:authorize="hasAuthority('admin')">
+        <a th:href="@{/subject/creation-page}">
+            <button type="submit" class="btn btn-info">CREATE NEW SUBJECT</button>
+        </a>
+    </div>
+
+    <div th:if="${message != null}" th:text="${message}" class="row alert alert-success" role="alert">
+    </div>
+
+    <div sec:authorize="!hasAuthority('admin')" class="row">
+        <p class="lead text-info">Log in with admin rights to create/delete a subject</p>
+    </div>
+
+    <div class="row vertical-center">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Subject Name</th>
+                <th>Description</th>
+                <th>Classroom</th>
+                <th>Professor</th>
+                <th sec:authorize="hasAuthority('admin') || hasAuthority('professor')">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="subject : ${subjects}">
+                <td th:text="${subject.getName()}"></td>
+                <td th:text="${subject.getDescription()}"></td>
+                <td>
+                    <div th:if="${subject.classroomDto == null}">
+                        <p class="text-warning">NO CLASSROOM!</p>
+                        <p>Edit this subject to add one</p>
+                    </div>
+                    <div th:if="${subject.classroomDto != null}">
+                        <p><span th:text="${subject.getClassroomDto().getName()}"/></p>
+                    </div>
+                </td>
+                <td>
+                    <div th:if="${subject.userDto == null}">No professor... Click 'EDIT' to add one</div>
+                    <div th:if="${subject.userDto != null}"><span
+                            th:text="${subject.getUserDto().getFirstName() + ' ' + subject.getUserDto().getLastName()}"></span>
+                    </div>
+                </td>
+                <td sec:authorize="hasAuthority('admin') || hasAuthority('professor')">
+                    <div class="action-buttons">
+                        <div class="btn-edit">
+                            <a th:href="@{/subject/{id}/edit-page(id=${subject.getId()})}">
+                                <button type="submit" class="btn btn-warning btn-sm">EDIT</button>
+                            </a>
+                        </div>
+                        <div sec:authorize="hasAuthority('admin')" class="btn-delete">
+                            <form th:action="@{/subject/{id}(id=${subject.getId()})}" th:method="delete" id="deleteSubjectForm" class="deleteSubjectForm">
+                                <button type="button" id="buttonDelete" onclick="deleteItem(this)" class="btn btn-danger btn-sm">DELETE</button>
+                                <script>
+                                    function deleteItem(button) {
+                                        var form = button.closest('.deleteSubjectForm');
+                                        var isConfirmed = confirm("This will affect the schedule. This subject's lessons will be deleted.");
+                                        if (isConfirmed) {
+                                            form.submit();
+                                        }
+                                    }
+                                </script>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <a href="#">SCROLL UP</a>
+    </div>
+
+</div>
+</body>

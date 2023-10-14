@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <link th:href="@{/styles/styles.css}" rel="stylesheet" type="text/css"/>
+    <title>Edit Student</title>
+</head>
+
+<body style="padding: 40px">
+
+<div th:replace="~{fragments/header}"></div>
+
+<div class="container-fluid" style="padding: 40px">
+    <div class="row vertical-center" style="max-width: 700px">
+
+        <h2>Edit Student</h2>
+        <form th:action="@{/user/student/{id}(id=${studentDto.id})}" th:object="${studentDto}" th:method="put">
+
+            <input type="hidden" th:field="*{id}"/>
+
+            <div class="form-group">
+
+                <div class="form-group">
+                    <label>Edit first name</label>
+                    <p><input type="text" th:field="*{firstName}" required pattern="^(?!\s*$).+"
+                    onmouseover="showPopup()" onmouseout="hidePopup()"/></p>
+                    <!--                    popup-->
+                    <div id="editStudentNamePopup" class="popup">
+                        Use 2 or more letters, numbers or symbols, do not leave this field empty or filled with whitespaces
+                    </div>
+                    <script>
+                        function showPopup() {
+                            var popup = document.getElementById("editStudentNamePopup");
+                            popup.style.display = "block";
+                        }
+
+                        function hidePopup() {
+                            var popup = document.getElementById("editStudentNamePopup");
+                            popup.style.display = "none";
+                        }
+                    </script>
+                </div>
+
+
+                <div class="form-group">
+                    <label>Edit last name</label>
+                    <p><input type="text" th:field="*{lastName}"/></p>
+                </div>
+
+                <div class="form-group">
+                    <label>Edit username</label>
+                    <p><input type="text" th:field="*{username}" required pattern="^(?!\s*$).+"
+                    onmouseover="showUsernamePopup()" onmouseout="hideUsernamePopup()"/></p>
+                    <!--                    popup-->
+                    <div id="editStudentUsernamePopup" class="popup">
+                        <p>Use 2 or more letters, numbers or symbols, do not leave this field empty or filled with whitespaces</p>
+                        <p>Username must be unique! You'll get "bad request" error if choose not unique username. Don't worry, just try again</p>
+                    </div>
+                    <script>
+                        function showUsernamePopup() {
+                            var popup = document.getElementById("editStudentUsernamePopup");
+                            popup.style.display = "block";
+                        }
+
+                        function hideUsernamePopup() {
+                            var popup = document.getElementById("editStudentUsernamePopup");
+                            popup.style.display = "none";
+                        }
+                    </script>
+                </div>
+
+                <div class="form-group">
+                    <label>Edit password</label>
+                    <p><input type="text" id="password" name="password" pattern="^(?!\s*$).+" th:value="''"
+                    onmouseover="showPassPopup()" onmouseout="hidePassPopup()"/></p>
+                    <!--                    popup-->
+                    <div id="editStudentPassPopup" class="popup">
+                        <p>Use 2 or more letters, numbers or symbols, do not fill with whitespaces (be creative)</p>
+                        <p>Leave this field empty to keep current password for this user</p>
+                    </div>
+                    <script>
+                        function showPassPopup() {
+                            var popup = document.getElementById("editStudentPassPopup");
+                            popup.style.display = "block";
+                        }
+
+                        function hidePassPopup() {
+                            var popup = document.getElementById("editStudentPassPopup");
+                            popup.style.display = "none";
+                        }
+                    </script>
+                </div>
+
+                <div class="form-group">
+                    <label>Choose a group or leave current</label>
+                    <div class="form-group">
+                        <select th:field="${studentDto.groupDto.name}">
+                            <option th:each="group : ${groups}" th:value="${group.name}"
+                                    th:text="${group.name}">
+                            </option>
+                            <option th:value="*{groupDto.name}" th:text="*{groupDto.name + ' (current)'}" selected></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <p><input type="submit" value="Submit" class="btn btn-success"/></p>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

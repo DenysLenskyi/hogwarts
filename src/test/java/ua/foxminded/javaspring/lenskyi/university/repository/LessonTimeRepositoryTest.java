@@ -5,12 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ua.foxminded.javaspring.lenskyi.university.model.Lesson;
-import ua.foxminded.javaspring.lenskyi.university.model.LessonStartEndTime;
+import ua.foxminded.javaspring.lenskyi.university.model.LessonTime;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -20,16 +17,16 @@ import static org.junit.Assert.assertTrue;
 @SpringBootTest
 @ActiveProfiles("test")
 @Testcontainers
-class LessonStartEndTimeRepositoryTest {
+class LessonTimeRepositoryTest {
 
     @Autowired
-    LessonStartEndTimeRepository lessonStartEndTimeRepository;
+    LessonTimeRepository lessonTimeRepository;
 
     @Test
     void entityCorrectnessTest() {
-        LessonStartEndTime firstLesson = lessonStartEndTimeRepository.findById(1L).orElseThrow();
-        LessonStartEndTime secondLesson = lessonStartEndTimeRepository.findById(2L).orElseThrow();
-        LessonStartEndTime fifthLesson = lessonStartEndTimeRepository.findById(5L).orElseThrow();
+        LessonTime firstLesson = lessonTimeRepository.findById(1L).orElseThrow();
+        LessonTime secondLesson = lessonTimeRepository.findById(2L).orElseThrow();
+        LessonTime fifthLesson = lessonTimeRepository.findById(5L).orElseThrow();
         assertEquals(Optional.of(1L), Optional.of(firstLesson.getId()));
         assertEquals(LocalTime.of(9, 30), firstLesson.getStart());
         assertEquals(LocalTime.of(10, 50), firstLesson.getEnd());

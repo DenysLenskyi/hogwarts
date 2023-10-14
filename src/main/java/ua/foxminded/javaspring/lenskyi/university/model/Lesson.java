@@ -16,16 +16,16 @@ public class Lesson {
     @Column(name = "LESSON_DATE", nullable = false)
     private LocalDate date;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "START_END_TIME_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-    private LessonStartEndTime lessonStartEndTime;
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "START_END_TIME_ID", referencedColumnName = "ID")
+    private LessonTime lessonTime;
 
-    @ManyToOne
-    @JoinColumn(name = "SUBJECT_ID", insertable = false, updatable = false)
-    private Subject subjectOfTheLesson;
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "SUBJECT_ID")
+    private Subject subject;
 
-    @ManyToOne
-    @JoinColumn(name = "GROUP_ID", insertable = false, updatable = false)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "GROUP_ID")
     private Group group;
 
     public Lesson() {
@@ -47,20 +47,20 @@ public class Lesson {
         this.date = date;
     }
 
-    public LessonStartEndTime getLessonStartEndTime() {
-        return lessonStartEndTime;
+    public LessonTime getLessonTime() {
+        return lessonTime;
     }
 
-    public void setLessonStartEndTime(LessonStartEndTime lessonStartEndTime) {
-        this.lessonStartEndTime = lessonStartEndTime;
+    public void setLessonTime(LessonTime lessonTime) {
+        this.lessonTime = lessonTime;
     }
 
-    public Subject getSubjectOfTheLesson() {
-        return subjectOfTheLesson;
+    public Subject getSubject() {
+        return subject;
     }
 
-    public void setSubjectOfTheLesson(Subject subjectLessons) {
-        this.subjectOfTheLesson = subjectLessons;
+    public void setSubject(Subject subjectLessons) {
+        this.subject = subjectLessons;
     }
 
     public Group getGroup() {

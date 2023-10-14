@@ -1,15 +1,28 @@
 package ua.foxminded.javaspring.lenskyi.university.controller.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Set;
 
 public class SubjectDto {
 
     private Long id;
+    @NotNull
+    @NotBlank
     private String name;
     private String description;
     private UserDto userDto;
     private ClassroomDto classroomDto;
     private Set<LessonDto> lessonsDto;
+
+    public SubjectDto() {
+    }
+
+    public SubjectDto(UserDto userDto, ClassroomDto classroomDto) {
+        this.userDto = userDto;
+        this.classroomDto = classroomDto;
+    }
 
     public Long getId() {
         return id;

@@ -1,21 +1,25 @@
 package ua.foxminded.javaspring.lenskyi.university.controller;
 
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.university.controller.dto.GroupDto;
-import ua.foxminded.javaspring.lenskyi.university.model.Group;
 import ua.foxminded.javaspring.lenskyi.university.service.GroupService;
 
 import java.util.List;
 
+import static ua.foxminded.javaspring.lenskyi.university.controller.DefaultMessage.*;
 import static ua.foxminded.javaspring.lenskyi.university.util.Constants.*;
 
 @Controller
 @RequestMapping("/group")
 public class GroupController {
 
+    private Logger log = LoggerFactory.getLogger(this.getClass());
     private GroupService groupService;
 
     public GroupController(GroupService groupService) {
@@ -25,61 +29,69 @@ public class GroupController {
     @GetMapping("/all")
     public String getGroupPage(Model model) {
         model.addAttribute("groups", groupService.findAll());
-        model.addAttribute("groupService", groupService);
+        log.info("getGroupPage called");
         return GROUP_PAGE_TEMPLATE_NAME;
     }
 
-    @GetMapping("/create-group-page")
+    @GetMapping("/creation-page")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String showCreateGroupForm(Model model) {
+    public String getNewGroupPage(Model model) {
         model.addAttribute("groupDto", new GroupDto());
+        log.info("getNewGroupPage called");
         return CREATE_GROUP_TEMPLATE_NAME;
     }
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String createNewGroup(GroupDto groupDto) {
+    public String createNewGroup(@Valid GroupDto groupDto, Model model) {
         if (groupService.existsByName(groupDto.getName())) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            groupService.createNewGroupFromGroupDto(groupDto);
-            return REDIRECT_GROUPS_PAGE;
         }
+        groupService.createNewGroup(groupDto);
+        log.info("Group created");
+        model.addAttribute("message", CREATED_MESSAGE);
+        model.addAttribute("groups", groupService.findAll());
+        return GROUP_PAGE_TEMPLATE_NAME;
     }
 
     @DeleteMapping("/{groupId}")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String deleteGroup(@PathVariable("groupId") Long id) {
+    public String deleteGroup(@PathVariable("groupId") Long id, Model model) {
         if (!groupService.existsById(id)) {
-            return "error/400";
-        } else {
-            groupService.deleteById(id);
-            return REDIRECT_GROUPS_PAGE;
+            return ERROR_400_TEMPLATE_NAME;
         }
+        groupService.deleteById(id);
+        log.info("Group deleted");
+        model.addAttribute("message", DELETED_MESSAGE);
+        model.addAttribute("groups", groupService.findAll());
+        return GROUP_PAGE_TEMPLATE_NAME;
     }
 
     @GetMapping("{groupId}/edit-page")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String showEditGroupForm(@PathVariable("groupId") Long id, Model model) {
+    public String getEditGroupPage(@PathVariable("groupId") Long id, Model model) {
         if (!groupService.existsById(id)) {
             return ERROR_400_TEMPLATE_NAME;
-        } else {
-            Group currentGroup = groupService.findById(id);
-            List<Group> groups = groupService.findAll();
-            groups.remove(currentGroup);
-            model.addAttribute("groupsExcludeCurrent", groups);
-            model.addAttribute("currentGroup", currentGroup);
-            model.addAttribute("groupDto", new GroupDto());
-            return EDIT_GROUP_TEMPLATE_NAME;
         }
+        GroupDto currentGroup = groupService.findById(id);
+        List<GroupDto> groups = groupService.findAll();
+        groups.remove(currentGroup);
+        log.info("getEditGroupPage called");
+        model.addAttribute("groupsExcludeCurrent", groups);
+        model.addAttribute("currentGroup", currentGroup);
+        model.addAttribute("groupDto", new GroupDto());
+        return EDIT_GROUP_TEMPLATE_NAME;
     }
 
     @PutMapping("{groupId}")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public String editGroup(@PathVariable("groupId") Long id, GroupDto groupDto) {
+    public String editGroup(@PathVariable("groupId") Long id, @Valid GroupDto groupDto, Model model) {
         groupService.moveStudentsFromGroupToAnotherGroup(
-                groupService.findById(id), groupService.findByName(groupDto.getName())
+                groupService.findGroupById(id), groupService.findByName(groupDto.getName())
         );
-        return REDIRECT_GROUPS_PAGE;
+        log.info("Group edited");
+        model.addAttribute("message", UPDATED_MESSAGE);
+        model.addAttribute("groups", groupService.findAll());
+        return GROUP_PAGE_TEMPLATE_NAME;
     }
 }

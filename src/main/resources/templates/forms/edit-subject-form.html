@@ -9,14 +9,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 
+    <link th:href="@{/styles/styles.css}" rel="stylesheet" type="text/css"/>
     <title>Edit Subject</title>
 </head>
 
-<body style="padding: 40px" sec:authorize="hasAuthority('admin') || hasAuthority('professor')">
+<body style="padding: 40px">
 
 <div th:replace="~{fragments/header}"></div>
 
 <div class="container-fluid" style="padding: 40px">
+
     <div class="row vertical-center" style="max-width: 700px">
 
         <h2>Edit Subject</h2>
@@ -29,7 +31,24 @@
                 <!--                Edit name option for admin-->
                 <div class="form-group" sec:authorize="hasAuthority('admin')">
                     <label>Edit Name</label>
-                    <p><input type="text" th:field="*{name}" pattern="[a-z0-9._%+\-]{2,}$"/></p>
+                    <p><input type="text" th:field="*{name}" required pattern="^(?!\s*$).+"
+                    onmouseover="showPopup()" onmouseout="hidePopup()"/></p>
+                    <!--                    popup-->
+                    <div id="editSubjectNamePopup" class="popup">
+                        <p>Use 2 or more letters, numbers or symbols, do not leave this field empty or filled with
+                            whitespaces</p>
+                    </div>
+                    <script>
+                        function showPopup() {
+                            var popup = document.getElementById("editSubjectNamePopup");
+                            popup.style.display = "block";
+                        }
+
+                        function hidePopup() {
+                            var popup = document.getElementById("editSubjectNamePopup");
+                            popup.style.display = "none";
+                        }
+                    </script>
                 </div>
 
                 <!--                Edit name option for professor-->
@@ -60,7 +79,9 @@
                             <option th:each="classroom : ${freeClassrooms}" th:value="${classroom.name}"
                                     th:text="${classroom.name}">
                             </option>
-                            <option th:value="*{classroomDto.name}" th:text="*{classroomDto.name + ' (current)'}"></option>
+                            <option th:value="*{classroomDto.name}" th:text="*{classroomDto.name + ' (current)'}"
+                                    selected></option>
+                            <option th:value="null" th:text="'(no classroom)'"></option>
                         </select>
                     </div>
                 </div>
@@ -81,9 +102,23 @@
                         <select th:field="*{userDto.username}">
                             <option th:each="user : ${freeProfessors}" th:value="${user.username}"
                                     th:text="${user.firstName + ' ' + user.lastName}"></option>
+                            <option th:value="*{userDto.username}"
+                                    th:text="*{userDto.firstName + ' ' + userDto.lastName + ' (current)'}"
+                                    selected></option>
+                            <option th:value="null" th:text="'(no professor)'"></option>
                         </select>
                     </div>
                 </div>
+
+
+<!--                Edit professor for the subject option for professor-->
+                <div th:if="${!freeProfessors.isEmpty()}" class="form-group" sec:authorize="hasAuthority('professor') && !hasAuthority('admin')">
+                    <label>Professor</label>
+                    <div>
+                        <input type="hidden" th:field="*{userDto.username}" th:value="*{userDto.username}">
+                    </div>
+                </div>
+
                 <div>
                     <p><input type="submit" value="Submit" class="btn btn-success"/></p>
                 </div>

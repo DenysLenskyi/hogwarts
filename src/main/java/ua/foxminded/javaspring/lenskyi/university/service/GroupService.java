@@ -7,19 +7,19 @@ import java.util.List;
 
 public interface GroupService {
 
-    List<Group> findAll();
+    List<GroupDto> findAll();
 
     boolean existsByName(String groupName);
 
-    void createNewGroupFromGroupDto(GroupDto groupDto);
+    void createNewGroup(GroupDto groupDto);
 
     boolean existsById(Long groupId);
 
     void deleteById(Long groupId);
 
-    long getNumStudentsInGroup(String groupName);
+    GroupDto findById(Long id);
 
-    Group findById(Long id);
+    Group findGroupById(Long id);
 
     Group findByName(String groupName);
 

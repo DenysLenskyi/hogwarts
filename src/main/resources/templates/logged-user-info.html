@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <title>Hogwarts Schedule Manager</title>
+</head>
+<body style="padding: 40px">
+<div th:replace="~{fragments/header}"></div>
+<div class="container-fluid">
+<!--    login info-->
+    <div class="row">
+        <h2>Your LOG IN Information</h2>
+<!--        info for student-->
+        <div sec:authorize="hasAuthority('student')">
+            <p>First name: <strong><span th:text="${#authentication.principal.firstName}"/></strong></p>
+            <p th:if="${!#authentication.principal.lastName.isEmpty()}">
+                Last name: <strong><span th:text="${#authentication.principal.lastName}"/></strong></p>
+            <p>Role: student</p>
+            <p>Group: <span th:text="${#authentication.principal.getGroup().getName()}"/></p>
+            <p>Permissions: observe only</p>
+            <p>Visit <a th:href="@{/login/readme}" target="_blank">README PAGE</a> to get information how to log in with another role</p>
+        </div>
+<!--        info for professor-->
+        <div sec:authorize="hasAuthority('professor') && !hasAuthority('admin')">
+            <p>First name: <strong><span th:text="${#authentication.principal.firstName}"/></strong></p>
+            <p th:if="${!#authentication.principal.lastName.isEmpty()}">
+                Last name: <strong><span th:text="${#authentication.principal.lastName}"/></strong></p>
+            <p>Role: professor</p>
+            <p th:if="${#authentication.principal.getSubject() != null}">
+                Subject: <span th:text="${#authentication.principal.getSubject().getName()}"/>
+            </p>
+            <p th:if="${#authentication.principal.getSubject() == null}">
+                You have no subject... You should ask an admin to add you one
+            </p>
+            <p>Permissions: observe, subject's classroom editing</p>
+            <p>Visit <a th:href="@{/login/readme}" target="_blank">README PAGE</a> to get information how to log in with another role</p>
+        </div>
+<!--        info for admin-->
+        <div sec:authorize="!hasAuthority('professor') && hasAuthority('admin')">
+            <p>First name: <strong><span th:text="${#authentication.principal.firstName}"/></strong></p>
+            <p th:if="${!#authentication.principal.lastName.isEmpty()}">
+                Last name: <strong><span th:text="${#authentication.principal.lastName}"/></strong></p>
+            <p>Role: administrator</p>
+            <p>Permissions: observe, create, edit, delete</p>
+            <p>Visit <a th:href="@{/login/readme}" target="_blank">README PAGE</a> to get information how to log in with another role</p>
+        </div>
+<!--        info for professor-admin-->
+        <div sec:authorize="hasAuthority('professor') && hasAuthority('admin')">
+            <p>First name: <strong><span th:text="${#authentication.principal.firstName}"/></strong></p>
+            <p th:if="${!#authentication.principal.lastName.isEmpty()}">
+                Last name: <strong><span th:text="${#authentication.principal.lastName}"/></strong></p>
+            <p>Role: professor, administrator</p>
+            <p th:if="${#authentication.principal.getSubject() != null}">
+                Subject: <span th:text="${#authentication.principal.getSubject().getName()}"/>
+            </p>
+            <p th:if="${#authentication.principal.getSubject() == null}">
+                You have no subject... You should add one for yourself
+            </p>
+            <p>Permissions: observe, create, edit, delete</p>
+            <p>Visit <a th:href="@{/login/readme}" target="_blank">README PAGE</a> to get information how to log in with another role</p>
+        </div>
+    </div>
+
+</div>
+<div th:replace="~{fragments/footer}"></div>
+</body>

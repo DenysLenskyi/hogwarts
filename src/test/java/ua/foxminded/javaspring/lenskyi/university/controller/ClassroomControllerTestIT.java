@@ -37,19 +37,18 @@ class ClassroomControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void getAllClassroomPageTest() throws Exception {
-        List<Classroom> allClassrooms = classroomService.findAll();
         mvc.perform(MockMvcRequestBuilders
                         .get("/classroom/all"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("classrooms-db-overview"))
-                .andExpect(model().attribute("classrooms", Matchers.equalToObject(allClassrooms)));
+                .andExpect(view().name("classrooms-page"))
+                .andExpect(model().attribute("classrooms", Matchers.equalToObject(classroomService.findAll())));
     }
 
     @Test
     @WithUserDetails("minervamcgonagall")
     void showEditClassroomFormTest() throws Exception {
-        List<Classroom> allClassrooms = classroomService.findAll();
-        Classroom classroom = allClassrooms.get(0);
+        List<ClassroomDto> allClassrooms = classroomService.findAll();
+        ClassroomDto classroom = allClassrooms.get(0);
         ClassroomDto classroomDto = classroomService.findById(classroom.getId());
         mvc.perform(MockMvcRequestBuilders
                         .get("/classroom/" + classroom.getId() + "/edit-page"))
@@ -61,7 +60,7 @@ class ClassroomControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void showEditClassroomFormWrongIdTest() throws Exception {
-        List<Classroom> allClassrooms = classroomService.findAll();
+        List<ClassroomDto> allClassrooms = classroomService.findAll();
         long wrongClassroomId = allClassrooms.get(0).getId() - 100L;
         mvc.perform(MockMvcRequestBuilders
                         .get("/classroom/" + wrongClassroomId + "/edit-page"))
@@ -72,23 +71,23 @@ class ClassroomControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void editClassroomTest() throws Exception {
-        List<Classroom> allClassrooms = classroomService.findAll();
-        Classroom classroom = allClassrooms.get(0);
+        List<ClassroomDto> allClassrooms = classroomService.findAll();
+        ClassroomDto classroom = allClassrooms.get(0);
         mvc.perform(MockMvcRequestBuilders
                         .put("/classroom/" + classroom.getId())
                         .param("name", classroom.getName())
                         .param("description", "test")
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection());
-        assertEquals("test", classroom.getDescription());
+        assertEquals("test", classroomService.findById(classroom.getId()).getDescription());
     }
 
     @Test
     @WithUserDetails("minervamcgonagall")
     void editClassroomWrongNameTest() throws Exception {
-        List<Classroom> allClassrooms = classroomService.findAll();
-        Classroom classroom = allClassrooms.get(0);
-        Classroom classroomTwo = allClassrooms.get(1);
+        List<ClassroomDto> allClassrooms = classroomService.findAll();
+        ClassroomDto classroom = allClassrooms.get(0);
+        ClassroomDto classroomTwo = allClassrooms.get(1);
         mvc.perform(MockMvcRequestBuilders
                         .put("/classroom/" + classroom.getId())
                         .param("name", classroomTwo.getName())
@@ -102,7 +101,7 @@ class ClassroomControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void showCreateNewClassroomFormTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/classroom/create-classroom-page")
+        mvc.perform(MockMvcRequestBuilders.get("/classroom/creation-page")
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("forms/create-classroom-form"))
@@ -123,7 +122,7 @@ class ClassroomControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void createNewClassroomNotUniqueNameTest() throws Exception {
-        List<Classroom> allClassrooms = classroomService.findAll();
+        List<ClassroomDto> allClassrooms = classroomService.findAll();
         mvc.perform(MockMvcRequestBuilders.post("/classroom")
                         .param("name", allClassrooms.get(0).getName())
                         .param("description", "testDescription")
@@ -135,8 +134,8 @@ class ClassroomControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void deleteClassroomTest() throws Exception {
-        List<Classroom> allClassrooms = classroomService.findAll();
-        Classroom classroom = allClassrooms.get(0);
+        List<ClassroomDto> allClassrooms = classroomService.findAll();
+        ClassroomDto classroom = allClassrooms.get(0);
         mvc.perform(MockMvcRequestBuilders.delete("/classroom/" + classroom.getId())
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection());
@@ -146,8 +145,8 @@ class ClassroomControllerTestIT {
     @Test
     @WithUserDetails("minervamcgonagall")
     void deleteClassroomWrongIdTest() throws Exception {
-        List<Classroom> allClassrooms = classroomService.findAll();
-        Classroom classroom = allClassrooms.get(0);
+        List<ClassroomDto> allClassrooms = classroomService.findAll();
+        ClassroomDto classroom = allClassrooms.get(0);
         long wrongClassroomId = classroom.getId() - 100L;
         mvc.perform(MockMvcRequestBuilders.delete("/classroom/" + wrongClassroomId)
                         .with(csrf()))

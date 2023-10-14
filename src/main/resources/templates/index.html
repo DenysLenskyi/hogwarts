@@ -2,34 +2,29 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-            href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,400;1,700&display=swap"
-            rel="stylesheet"
-    />
-
-    <link th:href="@{/css/index-styles.css}" rel="stylesheet" />
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <title>Hogwarts Schedule Manager</title>
 </head>
-<body>
+<body style="padding: 40px">
 <div th:replace="~{fragments/header}"></div>
-<h1>Hogwarts schedule manager homepage</h1>
-<h2>Here's what we have in Hogwarts Database</h2>
-<div>
-    <ul>
-        <li><a href="/user/all">Users</a></li>
-        <li><a href="/role/all">Roles</a></li>
-        <li><a href="/subject/all">Subjects</a></li>
-        <li><a href="/classroom/all">Classrooms</a></li>
-        <li><a href="/group/all">Groups</a></li>
-        <li><a href="/lesson/all">Lessons</a></li>
-        <li><a href="/lessonstartendtime/all">Lessons start and end time</a></li>
-    </ul>
+<div class="container-fluid">
+    <div class="row">
+        <h2>Hogwarts Schedule Manager</h2>
+        <p>Create a schedule for Hogwarts (You'd have the administrator rights to do that)</p>
+        <p>Use shortcuts in the header section to create, edit or delete:</p>
+        <ul>
+            <li>Users</li>
+            <li>Groups</li>
+            <li>Subjects</li>
+            <li>Classrooms</li>
+        </ul>
+        <p>Use that components to create a schedule. Have fun!</p>
+    </div>
+
+
 </div>
 <div th:replace="~{fragments/footer}"></div>
 </body>

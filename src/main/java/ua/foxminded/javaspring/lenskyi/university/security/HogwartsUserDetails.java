@@ -3,6 +3,8 @@ package ua.foxminded.javaspring.lenskyi.university.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ua.foxminded.javaspring.lenskyi.university.model.Group;
+import ua.foxminded.javaspring.lenskyi.university.model.Subject;
 import ua.foxminded.javaspring.lenskyi.university.model.User;
 
 import java.util.Collection;
@@ -40,6 +42,14 @@ public class HogwartsUserDetails implements UserDetails {
 
     public String getLastName() {
         return user.getLastName();
+    }
+
+    public Group getGroup() {
+        return user.getGroup();
+    }
+
+    public Subject getSubject() {
+        return user.getSubject();
     }
 
     @Override
